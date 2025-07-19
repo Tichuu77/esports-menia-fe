@@ -1,0 +1,94 @@
+import React from 'react';
+import { Chart, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { i18n } from 'src/i18n';
+
+// Register Chart.js components
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Tooltip,
+  Legend
+);
+
+const options = {
+  responsive: true,
+  interaction: {
+    mode: 'index' as const,
+    intersect: false,
+  },
+  stacked: false,
+  scales: {
+    x: {
+      display: false,
+      grid: {
+        display: false,
+      },
+    },
+    'y-axis-1': {
+      type: 'linear' as const,
+      display: false,
+      position: 'left' as const,
+      grid: {
+        display: false,
+      },
+    },
+    'y-axis-2': {
+      type: 'linear' as const,
+      display: true,
+      position: 'right' as const,
+      grid: {
+        display: false,
+      },
+    },
+  },
+};
+
+const data2 = {
+  labels: [
+    i18n('dashboard.charts.months.1'),
+    i18n('dashboard.charts.months.2'),
+    i18n('dashboard.charts.months.3'),
+    i18n('dashboard.charts.months.4'),
+    i18n('dashboard.charts.months.5'),
+    i18n('dashboard.charts.months.6'),
+    i18n('dashboard.charts.months.7'),
+  ],
+  datasets: [
+    {
+      label: i18n('dashboard.charts.orange'),
+      type: 'line' as const,
+      data: [51, 65, 40, 49, 60, 37, 40],
+      fill: false,
+      borderColor: '#EC932F',
+      backgroundColor: '#EC932F',
+      pointBorderColor: '#EC932F',
+      pointBackgroundColor: '#EC932F',
+      pointHoverBackgroundColor: '#EC932F',
+      pointHoverBorderColor: '#EC932F',
+      yAxisID: 'y-axis-2',
+    },
+    {
+      label: i18n('dashboard.charts.blue'),
+      type: 'line' as const,
+      data: [200, 185, 590, 621, 250, 400, 95],
+      fill: false,
+      backgroundColor: '#36A2EB',
+      borderColor: '#36A2EB',
+      hoverBackgroundColor: '#36A2EB',
+      hoverBorderColor: '#36A2EB',
+      yAxisID: 'y-axis-1',
+    },
+  ],
+};
+
+export default function DashboardMixChartTwo() {
+  return (
+    <div style={{ width: '100%', height: 300 }}>
+      <Bar data={data2} options={options} />
+    </div>
+  );
+}
