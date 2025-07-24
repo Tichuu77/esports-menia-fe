@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/auth/authActions';
 import selectors from 'src/modules/auth/authSelectors';
@@ -23,6 +23,7 @@ const schema = yup.object().shape({
 function PasswordResetPage() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const token = queryString.parse(location.search).token;
 
@@ -45,8 +46,8 @@ function PasswordResetPage() {
     selectors.selectLoadingPasswordReset,
   );
 
-  const onSubmit = async ({ password }) => {
-    dispatch(actions.doResetPassword(token, password));
+  const onSubmit = async ({ password } : any) => {
+    dispatch(actions.doResetPassword(token, password,navigate) as any);
   };
 
   return (

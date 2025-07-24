@@ -297,9 +297,8 @@ const authActions = {
       }
     },
 
-  doVerifyEmail: (token) => async (dispatch, getState) => {
+  doVerifyEmail: (token : string,navigate:any) => async (dispatch:any, getState:any) => {
     try {
-        const navigate = useNavigate();
       const isLoading =
         authSelectors.selectLoadingVerifyEmail(getState());
 
@@ -333,9 +332,9 @@ const authActions = {
   },
 
   doResetPassword:
-    (token, password) => async (dispatch) => {
+    (token : string, password : string,navigate : any) => async (dispatch :any, getState:any) => {
       try {
-          const navigate = useNavigate();
+          
         dispatch({
           type: authActions.PASSWORD_RESET_START,
         });
@@ -348,7 +347,6 @@ const authActions = {
         });
         navigate('/');
       } catch (error) {
-          const navigate = useNavigate();
         Errors.handle(error);
 
         dispatch({

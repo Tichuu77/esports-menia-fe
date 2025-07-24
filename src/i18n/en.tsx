@@ -1628,7 +1628,7 @@ const en = {
         '${path} must be one of the following values: ${values}',
       notOneOf:
         '${path} must not be one of the following values: ${values}',
-      notType: ({ path, type, value, originalValue }) => {
+      notType: ({ path, type, }:any) => {
         return `${path} must be a ${type}`;
       },
     },
@@ -1666,7 +1666,7 @@ const en = {
         '${path} field cannot have keys not specified in the object shape',
     },
     array: {
-      min: ({ min, path }) =>
+      min: ({ min, path }: any) =>
         min === 1
           ? `${path} is required`
           : `${path} field must have at least ${min} items`,

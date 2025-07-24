@@ -30,9 +30,10 @@ function InviationPage() {
   const logoUrl = useSelector(selectors.selectLogoUrl);
 
   const token = queryString.parse(location.search).token;
+  console.log('Invitation token:', token);
 
   useEffect(() => {
-    dispatch(invitationActions.doAcceptFromAuth(token));
+    dispatch(invitationActions.doAcceptFromAuth(token,navigate));
   }, [dispatch, token]);
 
   const doAcceptWithWrongEmail = () => {

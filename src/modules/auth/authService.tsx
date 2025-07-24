@@ -160,4 +160,5 @@ export default class AuthService {
 
     return Boolean(urlParams.get('social'));
   }
+  
 }

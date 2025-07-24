@@ -29,9 +29,9 @@ const tenantInvitationActions = {
   DECLINE_ERROR: `${prefix}_DECLINE_ERROR`,
 
   doAcceptFromAuth:
-    (token, forceAcceptOtherEmail = false) =>
-    async (dispatch, getState) => {
-       const navigate = useNavigate();
+    (token:string, navigate:any,forceAcceptOtherEmail = false) =>
+    async (dispatch :any, getState:any) => {
+       
       try {
         const isLoading =
           selectors.selectLoading(getState());

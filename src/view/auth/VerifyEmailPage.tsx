@@ -8,6 +8,7 @@ import selectors from 'src/modules/auth/authSelectors';
 import { useNavigate } from 'react-router-dom';
 
 function VerifyEmailPage() {
+     
      const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -28,11 +29,11 @@ function VerifyEmailPage() {
   );
 
   useEffect(() => {
-    dispatch(actions.doVerifyEmail(token));
+    dispatch(actions.doVerifyEmail(token as string,navigate) as any);
   }, [dispatch, token]);
 
   const doSignout = async () => {
-    await dispatch(actions.doSignout());
+    await dispatch(actions.doSignout() as any);
    navigate('/');
   };
 
