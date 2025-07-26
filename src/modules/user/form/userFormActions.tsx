@@ -78,7 +78,7 @@ const userFormActions = {
     }
   },
 
-  doUpdate: (values,navigate) => async (dispatch, getState) => {
+  doUpdate: (values :any,navigate:any) => async (dispatch:any, getState:any) => {
     try {
       dispatch({
         type: userFormActions.UPDATE_STARTED,

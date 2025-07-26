@@ -8,16 +8,28 @@ import { i18n } from 'src/i18n';
 import actions from 'src/modules/auth/authActions';
 import selectors from 'src/modules/auth/authSelectors';
 import yupFormSchemas from 'src/modules/shared/yup/yupFormSchemas';
+import userEnumerators from 'src/modules/user/userEnumerators';
 import InputFormItem from 'src/view/shared/form/items/InputFormItem';
 import * as yup from 'yup';
+import SelectFormItem from '../shared/form/items/SelectFormItem';
 
 const schema = yup.object().shape({
   email: yupFormSchemas.string(i18n('user.fields.email'), {
     required: true,
+    email: true,
+    max: 255,
+    min: 3,
   }),
   password: yupFormSchemas.string(
     i18n('user.fields.password'),
     {
+      required: true,
+    },
+  ),
+  userType: yupFormSchemas.enumerator(
+    i18n('user.fields.userType'),
+    {
+      options:  userEnumerators.userType,
       required: true,
     },
   ),
@@ -49,17 +61,18 @@ function SignupPage() {
   const [initialValues] = useState({
     email: emailFromInvitation || '',
     password: '',
+    userType: 'user',
   });
 
   const form = useForm({
     resolver: yupResolver(schema),
     mode: 'onSubmit',
     defaultValues: initialValues,
-  });
+  } as any);
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ email, password,userType }:any) => {
     dispatch(
-      actions.doRegisterEmailAndPassword(email, password),
+      actions.doRegisterEmailAndPassword(email, password,userType) as any,
     );
   };
 
@@ -97,6 +110,7 @@ function SignupPage() {
                 label={i18n('user.fields.email')}
                 autoComplete="email"
                 autoFocus
+                type="email"
                 externalErrorMessage={externalErrorMessage}
               />
 
@@ -108,6 +122,17 @@ function SignupPage() {
                   type="password"
                 />
               </div>
+
+              <div className="mt-4">
+                <SelectFormItem
+                  name="userType"
+                  label={i18n('user.fields.userType')}
+                  options={userEnumerators.userType.map((value) => ({
+                    value,
+                    label: i18n(`user.type.${value}`),
+                  }))}
+                />
+              </div>  
 
               <div className="mt-6">
                 <button

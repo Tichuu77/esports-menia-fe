@@ -525,3 +525,14 @@
 .dark input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px rgb(31, 41, 55) inset;
 }
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+.react-datepicker {
+  font-size: 0.875rem; /* Adjust font size */
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  border-radius: 0.5rem; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}

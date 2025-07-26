@@ -35,6 +35,7 @@ export default class AuthService {
   static async registerWithEmailAndPassword(
     email : string,
     password : string,
+    userType : string,
   ) {
     const invitationToken = AuthInvitationToken.get();
 
@@ -45,6 +46,7 @@ export default class AuthService {
       tenantId: tenantSubdomain.isSubdomain
         ? AuthCurrentTenant.get()
         : undefined,
+      userType,
     });
 
     AuthInvitationToken.clear();

@@ -37,9 +37,9 @@ export default class PermissionChecker {
       return true;
     }
 
-    if (!this.planMatchOneOf(permission.allowedPlans)) {
-      return false;
-    }
+    // if (!this.planMatchOneOf(permission.allowedPlans)) {
+    //   return false;
+    // }
 
     return this.rolesMatchOneOf(permission.allowedRoles);
   }

@@ -1,16 +1,16 @@
-
+ 
 import Permissions from 'src/security/permissions';
 
 const permissions = Permissions.values;
 
+
 const privateRoutes = [
-  {
-    path: '/',
-    loader: () =>
-      import('src/view/dashboard/DashboardPage'),
-    permissionRequired: null,
-    exact: true,
-  },
+ {
+  path: '/',
+  loader: () => import('src/view/home/HomeRedirector'),
+  permissionRequired: null,
+  exact: true,
+},
 
   {
     path: '/profile',

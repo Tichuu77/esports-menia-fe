@@ -26,7 +26,7 @@ function Header() {
   const userText = useSelector(authSelectors.selectCurrentUserNameOrEmailPrefix);
   const userAvatar = useSelector(authSelectors.selectCurrentUserAvatar);
   const currentTenant = useSelector(authSelectors.selectCurrentTenant);
-  const hasPermissionToReadWorkspeace = useSelector(authSelectors.selectPermissionToRead);
+  const hasPermissionToReadWorkspeace = useSelector(authSelectors.selectPermissionToAccessWorkSpeacen);
   const menuVisible = useSelector(layoutSelectors.selectMenuVisible);
 
 

@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import layoutSelectors from 'src/modules/layout/layoutSelectors';
 import Header from 'src/view/layout/Header';
 import Menu from 'src/view/layout/Menu';
 
@@ -11,7 +9,6 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const menuVisible = useSelector(layoutSelectors.selectMenuVisible);
 
   return (
     <div className="flex h-full dark:bg-gray-600">

@@ -97,7 +97,7 @@ const authActions = {
   },
 
   doRegisterEmailAndPassword:
-    (email, password) => async (dispatch) => {
+    (email:string, password:string,userType:string) => async (dispatch:any) => {
       try {
         dispatch({ type: authActions.AUTH_START });
 
@@ -105,6 +105,7 @@ const authActions = {
           await service.registerWithEmailAndPassword(
             email,
             password,
+            userType,
           );
 
         AuthToken.set(token, true);
@@ -268,9 +269,8 @@ const authActions = {
   },
 
   doChangePassword:
-    (oldPassword, newPassword) => async (dispatch) => {
+    (oldPassword :any, newPassword:any,navigate:any) => async (dispatch:any) => {
       try {
-          const navigate = useNavigate();
         dispatch({
           type: authActions.PASSWORD_CHANGE_START,
         });

@@ -20,9 +20,16 @@ const schema = yup.object().shape({
   roles: yupFormSchemas.stringArray(
     i18n('user.fields.roles'),
   ),
+  status: yupFormSchemas.enumerator(
+    i18n('user.fields.status'),
+    {
+      options: userEnumerators.status,
+      required: true,
+    },
+  ),
 });
 
-function UserEditForm(props) {
+function UserEditForm(props:any) {
   const dispatch = useDispatch();
    const navigate = useNavigate();
   const { saveLoading } = props;
@@ -37,13 +44,13 @@ function UserEditForm(props) {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values:any) => {
     const data = {
       id: props.user.id,
       ...values,
     };
     delete data.email;
-    dispatch(actions.doUpdate(data,navigate));
+    dispatch(actions.doUpdate(data,navigate)as any);
   };
 
   const onReset = () => {
@@ -71,6 +78,17 @@ function UserEditForm(props) {
               label: i18n(`roles.${value}.label`),
             }))}
             mode="multiple"
+          />
+        </div>
+
+        <div className="w-full sm:w-md md:w-md lg:w-md mt-4">
+          <SelectFormItem
+            name="status"
+            label={i18n('user.fields.status')}
+            options={userEnumerators.status.map((value) => ({
+              value,
+              label: i18n(`user.status.${value}`),
+            }))}
           />
         </div>
 

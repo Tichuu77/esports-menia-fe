@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import {
   Chart,
   CategoryScale,
@@ -79,7 +79,7 @@ const options = {
 export default function DashboardLineChart() {
    return (
           <div style={{ width: '100%', height: 300 }}>
-           <Line data={data} options={options} />
+           <Line data ={data} options={options} />
           </div>
         );
 }

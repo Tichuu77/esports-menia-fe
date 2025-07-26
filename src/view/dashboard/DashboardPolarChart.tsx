@@ -6,7 +6,7 @@ import { i18n } from 'src/i18n';
 // Register required Chart.js components
 Chart.register(ArcElement, Tooltip, Legend, RadialLinearScale);
 
-export default function DashboardPolarChart(props) {
+export default function DashboardPolarChart( ) {
   const chartRef = useRef(null);
 
   // Memoize data to prevent unnecessary re-renders
@@ -51,7 +51,7 @@ export default function DashboardPolarChart(props) {
   useEffect(() => {
     return () => {
       if (chartRef.current) {
-        chartRef.current.destroy();
+        chartRef.current.destroy() ;
       }
     };
   }, []);

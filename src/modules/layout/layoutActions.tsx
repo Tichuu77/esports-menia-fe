@@ -9,7 +9,7 @@ const layoutActions = {
 
   DARK_MODE_CHANGE: `${prefix}_DARK_MODE`,
 
-  doChangeLanguage: (language) => {
+  doChangeLanguage: (language:string) => {
     setLanguageCode(language);
 
     /**
@@ -19,7 +19,7 @@ const layoutActions = {
     window.location.reload();
   },
 
-  doDarkModeChange: (isDarkMode) => {
+  doDarkModeChange: (isDarkMode:boolean) => {
     return {
       type: layoutActions.DARK_MODE_CHANGE,
       payload: Boolean(isDarkMode),

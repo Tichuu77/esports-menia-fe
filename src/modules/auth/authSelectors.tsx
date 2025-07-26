@@ -9,18 +9,18 @@ const selectRaw = (state) => state.auth;
 
 const selectAuthenticationUser = createSelector(
   [selectRaw],
-  (auth) => auth.authenticationUser,
+  (auth) => auth?.authenticationUser,
 );
 
 const selectCurrentUser = createSelector(
   [selectRaw],
-  (auth) => auth.currentUser,
+  (auth) => auth?.currentUser,
 );
 
 const selectCurrentTenant = createSelector(
   [selectRaw],
   (raw) => {
-    return raw.currentTenant;
+    return raw?.currentTenant;
   },
 );
 
@@ -221,16 +221,60 @@ const selectLogoUrl = createSelector(
   },
 );
 
-const selectPermissionToRead = createSelector(
+const selectPermissionToAccessWorkSpeacen = createSelector(
   [
     selectCurrentTenant,
     selectCurrentUser,
   ],
   (currentTenant, currentUser) =>
     new PermissionChecker(currentTenant, currentUser).match(
-      Permissions.values.workSpeacenRead,
+      Permissions.values.workSpeacen,
     )
 );  
+
+const selectPermissionToAccess = createSelector(
+  [
+    selectCurrentTenant,
+    selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.addministrator,
+    )
+);
+
+const selectPesmissionAccessOwner= createSelector(
+  [
+    selectCurrentTenant,
+    selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.ownerAccess,
+    )
+);
+
+const selectPesmissionAccessHost= createSelector(
+  [
+    selectCurrentTenant,
+    selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.hostAccess,
+    )
+);
+
+const selectPesmissionAccessUser= createSelector(
+  [
+    selectCurrentTenant,
+    selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.userAccess,
+    )
+);
 
 
 const authSelectors = {
@@ -258,7 +302,11 @@ const authSelectors = {
   selectCurrentSettings,
   selectLogoUrl,
   selectBackgroundImageUrl,
-  selectPermissionToRead
+  selectPermissionToAccessWorkSpeacen,
+  selectPermissionToAccess,
+  selectPesmissionAccessOwner,
+  selectPesmissionAccessUser,
+  selectPesmissionAccessHost
 };
 
 export default authSelectors;

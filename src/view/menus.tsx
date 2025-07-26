@@ -5,7 +5,6 @@ import {
   //faHistory,
   faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
-import config from 'src/config';
 import { i18n } from 'src/i18n';
 import Permissions from 'src/security/permissions';
 
@@ -23,7 +22,7 @@ export default [
   {
     path: '/user',
     label: i18n('user.menu'),
-    permissionRequired: permissions.userRead,
+    permissionRequired: null,
     icon: faChevronRight,
     group: 'administrator',
   },
@@ -32,7 +31,7 @@ export default [
     path: '/audit-logs',
     icon: faChevronRight,
     label: i18n('auditLog.menu'),
-    permissionRequired: permissions.auditLogRead,
+    permissionRequired: null,
     group: 'administrator',
   },
   
@@ -40,7 +39,7 @@ export default [
     path: '/settings',
     icon: faChevronRight,
     label: i18n('settings.menu'),
-    permissionRequired: permissions.settingsEdit,
+    permissionRequired: null,
     group: 'administrator',
   },
 ].filter(Boolean);

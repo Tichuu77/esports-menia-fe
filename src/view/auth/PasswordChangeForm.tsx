@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/auth/authActions';
 import selectors from 'src/modules/auth/authSelectors';
@@ -38,9 +39,9 @@ const schema = yup.object().shape({
     ),
 });
 
-function PasswordChangeFormPage(props) {
+function PasswordChangeFormPage(props:any) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [initialValues] = useState(() => ({
     oldPassword: '',
     newPassword: '',
@@ -57,18 +58,19 @@ function PasswordChangeFormPage(props) {
     selectors.selectLoadingPasswordChange,
   );
 
-  const onSubmit = (values) => {
+  const onSubmit = (values : any) => {
     dispatch(
       actions.doChangePassword(
         values.oldPassword,
         values.newPassword,
-      ),
+        navigate,
+      ) as any,
     );
   };
 
   const onReset = () => {
     Object.keys(initialValues).forEach((key: any) => {
-      form.setValue(key, initialValues[key]);
+      form.setValue(key, initialValues[key as keyof typeof initialValues]);
     });
   };
 

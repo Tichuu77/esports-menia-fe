@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import { useNavigate } from 'react-router-dom';
 import actions from 'src/modules/tenant/form/tenantFormActions';
@@ -8,11 +8,12 @@ import selectors from 'src/modules/tenant/form/tenantFormSelectors';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 import Spinner from 'src/view/shared/Spinner';
 import TenantForm from 'src/view/tenant/form/TenantForm';
+import authSelectors from 'src/modules/auth/authSelectors';
 
 function TenantFormPage() {
   const dispatch = useDispatch();
   const [dispatched, setDispatched] = useState(false);
-  const match = useRouteMatch();
+  const {id}=  useParams();
      const navigate = useNavigate();
 
   const initLoading = useSelector(
@@ -23,12 +24,16 @@ function TenantFormPage() {
   );
   const record = useSelector(selectors.selectRecord);
 
-  const isEditing = Boolean(match.params.id);
+  const isEditing = Boolean(id);
+
+  const hasPermissionToAccessWorkspeace = useSelector(
+     authSelectors.selectPermissionToAccessWorkSpeacen,
+  );
 
   useEffect(() => {
-    dispatch(actions.doInit(match.params.id));
+    dispatch(actions.doInit(id));
     setDispatched(true);
-  }, [dispatch, match.params.id]);
+  }, [dispatch, id]);
 
   const doSubmit = (id, data) => {
     if (isEditing) {
@@ -55,7 +60,7 @@ function TenantFormPage() {
 
         {initLoading && <Spinner />}
 
-        {dispatched && !initLoading && (
+        {dispatched && !initLoading && hasPermissionToAccessWorkspeace && (
           <TenantForm
             saveLoading={saveLoading}
             record={record}

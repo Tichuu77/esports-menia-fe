@@ -1,4 +1,4 @@
-import React from 'react';
+ 
 import { Chart, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { i18n } from 'src/i18n';

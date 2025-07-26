@@ -76,14 +76,14 @@ function SigninPage() {
     defaultValues: initialValues,
   });
 
-  const onSubmit = ({ email, password, rememberMe }) => {
+  const onSubmit = ({ email, password, rememberMe }: any) => {
     dispatch(
       actions.doSigninWithEmailAndPassword(
         email,
         password,
         rememberMe,
-      ),
-    );
+      ) as any,
+    ) as any;
   };
 
   return (

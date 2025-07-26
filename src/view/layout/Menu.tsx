@@ -13,12 +13,15 @@ import { Layout, Menu as AntdMenu, Drawer } from 'antd';
 
 const { Sider } = Layout;
 
-function Menu(props) {
+function Menu(props:any) {
   const dispatch = useDispatch();
   const logoUrl = useSelector(authSelectors.selectLogoUrl);
   const currentTenant = useSelector(authSelectors.selectCurrentTenant);
   const currentUser = useSelector(authSelectors.selectCurrentUser);
   const menuVisible = useSelector(layoutSelectors.selectMenuVisible);
+  const hasPermissionAdministrator = useSelector(
+    authSelectors.selectPermissionToAccess,
+  );
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
@@ -34,8 +37,8 @@ function Menu(props) {
 
   const permissionChecker = new PermissionChecker(currentTenant, currentUser);
 
-  const match = (permission) => permissionChecker.match(permission);
-  const lockedForCurrentPlan = (permission) =>
+  const match = (permission :any) => permissionChecker.match(permission);
+  const lockedForCurrentPlan = (permission:any) =>
     permissionChecker.lockedForCurrentPlan(permission);
 
   const selectExpandedMenuKeys = () => {
@@ -68,7 +71,7 @@ function Menu(props) {
         icon: <FontAwesomeIcon icon={m.icon} />,
         label: <Link onClick={onMenuClick} to={m.path}>{m.label}</Link>,
       })),
-
+   (hasPermissionAdministrator  ) &&
     {
       key: 'administrator',
       label: 'Administrator',

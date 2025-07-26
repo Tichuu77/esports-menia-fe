@@ -16,7 +16,7 @@ const initialData = {
   errorMessageVerifyEmail: null,
 };
 
-export default (state = initialData, { type, payload }) => {
+export default (state = initialData, { type , payload } :any) => {
   if (type === actions.ERROR_MESSAGE_CLEARED) {
     return {
       ...state,
