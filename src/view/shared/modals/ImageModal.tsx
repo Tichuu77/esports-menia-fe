@@ -84,7 +84,7 @@ const ImageModalWrapper = styled.div`
   }
 `;
 
-function ImageModal(props) {
+function ImageModal(props:any) {
   return (
     <ImageModalWrapper>
       <div className="modal">

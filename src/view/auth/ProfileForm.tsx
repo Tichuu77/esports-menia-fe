@@ -1,11 +1,8 @@
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import {
-  faTimes,
-  faUndo,
-} from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import React, { useCallback, useMemo } from 'react'; // Added useCallback, useMemo
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
@@ -19,56 +16,40 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
-  
-  firstName: yupFormSchemas.string(
-    i18n('user.fields.firstName'),
-    {
-      max: 80,
-    },
-  ),
-  lastName: yupFormSchemas.string(
-    i18n('user.fields.lastName'),
-    {
-      max: 175,
-    },
-  ),
-  phoneNumber: yupFormSchemas.string(
-    i18n('user.fields.phoneNumber'),
-    {
-      matches: /^[0-9]/,
-      max: 24,
-    },
-  ),
-  avatars: yupFormSchemas.images(
-    i18n('user.fields.avatars'),
-    {
-      max: 1,
-    },
-  ),
+  firstName: yupFormSchemas.string(i18n('user.fields.firstName'), {
+    max: 80,
+  }),
+  lastName: yupFormSchemas.string(i18n('user.fields.lastName'), {
+    max: 175,
+  }),
+  phoneNumber: yupFormSchemas.string(i18n('user.fields.phoneNumber'), {
+    matches: /^[0-9]/,
+    max: 24,
+  }),
+  avatars: yupFormSchemas.images(i18n('user.fields.avatars'), {
+    max: 1,
+  }),
 });
 
-function ProfileFormPage(props) {
-   const navigate = useNavigate();
+// Assume ImagesFormItem is memoized if complex
+const MemoizedImagesFormItem = React.memo(ImagesFormItem);
+
+function ProfileFormPage(props: any) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const saveLoading = useSelector(
-    selectors.selectLoadingUpdateProfile,
-  );
+  const saveLoading = useSelector(selectors.selectLoadingUpdateProfile);
+  const currentUser = useSelector(selectors.selectCurrentUser);
 
-  const currentUser = useSelector(
-    selectors.selectCurrentUser,
-  );
-
-  const [initialValues] = useState(() => {
+  const initialValues = useMemo(() => {
     const record = currentUser || {};
-
     return {
       firstName: record.firstName,
       lastName: record.lastName,
       phoneNumber: record.phoneNumber,
       avatars: record.avatars || [],
-    };
-  });
+    } as any;
+  }, [currentUser]);
 
   const form = useForm({
     resolver: yupResolver(schema),
@@ -76,16 +57,19 @@ function ProfileFormPage(props) {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (values) => {
-    console.log('Submitting profile form with values:', values);
-    dispatch(actions.doUpdateProfile(values,navigate));
-  };
+  const onSubmit = useCallback(
+    (values: any) => {
+      console.log('Submitting profile form with values:', values);
+      dispatch(actions.doUpdateProfile(values, navigate) as any);
+    },
+    [dispatch, navigate],
+  );
 
-  const onReset = () => {
+  const onReset = useCallback(() => {
     Object.keys(initialValues).forEach((key) => {
-      form.setValue(key, initialValues[key]);
+      form.setValue(key as any, initialValues[key]);
     });
-  };
+  }, [form, initialValues]);
 
   return (
     <FormProvider {...form}>
@@ -124,7 +108,7 @@ function ProfileFormPage(props) {
         </div>
 
         <div className="w-full sm:w-md md:w-md lg:w-md mt-4">
-          <ImagesFormItem
+          <MemoizedImagesFormItem
             name="avatars"
             label={i18n('user.fields.avatars')}
             storage={Storage.values.userAvatarsProfiles}
@@ -139,10 +123,7 @@ function ProfileFormPage(props) {
             type="button"
             onClick={form.handleSubmit(onSubmit)}
           >
-            <FontAwesomeIcon
-              className="mr-2"
-              icon={faSave}
-            />
+            <FontAwesomeIcon className="mr-2" icon={faSave} />
             {i18n('common.save')}
           </button>
 
@@ -152,10 +133,7 @@ function ProfileFormPage(props) {
             className="mr-2 mb-2 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600 dark:text-white text-gray-700 border border-gray-300 transition-colors duration-200 transform bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
             type="button"
           >
-            <FontAwesomeIcon
-              className="mr-2"
-              icon={faUndo}
-            />
+            <FontAwesomeIcon className="mr-2" icon={faUndo} />
             {i18n('common.reset')}
           </button>
 
@@ -166,10 +144,7 @@ function ProfileFormPage(props) {
               className="mr-2 mb-2 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600 dark:text-white text-gray-700 border border-gray-300 transition-colors duration-200 transform bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
               type="button"
             >
-              <FontAwesomeIcon
-                className="mr-2"
-                icon={faTimes}
-              />
+              <FontAwesomeIcon className="mr-2" icon={faTimes} />
               {i18n('common.cancel')}
             </button>
           ) : null}
@@ -179,4 +154,4 @@ function ProfileFormPage(props) {
   );
 }
 
-export default ProfileFormPage;
+export default React.memo(ProfileFormPage); // Memoize if parent re-renders frequently

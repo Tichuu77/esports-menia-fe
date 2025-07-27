@@ -22,7 +22,7 @@ export default class SettingsService {
     return response.data;
   }
 
-  static async save(settings) {
+  static async save(settings:any) {
     const body = {
       settings,
     };
@@ -35,7 +35,7 @@ export default class SettingsService {
     return response.data;
   }
 
-  static applyTheme(color) {
+  static applyTheme(color:any) {
     // const oldLink = document.getElementById('theme-link');
     // if (oldLink) {
     //   oldLink.setAttribute(

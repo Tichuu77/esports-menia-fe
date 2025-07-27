@@ -6,11 +6,11 @@ import * as XLSX from 'xlsx';
 export default class Importer {
   schema: ImporterSchema;
 
-  constructor(fields) {
+  constructor(fields:any) {
     this.schema = new ImporterSchema(fields);
   }
 
-  downloadTemplate(templateFileName) {
+  downloadTemplate(templateFileName:any) {
     return Excel.exportAsExcelFile(
       [],
       this.schema.labels,
@@ -18,15 +18,15 @@ export default class Importer {
     );
   }
 
-  async castForDisplay(row, index) {
+  async castForDisplay(row:any, index:any) {
     return this.schema.castForDisplay(row, index);
   }
 
-  async castForImport(row) {
+  async castForImport(row:any) {
     return this.schema.castForImport(row);
   }
 
-  async convertExcelFileToJson(file, skipHeader = true) {
+  async convertExcelFileToJson(file:any, skipHeader = true) {
     const workbook =
       await this._convertExcelFileToWorkbook(file);
 
@@ -42,7 +42,7 @@ export default class Importer {
     return json;
   }
 
-  async _convertExcelFileToWorkbook(file) {
+  async _convertExcelFileToWorkbook(file:any) {
     try {
       const data = await this._readFile(file);
       return XLSX.read(data, {
@@ -56,7 +56,7 @@ export default class Importer {
     }
   }
 
-  async _readFile(file) {
+  async _readFile(file:any) {
     if (!file) {
       return null;
     }
@@ -80,7 +80,7 @@ export default class Importer {
         }
       };
 
-      reader.onerror = (e) => {
+      reader.onerror = () => {
         reject();
       };
 

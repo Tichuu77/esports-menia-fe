@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
@@ -9,7 +9,7 @@ import FormErrors from 'src/view/shared/form/formErrors';
 import selectControlStyles from 'src/view/shared/form/items/selectControlStyles';
 import { v4 as uuid } from 'uuid';
 
-function SelectFormItem(props) {
+function SelectFormItem(props: any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -22,6 +22,8 @@ function SelectFormItem(props) {
     placeholder,
     isClearable,
     externalErrorMessage,
+    onChange,
+    onBlur,
   } = props;
 
   const {
@@ -41,108 +43,93 @@ function SelectFormItem(props) {
 
   const originalValue = watch(name);
 
-  const isDarkMode = useSelector(
-    layoutSelectors.selectDarkMode,
-  );
+  const isDarkMode = useSelector(layoutSelectors.selectDarkMode);
 
   useEffect(() => {
     register(name);
   }, [register, name]);
 
-  const value = () => {
-    const { mode } = props;
-    if (mode === 'multiple') {
-      return valueMultiple();
-    } else {
-      return valueOne();
-    }
-  };
-
-  const valueMultiple = () => {
+  const valueMultiple = useCallback(() => {
     if (originalValue) {
-      return originalValue.map((value) =>
-        options.find((option) => option.value === value),
+      return originalValue.map((value: any) =>
+        options.find((option: any) => option.value === value),
       );
     }
-
     return [];
-  };
+  }, [originalValue, options]);
 
-  const valueOne = () => {
-    const { options } = props;
-
+  const valueOne = useCallback(() => {
     if (originalValue != null) {
-      return options.find(
-        (option) => option.value === originalValue,
-      );
+      return options.find((option: any) => option.value === originalValue);
     }
-
     return null;
-  };
+  }, [originalValue, options]);
 
-  const handleSelect = (data) => {
-    const { mode } = props;
-    if (mode === 'multiple') {
-      return handleSelectMultiple(data);
-    } else {
-      return handleSelectOne(data);
-    }
-  };
+  const value = useCallback(
+    () => {
+      if (mode === 'multiple') {
+        return valueMultiple();
+      } else {
+        return valueOne();
+      }
+    },
+    [mode, valueMultiple, valueOne],
+  );
 
-  const handleSelectMultiple = (values) => {
-    if (!values) {
-      setValue(name, [], {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange([]);
-      return;
-    }
+  const handleSelectMultiple = useCallback(
+    (values: any) => {
+      if (!values) {
+        setValue(name, [], { shouldValidate: true, shouldDirty: true });
+        onChange && onChange([]);
+        return;
+      }
+      const newValue = values
+        .map((data: any) => (data ? data.value : data))
+        .filter((value: any) => value != null);
+      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      onChange && onChange(newValue);
+    },
+    [setValue, name, onChange],
+  );
 
-    const newValue = values
-      .map((data) => (data ? data.value : data))
-      .filter((value) => value != null);
+  const handleSelectOne = useCallback(
+    (data: any) => {
+      if (!data) {
+        setValue(name, null, { shouldValidate: true, shouldDirty: true });
+        onChange && onChange(null);
+        return;
+      }
+      setValue(name, data.value, { shouldValidate: true, shouldDirty: true });
+      onChange && onChange(data.value);
+    },
+    [setValue, name, onChange],
+  );
 
-    setValue(name, newValue, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(newValue);
-  };
+  const handleSelect = useCallback(
+    (data: any) => {
+      if (mode === 'multiple') {
+        return handleSelectMultiple(data);
+      } else {
+        return handleSelectOne(data);
+      }
+    },
+    [mode, handleSelectMultiple, handleSelectOne],
+  );
 
-  const handleSelectOne = (data) => {
-    if (!data) {
-      setValue(name, null, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange(null);
-      return;
-    }
-
-    setValue(name, data.value, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(data.value);
-  };
-
-  const controlStyles = selectControlStyles(
-    isDarkMode,
-    Boolean(errorMessage),
+  const controlStyles = useMemo(
+    () => selectControlStyles(isDarkMode, Boolean(errorMessage)),
+    [isDarkMode, errorMessage],
   );
 
   return (
     <div>
       {Boolean(label) && (
         <label
-          className={`block text-sm text-gray-800 dark:text-gray-200`}
+          className="block text-sm text-gray-800 dark:text-gray-200"
           htmlFor={inputId}
         >
           {label}{' '}
-          {required ? (
-            <span className="text-sm text-red-400">*</span>
-          ) : null}
+          {required ? <span className="text-sm text-red-400">*</span> : null}
         </label>
       )}
 
@@ -150,9 +137,7 @@ function SelectFormItem(props) {
         className="w-full mt-2"
         value={value()}
         onChange={handleSelect}
-        onBlur={(event) => {
-          props.onBlur && props.onBlur(event);
-        }}
+        onBlur={(event) => onBlur && onBlur(event)}
         id={inputId}
         name={name}
         options={options}
@@ -161,18 +146,12 @@ function SelectFormItem(props) {
         isClearable={isClearable}
         styles={controlStyles}
         loadingMessage={() => i18n('autocomplete.loading')}
-        noOptionsMessage={() =>
-          i18n('autocomplete.noOptions')
-        }
+        noOptionsMessage={() => i18n('autocomplete.noOptions')}
       />
 
-      <div className="text-red-600 text-sm mt-2">
-        {errorMessage}
-      </div>
+      <div className="text-red-600 text-sm mt-2">{errorMessage}</div>
       {Boolean(hint) && (
-        <div className="text-gray-500 text-sm mt-2">
-          {hint}
-        </div>
+        <div className="text-gray-500 text-sm mt-2">{hint}</div>
       )}
     </div>
   );
@@ -193,7 +172,8 @@ SelectFormItem.propTypes = {
   mode: PropTypes.string,
   isClearable: PropTypes.bool,
   placeholder: PropTypes.string,
-  onChange:PropTypes.any,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
-export default SelectFormItem;
+export default React.memo(SelectFormItem); // Memoized for list usage

@@ -24,6 +24,7 @@ import ConfirmModal from 'src/view/shared/modals/ConfirmModal';
 import Spinner from 'src/view/shared/Spinner';
 import Pagination from 'src/view/shared/table/Pagination';
 import TableColumnHeader from 'src/view/shared/table/TableColumnHeader';
+ 
 
 function TenantListTable() {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ function TenantListTable() {
     authSelectors.selectCurrentTenant,
   );
 
-  const doChangeSort = (field) => {
+  const doChangeSort = (field:any) => {
     const order =
       sorter.field === field && sorter.order === 'ascend'
         ? 'descend'
@@ -77,30 +78,30 @@ function TenantListTable() {
       actions.doChangeSort({
         field,
         order,
-      }),
+      }) as any,
     );
   };
 
-  const doSelectTenant = (tenant) => {
-    dispatch(authActions.doSelectTenant(tenant));
+  const doSelectTenant = (tenant:string) => {
+    dispatch(authActions.doSelectTenant(tenant)as any);
   };
 
-  const doChangePagination = (pagination) => {
-    dispatch(actions.doChangePagination(pagination));
+  const doChangePagination = (pagination:any) => {
+    dispatch(actions.doChangePagination(pagination)as any);
   };
 
-  const doDestroy = (id) => {
+  const doDestroy = (id:string) => {
     setRecordIdToDestroy(null);
-    dispatch(destroyActions.doDestroy(id));
+    dispatch(destroyActions.doDestroy(id)as any);
   };
 
-  const doDeclineInvitation = (token) => {
+  const doDeclineInvitation = (token:string) => {
     setInvitationTokenToDeclineInvitation(null);
-    dispatch(invitationActions.doDecline(token));
+    dispatch(invitationActions.doDecline(token)as any);
   };
 
-  const doAcceptInvitation = (token) => {
-    dispatch(invitationActions.doAccept(token));
+  const doAcceptInvitation = (token:string) => {
+    dispatch(invitationActions.doAccept(token)as any);
   };
 
   return (
@@ -147,7 +148,7 @@ function TenantListTable() {
               </tr>
             )}
             {!loading &&
-              rows.map((row) => (
+              rows.map((row : any) => (
                 <tr key={row.id}>
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
                     {row.name}

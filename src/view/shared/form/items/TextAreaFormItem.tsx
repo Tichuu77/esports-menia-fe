@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function TextAreaFormItem(props) {
+function TextAreaFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -106,4 +106,4 @@ TextAreaFormItem.propTypes = {
   rows:PropTypes.number,
 };
 
-export default TextAreaFormItem;
+export default React.memo(TextAreaFormItem);

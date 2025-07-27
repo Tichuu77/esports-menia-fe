@@ -8,7 +8,7 @@ import initializers from './initializers';
 
 export const history = createBrowserHistory();
 
-export function createAppStore(preloadedState?: Partial<RootState>) {
+export function createAppStore( ) {
   const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>

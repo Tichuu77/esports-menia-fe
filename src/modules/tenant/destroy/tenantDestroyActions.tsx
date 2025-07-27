@@ -13,7 +13,7 @@ const tenantDestroyActions = {
   DESTROY_SUCCESS: `${prefix}_DESTROY_SUCCESS`,
   DESTROY_ERROR: `${prefix}_DESTROY_ERROR`,
 
-  doDestroy: (id) => async (dispatch) => {
+  doDestroy: (id:string) => async (dispatch:any) => {
     try {
         const navigate = useNavigate();
       dispatch({

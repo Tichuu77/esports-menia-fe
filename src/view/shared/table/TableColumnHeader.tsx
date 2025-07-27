@@ -22,7 +22,7 @@ const TableColumnHeaderStyled = styled.th`
   }
 `;
 
-const TableColumnHeader = (props) => {
+const TableColumnHeader = (props:any) => {
   const {
     sorter,
     onSort,

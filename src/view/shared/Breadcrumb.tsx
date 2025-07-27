@@ -2,13 +2,13 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
-function Breadcrumb(props) {
-  const isLink = (item) => {
+function Breadcrumb(props:any) {
+  const isLink = (item:any) => {
     return item.length > 1;
   };
   return (
     <ol className="text-sm flex items-center">
-      {props.items.map((item, index) => {
+      {props.items.map((item:any, index:any) => {
         const isFirst = index === 0;
         const isLast = props.items.length - 1 === index;
 

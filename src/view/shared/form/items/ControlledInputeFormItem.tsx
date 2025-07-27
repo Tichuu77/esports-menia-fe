@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-export function ControlledInputFormItem(props) {
+export function ControlledInputFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -83,4 +83,4 @@ ControlledInputFormItem.propTypes = {
   onBlur: PropTypes.func,
 };
 
-export default ControlledInputFormItem;
+export default React.memo(ControlledInputFormItem);

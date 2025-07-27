@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 function ControlledSwitchFormItem({
@@ -11,7 +11,7 @@ function ControlledSwitchFormItem({
   required,
   hint,
   externalErrorMessage,
-}) {
+}:any) {
   const [inputId] = useState(uuid());
 
   return (
@@ -74,4 +74,4 @@ ControlledSwitchFormItem.defaultProps = {
   required: false,
 };
 
-export default ControlledSwitchFormItem;
+export default React.memo(ControlledSwitchFormItem);

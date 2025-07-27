@@ -16,7 +16,7 @@ const initialData = {
   selectedKeys: [] as Array<any>,
 };
 
-export default (state = initialData, { type, payload }) => {
+export default (state = initialData, { type, payload }:any) => {
   if (type === actions.RESETED) {
     return {
       ...initialData,

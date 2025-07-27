@@ -2,7 +2,7 @@ import AuthCurrentTenant from 'src/modules/auth/authCurrentTenant';
 import authAxios from 'src/modules/shared/axios/authAxios';
 
 export default class UserService {
-  static async edit(data) {
+  static async edit(data:any) {
     const body = {
       data,
     };
@@ -17,7 +17,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async destroy(ids) {
+  static async destroy(ids:any[]) {
     const params = {
       ids,
     };
@@ -34,7 +34,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async create(data) {
+  static async create(data:any) {
     const body = {
       data,
     };
@@ -49,7 +49,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async import(values, importHash) {
+  static async import(values:any, importHash:any) {
     const body = {
       data: {
         ...values,
@@ -67,7 +67,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async find(id) {
+  static async find(id:string) {
     const tenantId = AuthCurrentTenant.get();
     const response = await authAxios.get(
       `/tenant/${tenantId}/user/${id}`,
@@ -75,7 +75,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async fetchUsers(filter, orderBy, limit, offset) {
+  static async fetchUsers(filter:any, orderBy:any, limit:number, offset:any) {
     const params = {
       filter,
       orderBy,
@@ -95,7 +95,7 @@ export default class UserService {
     return response.data;
   }
 
-  static async fetchUserAutocomplete(query, limit) {
+  static async fetchUserAutocomplete(query:any, limit:number) {
     const params = {
       query,
       limit,

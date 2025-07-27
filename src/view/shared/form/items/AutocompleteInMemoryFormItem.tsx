@@ -2,7 +2,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import _uniqBy from 'lodash/uniqBy';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
@@ -11,7 +11,8 @@ import layoutSelectors from 'src/modules/layout/layoutSelectors';
 import FormErrors from 'src/view/shared/form/formErrors';
 import selectControlStyles from 'src/view/shared/form/items/selectControlStyles';
 import { v4 as uuid } from 'uuid';
-function AutocompleteInMemoryFormItem(props) {
+
+function AutocompleteInMemoryFormItem(props: any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -33,160 +34,121 @@ function AutocompleteInMemoryFormItem(props) {
     isClearable,
     mapper,
     fetchFn,
-    intitialValue
+    initialValue, // Note: Likely a typo, should be initialValue
   } = props;
 
   const originalValue = watch(name);
 
-  const isDarkMode = useSelector(
-    layoutSelectors.selectDarkMode,
-  );
+  const isDarkMode = useSelector(layoutSelectors.selectDarkMode);
 
-  const [fullDataSource, setFullDataSource] = useState<
-    Array<any>
-  >([]);
+  const [fullDataSource, setFullDataSource] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     register(name);
   }, [register, name]);
 
+  const fetchAllResults = useCallback(async () => {
+    setLoading(true);
+    try {
+      let fullDataSource = await fetchFn();
+      fullDataSource = fullDataSource.map((data: any) => mapper.toAutocomplete(data));
+      setFullDataSource(fullDataSource);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setFullDataSource([]);
+      setLoading(false);
+    }
+  }, [fetchFn, mapper]);
+
   useEffect(() => {
-    const fetchAllResults = async () => {
-      setLoading(true);
+    fetchAllResults();
+  }, [fetchAllResults, initialValue]); // Note: Verify if initialValue is needed
 
-      try {
-        let fullDataSource = await fetchFn();
+  const prioritizeFromDataSource = useCallback(
+    (selected: any) => {
+      return (fullDataSource || []).find((item) => item.value === selected.value) || selected;
+    },
+    [fullDataSource],
+  );
 
-        fullDataSource = fullDataSource.map((data) =>
-          mapper.toAutocomplete(data),
-        );
+  const valueMultiple = useCallback(() => {
+    if (originalValue) {
+      return originalValue.map((value: any) => prioritizeFromDataSource(mapper.toAutocomplete(value)));
+    }
+    return [];
+  }, [originalValue, mapper, prioritizeFromDataSource]);
 
-        setFullDataSource(fullDataSource);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setFullDataSource([]);
-        setLoading(false);
-        return [];
-      }
-    };
+  const valueOne = useCallback(() => {
+    if (originalValue) {
+      return prioritizeFromDataSource(mapper.toAutocomplete(originalValue));
+    }
+    return null;
+  }, [originalValue, mapper, prioritizeFromDataSource]);
 
-    fetchAllResults().then(() => {});
-    // eslint-disable-next-line
-  }, [intitialValue]);
-
-  const prioritizeFromDataSource = (selected) => {
-    return (
-      (fullDataSource || []).find(
-        (item) => item.value === selected.value,
-      ) || selected
-    );
-  };
-
-  const value = () => {
+  const value = useCallback(() => {
     if (mode === 'multiple') {
       return valueMultiple();
     } else {
       return valueOne();
     }
-  };
+  }, [mode, valueMultiple, valueOne]);
 
-  const valueMultiple = () => {
-    if (originalValue) {
-      return originalValue.map((value) =>
-        prioritizeFromDataSource(
-          mapper.toAutocomplete(value),
-        ),
-      );
-    }
+  const handleSelectMultiple = useCallback(
+    (values: any) => {
+      if (!values) {
+        setValue(name, [], { shouldValidate: true, shouldDirty: true });
+        props.onChange && props.onChange([]);
+        return;
+      }
+      const newValue = values.map((value: any) => mapper.toValue(value));
+      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      props.onChange && props.onChange(newValue);
+    },
+    [setValue, name, mapper, props.onChange],
+  );
 
-    return [];
-  };
+  const handleSelectOne = useCallback(
+    (value: any) => {
+      if (!value) {
+        setValue(name, null, { shouldValidate: true, shouldDirty: true });
+        props.onChange && props.onChange(null);
+        return;
+      }
+      const newValue = mapper.toValue(value);
+      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      props.onChange && props.onChange(newValue);
+    },
+    [setValue, name, mapper, props.onChange],
+  );
 
-  const valueOne = () => {
-    if (originalValue) {
-      return prioritizeFromDataSource(
-        mapper.toAutocomplete(originalValue),
-      );
-    }
+  const handleSelect = useCallback(
+    (value: any) => {
+      if (mode === 'multiple') {
+        return handleSelectMultiple(value);
+      } else {
+        return handleSelectOne(value);
+      }
+    },
+    [mode, handleSelectMultiple, handleSelectOne],
+  );
 
-    return null;
-  };
-
-  const handleSelect = (value) => {
-    if (mode === 'multiple') {
-      return handleSelectMultiple(value);
-    } else {
-      return handleSelectOne(value);
-    }
-  };
-
-  const handleSelectMultiple = (values) => {
-    if (!values) {
-      setValue(name, [], {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange([]);
-      return;
-    }
-
-    const newValue = values.map((value) =>
-      mapper.toValue(value),
-    );
-    setValue(name, newValue, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(newValue);
-  };
-
-  const handleSelectOne = (value) => {
-    if (!value) {
-      setValue(name, null, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange(null);
-      return;
-    }
-
-    const newValue = mapper.toValue(value);
-    setValue(name, newValue, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(newValue);
-  };
-
-  const options = () => {
-    const { mode } = props;
-
+  const options = useMemo(() => {
     if (!fullDataSource) {
       return [];
     }
-
     if (value()) {
       if (mode === 'multiple') {
-        return _uniqBy(
-          [...fullDataSource, ...value()],
-          'value',
-        );
+        return _uniqBy([...fullDataSource, ...value()], 'value');
       } else {
-        return _uniqBy(
-          [...fullDataSource, value()],
-          'value',
-        );
+        return _uniqBy([...fullDataSource, value()], 'value');
       }
     }
-
     return fullDataSource;
-  };
+  }, [fullDataSource, value, mode]);
 
-  const hintOrLoading = loading
-    ? i18n('autocomplete.loading')
-    : hint;
+  const hintOrLoading = loading ? i18n('autocomplete.loading') : hint;
 
   const errorMessage = FormErrors.errorMessage(
     name,
@@ -196,22 +158,22 @@ function AutocompleteInMemoryFormItem(props) {
     externalErrorMessage,
   );
 
-  const controlStyles = selectControlStyles(
-    isDarkMode,
-    Boolean(errorMessage),
+  const controlStyles = useMemo(
+    () => selectControlStyles(isDarkMode, Boolean(errorMessage)),
+    [isDarkMode, errorMessage],
   );
+
+  const onOpenModal = useCallback(() => props.onOpenModal(), [props.onOpenModal]);
 
   return (
     <div>
       {Boolean(label) && (
         <label
-          className={`block text-sm text-gray-800 dark:text-gray-200`}
+          className="block text-sm text-gray-800 dark:text-gray-200"
           htmlFor={inputId}
         >
           {label}{' '}
-          {required ? (
-            <span className="text-sm text-red-400">*</span>
-          ) : null}
+          {required ? <span className="text-sm text-red-400">*</span> : null}
         </label>
       )}
       <div style={{ display: 'flex' }}>
@@ -220,29 +182,25 @@ function AutocompleteInMemoryFormItem(props) {
           styles={controlStyles}
           id={inputId}
           name={name}
-          isMulti={mode === 'multiple' ? true : false}
+          isMulti={mode === 'multiple'}
           placeholder={placeholder || ''}
           autoFocus={autoFocus || undefined}
           onChange={handleSelect}
           value={value()}
           isClearable={isClearable}
-          options={options()}
+          options={options}
           onBlur={(event) => {
             props.onBlur && props.onBlur(event);
           }}
-          loadingMessage={() =>
-            i18n('autocomplete.loading')
-          }
-          noOptionsMessage={() =>
-            i18n('autocomplete.noOptions')
-          }
+          loadingMessage={() => i18n('autocomplete.loading')}
+          noOptionsMessage={() => i18n('autocomplete.noOptions')}
         />
 
         {props.showCreate && props.hasPermissionToCreate ? (
           <button
             className="mt-2 ml-2 flex-shrink-0 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             type="button"
-            onClick={props.onOpenModal}
+            onClick={onOpenModal}
             style={{ height: 42 }}
           >
             <FontAwesomeIcon icon={faPlus} />
@@ -250,13 +208,9 @@ function AutocompleteInMemoryFormItem(props) {
         ) : null}
       </div>
 
-      <div className="text-red-600 text-sm mt-2">
-        {errorMessage}
-      </div>
+      <div className="text-red-600 text-sm mt-2">{errorMessage}</div>
       {Boolean(hintOrLoading) && (
-        <div className="text-gray-500 text-sm mt-2">
-          {hintOrLoading}
-        </div>
+        <div className="text-gray-500 text-sm mt-2">{hintOrLoading}</div>
       )}
     </div>
   );
@@ -284,4 +238,4 @@ AutocompleteInMemoryFormItem.propTypes = {
   hasPermissionToCreate: PropTypes.bool,
 };
 
-export default AutocompleteInMemoryFormItem;
+export default React.memo(AutocompleteInMemoryFormItem); // Memoized for list usage

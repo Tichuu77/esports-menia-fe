@@ -10,9 +10,9 @@ import { i18n } from 'src/i18n';
 import Errors from 'src/modules/shared/error/errors';
 import FileUploader from 'src/modules/shared/fileUpload/fileUploader';
 
-function FilesUploader(props) {
+function FilesUploader(props:any) {
   const [loading, setLoading] = useState(false);
-  const input = useRef<any>();
+  const input = useRef<any>(null);
 
   const value = () => {
     const { value } = props;
@@ -33,13 +33,13 @@ function FilesUploader(props) {
     }));
   };
 
-  const handleRemove = (id) => {
+  const handleRemove = (id:string) => {
     props.onChange(
       value().filter((item) => item.id !== id),
     );
   };
 
-  const handleChange = async (event) => {
+  const handleChange = async (event:any) => {
     try {
       const files = event.target.files;
 
@@ -78,7 +78,7 @@ function FilesUploader(props) {
 
     if (schema && schema.formats) {
       return schema.formats
-        .map((format) => `.${format}`)
+        .map((format:any) => `.${format}`)
         .join(',');
     }
 

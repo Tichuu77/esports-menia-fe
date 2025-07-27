@@ -3,10 +3,10 @@ import { i18n } from 'src/i18n';
 import * as yup from 'yup';
 
 const yupFormSchemas = {
-  generic(label) {
+  generic(label:any) {
     return yup.mixed().label(label);
   },
-  string(label, config?) {
+  string(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -36,10 +36,10 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  boolean(label, config?) {
+  boolean(label:any) {
     return yup.bool().default(false).label(label);
   },
-  relationToOne(label, config?) {
+  relationToOne(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -60,7 +60,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  stringArray(label, config?) {
+  stringArray(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -93,7 +93,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  relationToMany(label, config?) {
+  relationToMany(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -105,7 +105,7 @@ const yupFormSchemas = {
           return [];
         }
 
-        return originalValue.map((item) => item.id);
+        return originalValue.map((item:any) => item.id);
       });
 
     if (config.required) {
@@ -124,7 +124,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  integer(label, config?) {
+  integer(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -150,7 +150,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  images(label, config?) {
+  images(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup.array().nullable().label(label);
@@ -171,7 +171,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  files(label, config?) {
+  files(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -197,7 +197,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  enumerator(label, config?) {
+  enumerator(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -217,7 +217,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  email(label, config?) {
+  email(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -248,7 +248,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  decimal(label, config?) {
+  decimal(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .number()
@@ -272,7 +272,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  datetime(label, config?) {
+  datetime(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .mixed()
@@ -293,7 +293,7 @@ const yupFormSchemas = {
 
     return yupChain;
   },
-  date(label, config?) {
+  date(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .mixed()

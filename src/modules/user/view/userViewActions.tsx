@@ -1,5 +1,4 @@
 import Errors from 'src/modules/shared/error/errors';
-import { useNavigate } from 'react-router-dom';
 import UserService from 'src/modules/user/userService';
 
 const prefix = 'USER_VIEW';
@@ -10,7 +9,7 @@ const userViewActions = {
   FIND_SUCCESS: `${prefix}_FIND_SUCCESS`,
   FIND_ERROR: `${prefix}_FIND_ERROR`,
 
-  doFind: (id,navigate) => async (dispatch) => {
+  doFind: (id:string,navigate:any) => async (dispatch:any) => {
     try {
       dispatch({
         type: userViewActions.FIND_STARTED,

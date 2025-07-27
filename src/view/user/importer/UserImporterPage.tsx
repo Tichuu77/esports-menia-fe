@@ -12,7 +12,7 @@ const Importer = importerHoc(
   i18n('user.importer.hint'),
 );
 
-function UserImportPage(props) {
+function UserImportPage( ) {
   return (
     <>
       <Breadcrumb

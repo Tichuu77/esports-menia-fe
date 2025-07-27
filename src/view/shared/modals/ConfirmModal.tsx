@@ -2,7 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactDOM from 'react-dom';
 
-const ConfirmModal = (props) => {
+const ConfirmModal = (props:any) => {
   return ReactDOM.createPortal(
     <>
       <div

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
 
-export default (selectors) => {
+export default (selectors:any) => {
   function ImporterStatus() {
     const completed = useSelector(
       selectors.selectCompleted,
@@ -50,8 +50,8 @@ export default (selectors) => {
           <div className="w-full bg-gray-500 text-white dark:bg-gray-800 dark:text-gray-100 font-medium py-3 px-5 text-sm rounded-t-md">
             {i18n(
               'importer.importedMessage',
-              nonPendingRowsCount,
-              rowsCount,
+              nonPendingRowsCount as any,
+              rowsCount as any,
             )}{' '}
             {i18n('importer.noNavigateAwayMessage')}
           </div>

@@ -86,7 +86,7 @@ const tenantInvitationActions = {
       }
     },
 
-  doAccept: (token) => async (dispatch) => {
+  doAccept: (token:string) => async (dispatch:any) => {
     try {
       dispatch({
         type: tenantInvitationActions.ACCEPT_STARTED,
@@ -108,7 +108,7 @@ const tenantInvitationActions = {
     }
   },
 
-  doDecline: (token) => async (dispatch) => {
+  doDecline: (token:string) => async (dispatch:any) => {
      const navigate = useNavigate();
     try {
       dispatch({

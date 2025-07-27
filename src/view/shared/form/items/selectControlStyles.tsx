@@ -1,12 +1,12 @@
-export default (isDarkMode, hasErrors) =>
+export default (isDarkMode:boolean, hasErrors:boolean) =>
   hasErrors
     ? {
-        container: (provided) => ({
+        container: (provided:any) => ({
           ...provided,
           borderRadius: '0.375rem',
           cursor: 'pointer',
         }),
-        control: (provided, state) => ({
+        control: (provided:any, state:any) => ({
           ...provided,
           minHeight: '42px',
           borderColor: 'rgb(248, 113, 113)',
@@ -16,21 +16,21 @@ export default (isDarkMode, hasErrors) =>
             ? 'rgb(31, 41, 55)'
             : 'white',
         }),
-        indicatorSeparator: (provided, state) => ({
+        indicatorSeparator: (provided:any) => ({
           ...provided,
           backgroundColor: 'rgb(248, 113, 113)',
         }),
-        singleValue: (provided) => ({
+        singleValue: (provided:any) => ({
           ...provided,
           color: 'rgb(220, 38, 38)',
         }),
-        menu: (provided, state) => ({
+        menu: (provided:any) => ({
           ...provided,
           backgroundColor: isDarkMode
             ? 'rgb(31, 41, 55)'
             : 'white',
         }),
-        option: (provided, state) => ({
+        option: (provided:any, state:any) => ({
           ...provided,
           cursor: 'pointer',
           backgroundColor: isDarkMode
@@ -48,7 +48,7 @@ export default (isDarkMode, hasErrors) =>
             ? 'white'
             : 'rgb(55, 65, 81)',
         }),
-        multiValue: (provided, state) => ({
+        multiValue: (provided:any, state:any) => ({
           ...provided,
           color: isDarkMode
             ? state.isFocused
@@ -58,7 +58,7 @@ export default (isDarkMode, hasErrors) =>
             ? 'white'
             : 'rgb(55, 65, 81)',
         }),
-        input: (provided, state) => ({
+        input: (provided:any, state:any) => ({
           ...provided,
           color: isDarkMode
             ? state.isFocused
@@ -68,18 +68,18 @@ export default (isDarkMode, hasErrors) =>
             ? 'white'
             : 'rgb(55, 65, 81)',
         }),
-        multiValueRemove: (provided, state) => ({
+        multiValueRemove: (provided:any) => ({
           ...provided,
           color: 'rgb(55, 65, 81)',
         }),
       }
     : {
-        container: (provided) => ({
+        container: (provided:any) => ({
           ...provided,
           borderRadius: '0.375rem',
           cursor: 'pointer',
         }),
-        control: (provided, state) => ({
+        control: (provided:any, state:any) => ({
           ...provided,
           minHeight: '42px',
           cursor: state.isDisabled ? 'default' : 'pointer',
@@ -94,25 +94,25 @@ export default (isDarkMode, hasErrors) =>
             ? 'rgb(75, 85, 99)'
             : 'rgb(209, 213, 219)',
         }),
-        indicatorSeparator: (provided, state) => ({
+        indicatorSeparator: (provided:any) => ({
           ...provided,
           backgroundColor: isDarkMode
             ? 'rgb(75, 85, 99)'
             : 'rgb(209, 213, 219)',
         }),
-        singleValue: (provided) => ({
+        singleValue: (provided:any) => ({
           ...provided,
           color: isDarkMode
             ? 'rgb(229, 231, 235)'
             : 'rgb(55, 65, 81)',
         }),
-        menu: (provided, state) => ({
+        menu: (provided:any) => ({
           ...provided,
           backgroundColor: isDarkMode
             ? 'rgb(31, 41, 55)'
             : 'white',
         }),
-        option: (provided, state) => ({
+        option: (provided:any, state:any) => ({
           ...provided,
           cursor: 'pointer',
           backgroundColor: isDarkMode
@@ -130,7 +130,7 @@ export default (isDarkMode, hasErrors) =>
             ? 'white'
             : 'rgb(55, 65, 81)',
         }),
-        input: (provided, state) => ({
+        input: (provided:any, state:any) => ({
           ...provided,
           color: isDarkMode
             ? state.isFocused
@@ -140,7 +140,7 @@ export default (isDarkMode, hasErrors) =>
             ? 'white'
             : 'rgb(55, 65, 81)',
         }),
-        multiValueRemove: (provided, state) => ({
+        multiValueRemove: (provided:any) => ({
           ...provided,
           color: 'rgb(55, 65, 81)',
         }),

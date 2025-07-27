@@ -43,9 +43,9 @@ const auditLogActions = {
 
       const response = await AuditLogService.fetch(
         filter,
-        selectors.selectOrderBy(getState()),
-        null,
-        null,
+        selectors.selectOrderBy(getState())as any,
+        null as any,
+        null as any,
       );
 
       new Exporter(
@@ -104,7 +104,7 @@ const auditLogActions = {
 
         const response = await AuditLogService.fetch(
           filter,
-          selectors.selectOrderBy(getState()),
+          selectors.selectOrderBy(getState()) as any,
           selectors.selectLimit(getState()),
           selectors.selectOffset(getState()),
         );

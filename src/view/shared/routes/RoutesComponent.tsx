@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useMemo } from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import authSelectors from 'src/modules/auth/authSelectors';
 import layoutSelectors from 'src/modules/layout/layoutSelectors';
@@ -11,15 +11,61 @@ import EmptyPermissionsRoute from 'src/view/shared/routes/EmptyPermissionsRoute'
 import EmptyTenantRoute from 'src/view/shared/routes/EmptyTenantRoute';
 import PrivateRoute from 'src/view/shared/routes/PrivateRoute';
 import PublicRoute from 'src/view/shared/routes/PublicRoute';
+import type { AppRoute } from 'src/types/routes';
+// import type { RootState } from 'src/modules/store'; // <- use your real RootState
 
-function RoutesComponent() {
+type WrapperCmp = React.ComponentType<any>;
+
+const RoutesComponent: React.FC = () => {
   const isInitialMount = useRef(true);
 
-  const authLoading = useSelector(authSelectors.selectLoadingInit);
-  const layoutLoading = useSelector(layoutSelectors.selectLoading);
+  const {
+    authLoading,
+    layoutLoading,
+    currentUser,
+    currentTenant,
+    ownerAccess,
+    adminAccess,
+    hostAccess,
+  } = useSelector(
+    (state: any /* RootState */) => ({
+      authLoading: authSelectors.selectLoadingInit(state),
+      layoutLoading: layoutSelectors.selectLoading(state),
+      currentUser: authSelectors.selectCurrentUser(state),
+      currentTenant: authSelectors.selectCurrentTenant(state),
+      ownerAccess: authSelectors.selectPesmissionAccessOwner(state),
+      adminAccess: authSelectors.selectPesmissionAccessAdmin(state),
+      hostAccess: authSelectors.selectPesmissionAccessHost(state),
+    }),
+    shallowEqual,
+  );
+
   const loading = authLoading || layoutLoading;
-  const currentUser = useSelector(authSelectors.selectCurrentUser);
-  const currentTenant = useSelector(authSelectors.selectCurrentTenant);
+
+  const { publicRoutes, privateRoutes } = useMemo(() => {
+    if (ownerAccess) {
+      return {
+        publicRoutes: routes.ownerPublicRoutes,
+        privateRoutes: routes.ownerPrivateRoutes,
+      };
+    }
+    if (adminAccess) {
+      return {
+        publicRoutes: routes.adminPublicRoutes,
+        privateRoutes: routes.adminPrivateRoutes,
+      };
+    }
+    if (hostAccess) {
+      return {
+        publicRoutes: routes.hostPublicRoutes,
+        privateRoutes: routes.hostPrivateRoutes,
+      };
+    }
+    return {
+      publicRoutes: routes.userPrivateRoutes,
+      privateRoutes: routes.userPublicRoutes,
+    };
+  }, [ownerAccess, adminAccess, hostAccess]);
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -27,35 +73,36 @@ function RoutesComponent() {
       ProgressBar.start();
       return;
     }
-
-    if (!loading) {
-      ProgressBar.done();
-    }
+    if (!loading) ProgressBar.done();
   }, [loading]);
 
-  if (loading) {
-    return <div />;
-  }
+  if (loading) return <div />;
+
+  const renderRoutes = (
+    routeList: AppRoute[],
+    Wrapper: WrapperCmp | null = null,
+    extraProps: Record<string, unknown> = {},
+  ) =>
+    routeList.map((route) => {
+      const LazyComponent = CustomLoadable({ loader: route.loader });
+
+      const element = Wrapper ? (
+        <Wrapper
+          {...extraProps}
+          permissionRequired={route.permissionRequired}
+          component={LazyComponent}
+        />
+      ) : (
+        <LazyComponent />
+      );
+
+      return <Route key={route.path} path={route.path} element={element} />;
+    });
 
   return (
     <Routes>
       {/* Public Routes */}
-      {routes.publicRoutes.map((route) => {
-        const LazyComponent = CustomLoadable({ loader: route.loader });
-        return (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <PublicRoute
-                currentUser={currentUser}
-                currentTenant={currentTenant}
-                component={LazyComponent} // ✅ Fixed
-              />
-            }
-          />
-        );
-      })}
+      {renderRoutes(publicRoutes, PublicRoute, { currentUser, currentTenant })}
 
       {/* Email Unverified Routes */}
       <Route
@@ -66,16 +113,7 @@ function RoutesComponent() {
           />
         }
       >
-        {routes.emailUnverifiedRoutes.map((route) => {
-          const LazyComponent = CustomLoadable({ loader: route.loader });
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<LazyComponent />} // ✅ OK
-            />
-          );
-        })}
+        {renderRoutes(routes.emailUnverifiedRoutes)}
       </Route>
 
       {/* Empty Tenant Routes */}
@@ -84,20 +122,11 @@ function RoutesComponent() {
           <EmptyTenantRoute
             currentUser={currentUser}
             currentTenant={currentTenant}
-            component={null}
+            component={undefined}
           />
         }
       >
-        {routes.emptyTenantRoutes.map((route) => {
-          const LazyComponent = CustomLoadable({ loader: route.loader });
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<LazyComponent />} // ✅ OK
-            />
-          );
-        })}
+        {renderRoutes(routes.emptyTenantRoutes)}
       </Route>
 
       {/* Empty Permissions Routes */}
@@ -106,54 +135,23 @@ function RoutesComponent() {
           <EmptyPermissionsRoute
             currentUser={currentUser}
             currentTenant={currentTenant}
-            component={null}
+            component={undefined}
           />
         }
       >
-        {routes.emptyPermissionsRoutes.map((route) => {
-          const LazyComponent = CustomLoadable({ loader: route.loader });
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<LazyComponent />} // ✅ OK
-            />
-          );
-        })}
+        {renderRoutes(routes.emptyPermissionsRoutes)}
       </Route>
 
       {/* Private Routes */}
-      {routes.privateRoutes.map((route) => {
-        const LazyComponent = CustomLoadable({ loader: route.loader });
-        return (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <PrivateRoute
-                currentUser={currentUser}
-                currentTenant={currentTenant}
-                permissionRequired={route.permissionRequired}
-                component={LazyComponent} // ✅ Fixed
-              />
-            }
-          />
-        );
+      {renderRoutes(privateRoutes, PrivateRoute, {
+        currentUser,
+        currentTenant,
       })}
 
       {/* Simple Routes */}
-      {routes.simpleRoutes.map((route) => {
-        const LazyComponent = CustomLoadable({ loader: route.loader });
-        return (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={<LazyComponent />} // ✅ OK
-          />
-        );
-      })}
+      {renderRoutes(routes.simpleRoutes)}
     </Routes>
   );
-}
+};
 
 export default RoutesComponent;

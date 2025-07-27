@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-export function ControlledInputNumberFormItem(props) {
+export function ControlledInputNumberFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -82,4 +82,4 @@ ControlledInputNumberFormItem.propTypes = {
   externalErrorMessage: PropTypes.string,
 };
 
-export default ControlledInputNumberFormItem;
+export default React.memo(ControlledInputNumberFormItem);

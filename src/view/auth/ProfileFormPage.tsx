@@ -2,6 +2,7 @@ import { i18n } from 'src/i18n';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from 'src/view/auth/ProfileForm';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
+import React from 'react';
 
 function ProfileFormPage() {
      const navigate = useNavigate();
@@ -27,4 +28,4 @@ function ProfileFormPage() {
   );
 }
 
-export default ProfileFormPage;
+export default React.memo(ProfileFormPage);

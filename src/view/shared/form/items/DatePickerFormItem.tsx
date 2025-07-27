@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-export function DatePickerFormItem(props) {
+export function DatePickerFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -78,7 +78,7 @@ export function DatePickerFormItem(props) {
               enabled: true,
               escapeWithReference: false,
             },
-          }}
+          }as any}
           placeholderText={placeholder || ''}
           autoFocus={autoFocus || undefined}
           autoComplete={'off'}
@@ -119,4 +119,4 @@ DatePickerFormItem.propTypes = {
   showTimeInput: PropTypes.bool,
 };
 
-export default DatePickerFormItem;
+export default React.memo(DatePickerFormItem);

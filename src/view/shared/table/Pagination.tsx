@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import RCPagination from 'rc-pagination';
 import { getLanguage, i18n } from 'src/i18n';
 
-const Pagination = (props) => {
-  const onChange = (current, pageSize) => {
+const Pagination = (props:any) => {
+  const onChange = (current:any, pageSize:number) => {
     props.onChange({
       current: Number(current),
       pageSize: Number(pageSize),
@@ -29,7 +29,7 @@ const Pagination = (props) => {
         style={{ height: '32px' }}
         className="ml-2 cursor-pointer text-sm w-28 inline-block px-4 py-1 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
         value={Number(pageSize)}
-        onChange={(event) =>
+        onChange={(event:any) =>
           onChange(1, event.target.value)
         }
       >

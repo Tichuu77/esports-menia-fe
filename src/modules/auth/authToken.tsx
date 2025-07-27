@@ -1,4 +1,4 @@
-let inMemoryToken = null;
+let inMemoryToken :any;
 
 export class AuthToken {
   static get() {
@@ -7,7 +7,7 @@ export class AuthToken {
     );
   }
 
-  static set(token, rememberMe) {
+  static set(token:string, rememberMe:boolean) {
     if (rememberMe) {
       localStorage.setItem('jwt', token || '');
     } else {

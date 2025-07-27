@@ -146,18 +146,22 @@ const en = {
     admin: {
       label: 'Admin',
       description: 'Full access to all resources',
+      home:'Home'
     },
     host: {
       label: 'Host',
       description: 'Custom access to resources',
+      home: 'Dashbord',
     },
     user:{
        label: 'User',
-       description: 'Access to grower related resources'
+       description: 'Access to grower related resources',
+       home: 'Home',
     },
     owner:{
       label: 'Owner',
-      description: 'Access to owner related resources'
+      description: 'Access to owner related resources',
+      home: 'Dashbord',
     }
   },
 

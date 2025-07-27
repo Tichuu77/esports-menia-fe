@@ -45,14 +45,14 @@ const userListActions = {
     };
   },
 
-  doToggleOneSelected(id) {
+  doToggleOneSelected(id:string) {
     return {
       type: userListActions.TOGGLE_ONE_SELECTED,
       payload: id,
     };
   },
 
-  doReset: () => async (dispatch) => {
+  doReset: () => async (dispatch:any) => {
     dispatch({
       type: userListActions.RESETED,
     });
@@ -60,7 +60,7 @@ const userListActions = {
     dispatch(userListActions.doFetch());
   },
 
-  doExport: () => async (dispatch, getState) => {
+  doExport: () => async (dispatch:any, getState:any) => {
     try {
       if (!exporterFields || !exporterFields.length) {
         throw new Error('exporterFields is required');
@@ -96,7 +96,7 @@ const userListActions = {
   },
 
   doChangePagination:
-    (pagination) => async (dispatch, getState) => {
+    (pagination:any) => async (dispatch:any) => {
       dispatch({
         type: userListActions.PAGINATION_CHANGED,
         payload: pagination,
@@ -105,7 +105,7 @@ const userListActions = {
       dispatch(userListActions.doFetchCurrentFilter());
     },
 
-  doChangeSort: (sorter) => async (dispatch, getState) => {
+  doChangeSort: (sorter:any) => async (dispatch:any) => {
     dispatch({
       type: userListActions.SORTER_CHANGED,
       payload: sorter,
@@ -115,7 +115,7 @@ const userListActions = {
   },
 
   doFetchCurrentFilter:
-    () => async (dispatch, getState) => {
+    () => async (dispatch:any, getState:any) => {
       const filter = selectors.selectFilter(getState());
       const rawFilter =
         selectors.selectRawFilter(getState());
@@ -125,8 +125,8 @@ const userListActions = {
     },
 
   doFetch:
-    (filter?, rawFilter?, keepPagination = false) =>
-    async (dispatch, getState) => {
+    (filter?:any, rawFilter?:any, keepPagination = false) =>
+    async (dispatch:any, getState:any) => {
       try {
         dispatch({
           type: userListActions.FETCH_STARTED,
@@ -156,7 +156,7 @@ const userListActions = {
       }
     },
 
-  doDestroy: (id) => async (dispatch, getState) => {
+  doDestroy: (id:string) => async (dispatch:any) => {
     try {
       dispatch({
         type: userListActions.DESTROY_STARTED,
@@ -183,7 +183,7 @@ const userListActions = {
   },
 
   doDestroyAllSelected:
-    () => async (dispatch, getState) => {
+    () => async (dispatch:any, getState:any) => {
       try {
         const selectedRows =
           selectors.selectSelectedRows(getState());
@@ -193,7 +193,7 @@ const userListActions = {
         });
 
         await UserService.destroy(
-          selectedRows.map((row) => row.id),
+          selectedRows.map((row:any) => row.id),
         );
 
         dispatch({

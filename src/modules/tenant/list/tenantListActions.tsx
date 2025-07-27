@@ -30,14 +30,14 @@ const tenantListActions = {
     };
   },
 
-  doToggleOneSelected(id) {
+  doToggleOneSelected(id:string) {
     return {
       type: tenantListActions.TOGGLE_ONE_SELECTED,
       payload: id,
     };
   },
 
-  doReset: () => async (dispatch) => {
+  doReset: () => async (dispatch:any) => {
     dispatch({
       type: tenantListActions.RESETED,
     });
@@ -46,7 +46,7 @@ const tenantListActions = {
   },
 
   doChangePagination:
-    (pagination) => async (dispatch, getState) => {
+    (pagination:any) => async (dispatch:any) => {
       dispatch({
         type: tenantListActions.PAGINATION_CHANGED,
         payload: pagination,
@@ -55,7 +55,7 @@ const tenantListActions = {
       dispatch(tenantListActions.doFetchCurrentFilter());
     },
 
-  doChangeSort: (sorter) => async (dispatch, getState) => {
+  doChangeSort: (sorter:any) => async (dispatch:any) => {
     dispatch({
       type: tenantListActions.SORTER_CHANGED,
       payload: sorter,
@@ -65,7 +65,7 @@ const tenantListActions = {
   },
 
   doFetchCurrentFilter:
-    () => async (dispatch, getState) => {
+    () => async (dispatch:any, getState:any) => {
       const filter = selectors.selectFilter(getState());
       const rawFilter =
         selectors.selectRawFilter(getState());
@@ -75,8 +75,8 @@ const tenantListActions = {
     },
 
   doFetch:
-    (filter?, rawFilter?, keepPagination = false) =>
-    async (dispatch, getState) => {
+    (filter?:any, rawFilter?:any, keepPagination = false) =>
+    async (dispatch:any, getState:any) => {
       try {
         dispatch({
           type: tenantListActions.FETCH_STARTED,

@@ -5,13 +5,13 @@ export default class ImporterSchema {
   fields: Array<any>;
   yupSchema: any;
 
-  constructor(fields) {
+  constructor(fields:any) {
     this.fields = fields;
     this.yupSchema = this.buildSchema();
   }
 
   buildSchema() {
-    const shape = {};
+    let shape : any;
 
     this.fields.forEach((field) => {
       shape[field.name] = field.schema;
@@ -20,7 +20,7 @@ export default class ImporterSchema {
     return yup.object().shape(shape).noUnknown(true);
   }
 
-  async castForDisplay(row, index) {
+  async castForDisplay(row:any, index:any) {
     const rowWithColumnNames = {} as any;
 
     rowWithColumnNames._status = statuses.PENDING;
@@ -35,7 +35,7 @@ export default class ImporterSchema {
         rowWithColumnNames,
       );
       await this.yupSchema.validate(validatableRow);
-    } catch (error) {
+    } catch (error:any) {
       rowWithColumnNames._status = statuses.ERROR;
       rowWithColumnNames._errorMessage = error.message;
     }
@@ -43,11 +43,11 @@ export default class ImporterSchema {
     return rowWithColumnNames;
   }
 
-  async castForImport(row) {
+  async castForImport(row:any) {
     return this.yupSchema.cast(row);
   }
 
-  async castForValidation(row) {
+  async castForValidation(row:any) {
     return this.yupSchema.cast(row);
   }
 

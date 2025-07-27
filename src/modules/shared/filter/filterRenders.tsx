@@ -2,34 +2,34 @@ import moment from 'moment';
 import { i18n } from 'src/i18n';
 
 const filterRenders = {
-  enumerator: (i18nStartPath) => (value) =>
+  enumerator: (i18nStartPath:any) => (value:any) =>
     value ? i18n(`${i18nStartPath}.${value}`) : null,
-  enumeratorMultiple: (i18nStartPath) => (values) =>
+  enumeratorMultiple: (i18nStartPath:any) => (values:any) =>
     values
       ? values
-          .map((value) => i18n(`${i18nStartPath}.${value}`))
+          .map((value:any) => i18n(`${i18nStartPath}.${value}`))
           .join(', ')
       : null,
-  generic: () => (value) => value,
-  stringArray: () => (value) => (value || []).join(', '),
-  json: () => (value) =>
+  generic: () => (value:any) => value,
+  stringArray: () => (value:any) => (value || []).join(', '),
+  json: () => (value:any) =>
     value ? JSON.stringify(value, null, 2) : null,
-  decimal: (fractionDigits?) => (value) =>
+  decimal: (fractionDigits?:any) => (value:any) =>
     formatDecimal(value, fractionDigits),
-  boolean: (trueLabel?, falseLabel?) => (value) =>
+  boolean: (trueLabel?:any, falseLabel?:any) => (value:any) =>
     value == null
       ? null
       : Boolean(value)
         ? trueLabel || i18n('common.yes')
         : falseLabel || i18n('common.no'),
-  relationToOne: () => (value) =>
+  relationToOne: () => (value:any) =>
     (value && value.label) || null,
-  relationToMany: () => (value) =>
-    (value || []).map((item) => item.label).join(', '),
-  filesOrImages: () => (value) =>
-    (value || []).map((item) => item.downloadUrl).join(' '),
-  date: () => (value) => formatDate(value),
-  dateRange: () => (value) => {
+  relationToMany: () => (value:any) =>
+    (value || []).map((item:any) => item.label).join(', '),
+  filesOrImages: () => (value:any) =>
+    (value || []).map((item:any) => item.downloadUrl).join(' '),
+  date: () => (value:any) => formatDate(value),
+  dateRange: () => (value:any) => {
     if (!value || !value.length) {
       return null;
     }
@@ -51,8 +51,8 @@ const filterRenders = {
 
     return `${formatDate(start)} - ${formatDate(end)}`;
   },
-  datetime: () => (value) => formatDatetime(value),
-  datetimeRange: () => (value) => {
+  datetime: () => (value:any) => formatDatetime(value),
+  datetimeRange: () => (value:any) => {
     if (!value || !value.length) {
       return null;
     }
@@ -76,7 +76,7 @@ const filterRenders = {
       end,
     )}`;
   },
-  decimalRange: (fractionDigits?) => (value) => {
+  decimalRange: (fractionDigits?:any) => (value:any) => {
     if (!value || !value.length) {
       return null;
     }
@@ -101,7 +101,7 @@ const filterRenders = {
       fractionDigits,
     )} - ${formatDecimal(end, fractionDigits)}`;
   },
-  range: () => (value) => {
+  range: () => (value:any) => {
     if (!value || !value.length) {
       return null;
     }
@@ -128,7 +128,7 @@ const filterRenders = {
   },
 };
 
-function formatDecimal(value, fractionDigits) {
+function formatDecimal(value:any, fractionDigits:any) {
   return value
     ? fractionDigits
       ? Number(value).toFixed(fractionDigits)
@@ -136,11 +136,11 @@ function formatDecimal(value, fractionDigits) {
     : null;
 }
 
-function formatDate(value) {
+function formatDate(value:any) {
   return value ? moment(value).format('YYYY-MM-DD') : null;
 }
 
-function formatDatetime(value) {
+function formatDatetime(value:any) {
   return value
     ? moment(value).format('YYYY-MM-DD HH:mm')
     : null;

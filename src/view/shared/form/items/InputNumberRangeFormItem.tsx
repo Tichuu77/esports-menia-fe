@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function InputNumberRangeFormItem(props) {
+function InputNumberRangeFormItem(props: any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -16,6 +16,8 @@ function InputNumberRangeFormItem(props) {
     autoComplete,
     required,
     externalErrorMessage,
+    onChange,
+    onBlur,
   } = props;
 
   const {
@@ -39,65 +41,53 @@ function InputNumberRangeFormItem(props) {
     register(name);
   }, [register, name]);
 
-  const handleStartChanged = (value) => {
-    setValue(name, [value, endValue()], {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange([value, endValue()]);
-  };
-
-  const handleEndChanged = (value) => {
-    setValue(name, [startValue(), value], {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange([value, startValue()]);
-  };
-
-  const startValue = () => {
-    if (!originalValue) {
+  const startValue = useCallback(() => {
+    if (!originalValue || !Array.isArray(originalValue) || !originalValue.length) {
       return '';
     }
-
-    if (Array.isArray(!originalValue)) {
-      return '';
-    }
-
-    if (!originalValue.length) {
-      return '';
-    }
-
     return originalValue[0];
-  };
+  }, [originalValue]);
 
-  const endValue = () => {
-    if (!originalValue) {
+  const endValue = useCallback(() => {
+    if (!originalValue || !Array.isArray(originalValue) || originalValue.length < 2) {
       return '';
     }
-
-    if (Array.isArray(!originalValue)) {
-      return '';
-    }
-
-    if (originalValue.length < 2) {
-      return '';
-    }
-
     return originalValue[1];
-  };
+  }, [originalValue]);
+
+  const handleStartChanged = useCallback(
+    (value: any) => {
+      setValue(name, [value, endValue()], { shouldValidate: true, shouldDirty: true });
+      onChange && onChange([value, endValue()]);
+    },
+    [setValue, name, endValue, onChange],
+  );
+
+  const handleEndChanged = useCallback(
+    (value: any) => {
+      setValue(name, [startValue(), value], { shouldValidate: true, shouldDirty: true });
+      onChange && onChange([startValue(), value]); // Fixed order
+    },
+    [setValue, name, startValue, onChange],
+  );
+
+  const inputClassName = useMemo(
+    () =>
+      `block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
+        errorMessage ? 'border-red-400 text-red-600' : ''
+      }`,
+    [errorMessage],
+  );
 
   return (
     <div>
       {Boolean(label) && (
         <label
-          className={`block text-sm text-gray-800 dark:text-gray-200`}
+          className="block text-sm text-gray-800 dark:text-gray-200"
           htmlFor={`${inputId}Start`}
         >
           {label}{' '}
-          {required ? (
-            <span className="text-sm text-red-400">*</span>
-          ) : null}
+          {required ? <span className="text-sm text-red-400">*</span> : null}
         </label>
       )}
       <div className="flex flex-nowrap items-baseline">
@@ -105,21 +95,13 @@ function InputNumberRangeFormItem(props) {
           type="number"
           id={`${inputId}Start`}
           name={`${name}Start`}
-          onChange={(event) =>
-            handleStartChanged(event.target.value)
-          }
-          onBlur={(event) => {
-            props.onBlur && props.onBlur(event);
-          }}
+          onChange={(event) => handleStartChanged(event.target.value)}
+          onBlur={(event) => onBlur && onBlur(event)}
           value={startValue()}
           placeholder={placeholder || undefined}
           autoFocus={autoFocus || undefined}
           autoComplete={autoComplete || undefined}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
-            errorMessage
-              ? 'border-red-400 text-red-600'
-              : ''
-          }`}
+          className={inputClassName}
         />
 
         <div
@@ -138,30 +120,18 @@ function InputNumberRangeFormItem(props) {
           type="number"
           id={`${inputId}End`}
           name={`${name}End`}
-          onChange={(event) =>
-            handleEndChanged(event.target.value)
-          }
-          onBlur={(event) => {
-            props.onBlur && props.onBlur(event);
-          }}
+          onChange={(event) => handleEndChanged(event.target.value)}
+          onBlur={(event) => onBlur && onBlur(event)}
           value={endValue()}
           placeholder={placeholder || undefined}
           autoFocus={autoFocus || undefined}
           autoComplete={autoComplete || undefined}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
-            errorMessage
-              ? 'border-red-400 text-red-600'
-              : ''
-          }`}
+          className={inputClassName}
         />
       </div>
-      <div className="text-red-600 text-sm mt-2">
-        {errorMessage}
-      </div>
+      <div className="text-red-600 text-sm mt-2">{errorMessage}</div>
       {Boolean(hint) && (
-        <div className="text-gray-500 text-sm mt-2">
-          {hint}
-        </div>
+        <div className="text-gray-500 text-sm mt-2">{hint}</div>
       )}
     </div>
   );
@@ -181,6 +151,8 @@ InputNumberRangeFormItem.propTypes = {
   placeholder: PropTypes.string,
   externalErrorMessage: PropTypes.string,
   formItemProps: PropTypes.object,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
-export default InputNumberRangeFormItem;
+export default React.memo(InputNumberRangeFormItem); // Memoized for list usage

@@ -2,8 +2,8 @@ import _get from 'lodash/get';
 import { createSelector } from 'reselect';
 import statuses from 'src/modules/shared/importer/importerStatuses';
 
-export default (rawPath) => {
-  const selectRaw = (state) => _get(state, rawPath);
+export default (rawPath:any) => {
+  const selectRaw = (state:any) => _get(state, rawPath);
 
   const selectRows = createSelector(
     [selectRaw],
@@ -24,7 +24,7 @@ export default (rawPath) => {
     [selectRows],
     (rows) =>
       rows.filter(
-        (row) => row._status === statuses.PENDING,
+        (row:any) => row._status === statuses.PENDING,
       ),
   );
 
@@ -42,7 +42,7 @@ export default (rawPath) => {
     [selectRows],
     (rows) =>
       rows.filter(
-        (row) => row._status === statuses.IMPORTED,
+        (row:any) => row._status === statuses.IMPORTED,
       ).length,
   );
 
@@ -54,7 +54,7 @@ export default (rawPath) => {
   const selectErrorRowsCount = createSelector(
     [selectRows],
     (rows) =>
-      rows.filter((row) => row._status === statuses.ERROR)
+      rows.filter((row:any) => row._status === statuses.ERROR)
         .length,
   );
 

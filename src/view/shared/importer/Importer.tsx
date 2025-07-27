@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import importerFormHoc from 'src/view/shared/importer/ImporterForm';
 import importerListHoc from 'src/view/shared/importer/ImporterList';
@@ -5,10 +6,10 @@ import importerStatusHoc from 'src/view/shared/importer/ImporterStatus';
 import importerToolbarHoc from 'src/view/shared/importer/ImporterToolbar';
 
 export default (
-  selectors,
-  actions,
-  fields,
-  templateHelp,
+  selectors :any,
+  actions:any,
+  fields:any,
+  templateHelp:any,
 ) => {
   const ImporterToolbar = importerToolbarHoc(
     selectors,
@@ -38,5 +39,5 @@ export default (
     );
   }
 
-  return Importer;
+  return React.memo(Importer);
 };

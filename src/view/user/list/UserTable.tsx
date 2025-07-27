@@ -44,12 +44,12 @@ function UserTable() {
     userSelectors.selectPermissionToDestroy,
   );
 
-  const doDestroy = (id) => {
+  const doDestroy = (id:any) => {
     setRecordIdToDestroy(null);
-    dispatch(actions.doDestroy(id));
+    dispatch(actions.doDestroy(id)as any);
   };
 
-  const doChangeSort = (field) => {
+  const doChangeSort = (field:any) => {
     const order =
       sorter.field === field && sorter.order === 'ascend'
         ? 'descend'
@@ -59,19 +59,19 @@ function UserTable() {
       actions.doChangeSort({
         field,
         order,
-      }),
+      })as any,
     );
   };
 
-  const doChangePagination = (pagination) => {
-    dispatch(actions.doChangePagination(pagination));
+  const doChangePagination = (pagination: any) => {
+    dispatch(actions.doChangePagination(pagination)as any);
   };
 
   const doToggleAllSelected = () => {
     dispatch(actions.doToggleAllSelected());
   };
 
-  const doToggleOneSelected = (id) => {
+  const doToggleOneSelected = (id:string) => {
     dispatch(actions.doToggleOneSelected(id));
   };
 
@@ -141,7 +141,7 @@ function UserTable() {
               </tr>
             )}
             {!loading &&
-              rows.map((row) => (
+              rows.map((row:any) => (
                 <tr key={row.id}>
                   <th
                     className="w-12 border-b border-gray-200 dark:border-gray-800"
@@ -178,7 +178,7 @@ function UserTable() {
                     {row.fullName}
                   </td>
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.roles.map((roleId) => (
+                    {row.roles.map((roleId:string) => (
                       <div key={roleId}>
                         <span>{Roles.labelOf(roleId)}</span>
                       </div>

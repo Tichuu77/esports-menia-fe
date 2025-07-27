@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import {  useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-
 import { i18n } from 'src/i18n';
 import layoutSelectors from 'src/modules/layout/layoutSelectors';
 import selectControlStyles from 'src/view/shared/form/items/selectControlStyles';
@@ -21,32 +20,35 @@ function ControlledSelectFormItem({
   isClearable = true,
   placeholder,
   externalErrorMessage,
-}) {
+}: any) {
   const [inputId] = useState(uuid());
   const isDarkMode = useSelector(layoutSelectors.selectDarkMode);
 
-  const controlStyles = selectControlStyles(
-    isDarkMode,
-    Boolean(externalErrorMessage),
+  const controlStyles = useMemo(
+    () => selectControlStyles(isDarkMode, Boolean(externalErrorMessage)),
+    [isDarkMode, externalErrorMessage],
   );
 
-  const getCurrentValue = () => {
+  const getCurrentValue = useCallback(() => {
     if (mode === 'multiple') {
       return Array.isArray(value)
-        ? value.map((val) => options.find((opt) => opt.value === val))
+        ? value.map((val) => options.find((opt: any) => opt.value === val))
         : [];
     }
-    return options.find((opt) => opt.value === value) || null;
-  };
+    return options.find((opt: any) => opt.value === value) || null;
+  }, [value, options, mode]);
 
-  const handleChange = (selected) => {
-    if (mode === 'multiple') {
-      const newValues = selected?.map((opt) => opt?.value) || [];
-      onChange?.(newValues);
-    } else {
-      onChange?.(selected ? selected.value : null);
-    }
-  };
+  const handleChange = useCallback(
+    (selected: any) => {
+      if (mode === 'multiple') {
+        const newValues = selected?.map((opt: any) => opt?.value) || [];
+        onChange?.(newValues);
+      } else {
+        onChange?.(selected ? selected.value : null);
+      }
+    },
+    [onChange, mode],
+  );
 
   return (
     <div>
@@ -56,9 +58,7 @@ function ControlledSelectFormItem({
           className="block text-sm text-gray-800 dark:text-gray-200"
         >
           {label}{' '}
-          {required && (
-            <span className="text-sm text-red-400">*</span>
-          )}
+          {required && <span className="text-sm text-red-400">*</span>}
         </label>
       )}
 
@@ -79,9 +79,7 @@ function ControlledSelectFormItem({
       />
 
       {externalErrorMessage && (
-        <div className="text-red-600 text-sm mt-2">
-          {externalErrorMessage}
-        </div>
+        <div className="text-red-600 text-sm mt-2">{externalErrorMessage}</div>
       )}
 
       {hint && (
@@ -112,4 +110,4 @@ ControlledSelectFormItem.defaultProps = {
   mode: 'single',
 };
 
-export default ControlledSelectFormItem;
+export default React.memo(ControlledSelectFormItem); // Memoized for list usage

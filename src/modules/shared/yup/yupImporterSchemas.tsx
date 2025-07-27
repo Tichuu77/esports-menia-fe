@@ -3,10 +3,10 @@ import { i18n } from 'src/i18n';
 import * as yup from 'yup';
 
 const yupImporterSchemas = {
-  generic(label) {
+  generic(label:any) {
     return yup.mixed().label(label);
   },
-  string(label, config?) {
+  string(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -36,10 +36,10 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  boolean(label, config?) {
+  boolean(label:any) {
     return yup.bool().default(false).label(label);
   },
-  relationToOne(label, config?) {
+  relationToOne(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup.mixed().nullable(true).label(label);
@@ -50,7 +50,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  stringArray(label, config?) {
+  stringArray(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -62,8 +62,8 @@ const yupImporterSchemas = {
           : (value || '')
               .trim()
               .split(' ')
-              .filter((item) => Boolean(item))
-              .map((item) => item.trim()),
+              .filter((item:any) => Boolean(item))
+              .map((item:any) => item.trim()),
       );
 
     if (config.required) {
@@ -72,7 +72,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  relationToMany(label, config?) {
+  relationToMany(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -91,7 +91,7 @@ const yupImporterSchemas = {
         return originalValue
           .trim()
           .split(' ')
-          .map((value) => {
+          .map((value:any) => {
             return value;
           });
       });
@@ -112,10 +112,10 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  json(label) {
+  json(label:any) {
     return yup.mixed().label(label);
   },
-  integer(label, config?) {
+  integer(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -141,7 +141,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  images(label, config?) {
+  images(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -160,7 +160,7 @@ const yupImporterSchemas = {
         return originalValue
           .trim()
           .split(' ')
-          .map((value) => {
+          .map((value:any) => {
             return {
               name: value.trim(),
               publicUrl: value.trim(),
@@ -185,7 +185,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  files(label, config?) {
+  files(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -204,7 +204,7 @@ const yupImporterSchemas = {
         return originalValue
           .trim()
           .split(' ')
-          .map((value) => {
+          .map((value:any) => {
             return {
               name: value.trim(),
               publicUrl: value.trim(),
@@ -229,7 +229,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  enumerator(label, config?) {
+  enumerator(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -249,7 +249,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  email(label, config?) {
+  email(label:any, config?:any) {
     config = config || {};
 
     let yupChain = yup
@@ -280,7 +280,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  decimal(label, config?) {
+  decimal(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .number()
@@ -304,7 +304,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  datetime(label, config?) {
+  datetime(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .mixed()
@@ -328,7 +328,7 @@ const yupImporterSchemas = {
 
     return yupChain;
   },
-  date(label, config?) {
+  date(label:any, config?:any) {
     config = config || {};
     let yupChain = yup
       .mixed()

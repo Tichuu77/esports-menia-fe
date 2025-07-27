@@ -5,7 +5,7 @@ export default class LayoutDarkMode {
     );
   }
 
-  static set(isDarkMode) {
+  static set(isDarkMode:boolean) {
     sessionStorage.setItem(
       'darkMode',
       String(Boolean(isDarkMode)),

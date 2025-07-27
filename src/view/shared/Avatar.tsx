@@ -55,7 +55,7 @@ const AvatarWrapper = styled.span`
   }
 `;
 
-const Avatar = (props) => {
+const Avatar = (props:any) => {
   const { shape, size, src } = props;
   const sizeClass =
     {

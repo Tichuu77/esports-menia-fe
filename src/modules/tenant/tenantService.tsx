@@ -49,7 +49,7 @@ export default class TenantService {
     SettingsService.applyThemeFromTenant();
   }
 
-  static async update(id, data) {
+  static async update(id:string, data:any) {
     const body = {
       id,
       data,
@@ -63,7 +63,7 @@ export default class TenantService {
     return response.data;
   }
 
-  static async destroyAll(ids) {
+  static async destroyAll(ids:any []) {
     const params = {
       ids,
     };
@@ -75,7 +75,7 @@ export default class TenantService {
     return response.data;
   }
 
-  static async create(data) {
+  static async create(data:any) {
     const body = {
       data,
     };
@@ -86,7 +86,7 @@ export default class TenantService {
   }
 
   static async acceptInvitation(
-    token,
+    token:string,
     forceAcceptOtherEmail = false,
   ) {
     const response = await authAxios.post(
@@ -99,7 +99,7 @@ export default class TenantService {
     return response.data;
   }
 
-  static async declineInvitation(token) {
+  static async declineInvitation(token:string) {
     const params = null;
 
     const response = await authAxios.delete(
@@ -112,19 +112,19 @@ export default class TenantService {
     return response.data;
   }
 
-  static async find(id) {
+  static async find(id:string) {
     const response = await authAxios.get(`/tenant/${id}`);
     return response.data;
   }
 
-  static async findByUrl(url) {
+  static async findByUrl(url:string) {
     const response = await authAxios.get(`/tenant/url`, {
       params: { url },
     });
     return response.data;
   }
 
-  static async list(filter, orderBy, limit, offset) {
+  static async list(filter:any, orderBy:any, limit:number, offset:any) {
     const params = {
       filter,
       orderBy,

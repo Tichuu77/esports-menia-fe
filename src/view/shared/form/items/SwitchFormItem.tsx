@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function SwitchFormItem(props) {
+function SwitchFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -95,4 +95,4 @@ SwitchFormItem.propTypes = {
   externalErrorMessage: PropTypes.string,
 };
 
-export default SwitchFormItem;
+export default React.memo(SwitchFormItem);

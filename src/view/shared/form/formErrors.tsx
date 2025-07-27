@@ -1,14 +1,14 @@
 
-function get(obj, path) {
-  return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+function get(obj:any, path:any) {
+  return path.split('.').reduce((acc:any, part:any) => acc && acc[part], obj);
 }
 
 export default class FormErrors {
   static errorMessage(
-    name,
-    errors,
-    touched,
-    isSubmitted,
+    name:string,
+    errors: any,
+    touched:any,
+    isSubmitted:boolean,
     externalErrorMessage = null,
   ) {
     if (externalErrorMessage) {

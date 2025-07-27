@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state) => state.user.form;
+const selectRaw = (state:any) => state.user.form;
 
 const selectUser = createSelector(
   [selectRaw],

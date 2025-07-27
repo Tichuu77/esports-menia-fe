@@ -7,7 +7,7 @@ import selectors from 'src/modules/user/form/userFormSelectors';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 import UserNewForm from 'src/view/user/new/UserNewForm';
 
-function UserNewPage(props) {
+function UserNewPage( ) {
   const dispatch = useDispatch();
        const navigate = useNavigate();
   const saveLoading = useSelector(
@@ -18,8 +18,8 @@ function UserNewPage(props) {
     dispatch(actions.doInit());
   }, [dispatch]);
 
-  const doSubmit = (id, data) => {
-    dispatch(actions.doAdd(data,navigate));
+  const doSubmit = (id:string, data:any) => {
+    dispatch(actions.doAdd(data,navigate)as any);
   };
 
   return (

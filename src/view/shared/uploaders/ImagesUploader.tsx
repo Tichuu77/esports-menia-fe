@@ -11,10 +11,10 @@ import Errors from 'src/modules/shared/error/errors';
 import FileUploader from 'src/modules/shared/fileUpload/fileUploader';
 import ImageModal from 'src/view/shared/modals/ImageModal';
 
-function ImagesUploader(props) {
+function ImagesUploader(props:any) {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<any>(null);
-  const input = useRef<any>();
+  const input = useRef<any>(null);
   const [mouseOver, setMouseOver] = useState(null);
 
   const value = () => {
@@ -36,13 +36,13 @@ function ImagesUploader(props) {
     }));
   };
 
-  const handleRemove = (id) => {
+  const handleRemove = (id:string) => {
     props.onChange(
       value().filter((item) => item.id !== id),
     );
   };
 
-  const handleChange = async (event) => {
+  const handleChange = async (event:any) => {
     try {
       const files = event.target.files;
 
@@ -76,7 +76,7 @@ function ImagesUploader(props) {
     }
   };
 
-  const doPreviewImage = (image) => {
+  const doPreviewImage = (image:any) => {
     setImage({
       src: image.downloadUrl,
       alt: image.name,

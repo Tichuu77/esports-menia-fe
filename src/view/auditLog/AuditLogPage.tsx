@@ -4,7 +4,7 @@ import AuditLogTable from 'src/view/auditLog/AuditLogTable';
 import AuditLogToolbar from 'src/view/auditLog/AuditLogToolbar';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 
-function AuditLogPage(props) {
+function AuditLogPage( ) {
   return (
     <>
       <Breadcrumb

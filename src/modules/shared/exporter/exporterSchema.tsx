@@ -1,7 +1,7 @@
 export default class ExporterSchema {
   fields: Array<any>;
 
-  constructor(fields) {
+  constructor(fields:any) {
     this.fields = fields;
   }
 
@@ -9,7 +9,7 @@ export default class ExporterSchema {
     return this.fields.map((field) => field.label);
   }
 
-  labelOf(name) {
+  labelOf(name:any) {
     const field = this.fields.find(
       (field) => field.name === name,
     );
@@ -21,18 +21,18 @@ export default class ExporterSchema {
     return name;
   }
 
-  cast(row) {
+  cast(row:any) {
     if (!row) {
       return row;
     }
 
-    const casted = {};
+    let casted :any;
     Object.keys(row).forEach((name) => {
       const field = this.fields.find(
         (field) => field.name === name,
       );
       if (field) {
-        casted[name] = field.render
+        casted[name]  = field.render
           ? field.render(row[name])
           : row[name]
             ? String(row[name])

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import auditLogSelectors from 'src/modules/auditLog/auditLogSelectors';
 
-function SettingsFormToolbar(props) {
+function SettingsFormToolbar( ) {
   const hasPermissionToAuditLogs = useSelector(
     auditLogSelectors.selectPermissionToRead,
   );

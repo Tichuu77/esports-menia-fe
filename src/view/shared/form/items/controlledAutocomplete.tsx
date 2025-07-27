@@ -104,4 +104,4 @@ function ControlledAutocomplete({
   );
 }
 
-export default ControlledAutocomplete;
+export default React.memo(ControlledAutocomplete);

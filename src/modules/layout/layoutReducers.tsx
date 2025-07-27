@@ -9,7 +9,7 @@ const initialData = {
   darkMode: LayoutDarkMode.get(),
 };
 
-export default (state = initialData, { type, payload }) => {
+export default (state = initialData, { type, payload }:any) => {
   if (type === actions.DARK_MODE_CHANGE) {
     LayoutDarkMode.set(payload);
 

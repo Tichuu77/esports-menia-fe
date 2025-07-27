@@ -1,6 +1,7 @@
 // loadables.ts
-import React, { ComponentType, LazyExoticComponent } from 'react';
+import type{ ComponentType , LazyExoticComponent } from 'react';
 import LoadingComponent from 'src/view/shared/LoadingComponent';
+import React from 'react';
 
 interface LoadableOptions {
   loader: () => Promise<{ default: ComponentType<any> }>;
@@ -12,7 +13,7 @@ export default function CustomLoadable({ loader }: LoadableOptions): React.FC {
   const LoadableWrapper: React.FC = (props) => (
     <React.Suspense fallback={<LoadingComponent />}>
       <LazyComponent {...props} />
-    </React.Suspense>
+    </React..Suspense>
   );
 
   return LoadableWrapper;

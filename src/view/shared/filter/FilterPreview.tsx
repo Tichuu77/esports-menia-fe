@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { i18n } from 'src/i18n';
 
-export default function FilterPreview(props) {
+export default function FilterPreview(props:any) {
   const { values, renders, onClick, onRemove } = props;
 
   const itemsNotEmpty = Object.keys(values || {})

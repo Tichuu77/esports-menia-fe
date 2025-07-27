@@ -6,7 +6,7 @@ import UserService from 'src/modules/user/userService';
 import AutocompleteInMemoryFormItem from 'src/view/shared/form/items/AutocompleteInMemoryFormItem';
 import UserNewFormModal from 'src/view/user/new/UserNewFormModal';
 
-function UserAutocompleteFormItem(props) {
+function UserAutocompleteFormItem(props:any) {
   const { setValue, getValues } = useFormContext();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -14,7 +14,7 @@ function UserAutocompleteFormItem(props) {
     selectors.selectPermissionToCreate,
   );
 
-  const doCreateSuccess = (record) => {
+  const doCreateSuccess = (record:any) => {
     const { name, mode } = props;
 
     if (mode && mode === 'multiple') {
@@ -33,12 +33,12 @@ function UserAutocompleteFormItem(props) {
     setModalVisible(false);
   };
 
-  const fetchFn = (value, limit) => {
+  const fetchFn = (value:any, limit:number) => {
     return UserService.fetchUserAutocomplete(value, limit);
   };
 
   const mapper = {
-    toAutocomplete(originalValue) {
+    toAutocomplete(originalValue:any) {
       if (!originalValue) {
         return null;
       }
@@ -62,7 +62,7 @@ function UserAutocompleteFormItem(props) {
       };
     },
 
-    toValue(originalValue) {
+    toValue(originalValue:any) {
       if (!originalValue) {
         return null;
       }

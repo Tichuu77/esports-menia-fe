@@ -16,7 +16,7 @@ const settingsActions = {
   SAVE_SUCCESS: `${prefix}_SAVE_SUCCESS`,
   SAVE_ERROR: `${prefix}_SAVE_ERROR`,
 
-  doInit: () => async (dispatch, getState) => {
+  doInit: () => async (dispatch:any, getState:any) => {
     try {
       if (
         !authSelectors.selectSignedIn(getState()) ||
@@ -47,7 +47,7 @@ const settingsActions = {
     }
   },
 
-  doSave: (values) => async (dispatch, getState) => {
+  doSave: (values:any) => async (dispatch:any, getState:any) => {
     try {
       dispatch({
         type: settingsActions.SAVE_STARTED,

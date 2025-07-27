@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
@@ -14,7 +14,7 @@ const schema = yup.object().shape({
   id: yupFormSchemas.string(i18n('tenant.fields.tenantId')),
 });
 
-function TenantSelectForm(props) {
+function TenantSelectForm(props:any) {
   const dispatch = useDispatch();
 
   const loading = useSelector(selectors.selectLoading);
@@ -37,15 +37,15 @@ function TenantSelectForm(props) {
     defaultValues: initialValues,
   });
 
-  const onSubmit = ({ id }) => {
+  const onSubmit = ({ id }:any) => {
     const tenantUserInvitation = currentUser.tenants.find(
-      (tenantUser) => tenantUser.tenant.id === id,
+      (tenantUser:any) => tenantUser.tenant.id === id,
     );
 
     dispatch(
       actions.doAccept(
         tenantUserInvitation.invitationToken,
-      ),
+      )as any,
     );
   };
 
@@ -58,7 +58,7 @@ function TenantSelectForm(props) {
         <SelectFormItem
           name="id"
           label={i18n('tenant.fields.tenantId')}
-          options={invitedTenants.map((item) => ({
+          options={invitedTenants.map((item:any) => ({
             value: item.id,
             label: item.name,
           }))}
@@ -89,4 +89,4 @@ function TenantSelectForm(props) {
   );
 }
 
-export default TenantSelectForm;
+export default React.memo(TenantSelectForm);

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Avatar from 'src/view/shared/Avatar';
 
-function ImagesListView(props) {
+function ImagesListView(props:any) {
   const valueAsArray = () => {
     const { value } = props;
 

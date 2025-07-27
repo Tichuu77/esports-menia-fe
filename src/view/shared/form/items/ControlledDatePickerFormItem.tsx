@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { v4 as uuid } from 'uuid';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export function ControlledDatePickerFormItem(props) {
+export function ControlledDatePickerFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -58,7 +58,7 @@ export function ControlledDatePickerFormItem(props) {
                 enabled: true,
                 escapeWithReference: false,
               },
-            }}
+            }as any}
             placeholderText={placeholder || ''}
             autoFocus={autoFocus || undefined}
             autoComplete={'off'}
@@ -101,4 +101,4 @@ ControlledDatePickerFormItem.defaultProps = {
   showTimeInput: false,
 };
 
-export default ControlledDatePickerFormItem;
+export default React.memo(ControlledDatePickerFormItem);

@@ -56,7 +56,7 @@ const authActions = {
   },
 
   doSendEmailConfirmation:
-    () => async (dispatch) => {
+    () => async (dispatch : any) => {
       try {
         dispatch({
           type: authActions.EMAIL_CONFIRMATION_START,
@@ -76,7 +76,7 @@ const authActions = {
       }
     },
 
-  doSendPasswordResetEmail: (email) => async (dispatch) => {
+  doSendPasswordResetEmail: (email : string) => async (dispatch:any) => {
     try {
       dispatch({
         type: authActions.PASSWORD_RESET_EMAIL_START,
@@ -133,7 +133,7 @@ const authActions = {
     },
 
   doSigninWithEmailAndPassword:
-    (email, password, rememberMe) => async (dispatch) => {
+    (email :string, password :string, rememberMe:boolean) => async (dispatch:any) => {
       try {
         dispatch({ type: authActions.AUTH_START });
 
@@ -168,7 +168,7 @@ const authActions = {
       }
     },
 
-  doSignout: () => async (dispatch) => {
+  doSignout: () => async (dispatch : any) => {
     try {
       dispatch({ type: authActions.AUTH_START });
       await service.signout();
@@ -188,7 +188,7 @@ const authActions = {
     }
   },
 
-  doInit: () => async (dispatch) => {
+  doInit: () => async (dispatch : any) => {
     try {
       const token = AuthToken.get();
       let currentUser = null;
@@ -214,7 +214,7 @@ const authActions = {
     }
   },
 
-  doRefreshCurrentUser: () => async (dispatch) => {
+  doRefreshCurrentUser: () => async (dispatch : any) => {
     try {
       dispatch({
         type: authActions.CURRENT_USER_REFRESH_START,
@@ -244,7 +244,7 @@ const authActions = {
     }
   },
 
-  doUpdateProfile: (data,navigate) => async (dispatch) => {
+  doUpdateProfile: (data :any ,navigate:any) => async (dispatch:any) => {
     try {
       
       dispatch({
@@ -332,7 +332,7 @@ const authActions = {
   },
 
   doResetPassword:
-    (token : string, password : string,navigate : any) => async (dispatch :any, getState:any) => {
+    (token : string, password : string,navigate : any) => async (dispatch :any) => {
       try {
           
         dispatch({
@@ -358,7 +358,7 @@ const authActions = {
       }
     },
 
-  doSelectTenant: (tenant) => async (dispatch) => {
+  doSelectTenant: (tenant:any) => async (dispatch:any) => {
       const navigate = useNavigate();
     if (tenantSubdomain.isEnabled) {
       tenantSubdomain.redirectAuthenticatedTo(tenant.url);

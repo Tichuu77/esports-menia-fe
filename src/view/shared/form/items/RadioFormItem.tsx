@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function RadioFormItem(props) {
+function RadioFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -51,7 +51,7 @@ function RadioFormItem(props) {
       )}
 
       <div className={`mt-1 ${inline ? "flex gap-2":''}`}>
-        {options.map((option) => (
+        {options.map((option:any) => (
           <div key={option.value}>
             <input
               className="cursor-pointer border-gray-300 dark:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
@@ -110,4 +110,4 @@ RadioFormItem.propTypes = {
   inline:PropTypes.bool,
 };
 
-export default RadioFormItem;
+export default React.memo(RadioFormItem);

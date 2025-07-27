@@ -8,7 +8,7 @@ export default class AuthInvitationToken {
     );
   }
 
-  static set(token) {
+  static set(token:string) {
     sessionStorage.setItem('invitationToken', token);
   }
 

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state) => state.settings;
+const selectRaw = (state:any) => state.settings;
 
 const selectSettings = createSelector(
   [selectRaw],

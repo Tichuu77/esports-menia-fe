@@ -5,7 +5,7 @@ const initialData = {
   warningMessage: null,
 };
 
-export default (state = initialData, { type, payload }) => {
+export default (state = initialData, { type, payload }:any) => {
   if (type === actions.ACCEPT_FROM_AUTH_STARTED) {
     return {
       ...state,

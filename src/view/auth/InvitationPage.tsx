@@ -1,58 +1,44 @@
 import queryString from 'query-string';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import authActions from 'src/modules/auth/authActions';
 import selectors from 'src/modules/auth/authSelectors';
-import { useNavigate } from 'react-router-dom';
 import invitationActions from 'src/modules/tenant/invitation/tenantInvitationActions';
 import invitationSelectors from 'src/modules/tenant/invitation/tenantInvitationSelectors';
 import Spinner from 'src/view/shared/Spinner';
 
 function InviationPage() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const loading = useSelector(
-    invitationSelectors.selectLoading,
-  );
-
-  const warningMessage = useSelector(
-    invitationSelectors.selectWarningMessage,
-  );
-
-  const backgroundImageUrl = useSelector(
-    selectors.selectBackgroundImageUrl,
-  );
+  const loading = useSelector(invitationSelectors.selectLoading);
+  const warningMessage = useSelector(invitationSelectors.selectWarningMessage);
+  const backgroundImageUrl = useSelector(selectors.selectBackgroundImageUrl);
   const logoUrl = useSelector(selectors.selectLogoUrl);
 
-  const token = queryString.parse(location.search).token;
-  console.log('Invitation token:', token);
+  const token = useMemo(() => queryString.parse(location.search).token, [location.search]);
+  const hasWarning = Boolean(warningMessage);
 
   useEffect(() => {
-    dispatch(invitationActions.doAcceptFromAuth(token,navigate));
+    dispatch(invitationActions.doAcceptFromAuth(token as string, navigate) as any);
+  }, [dispatch, token, navigate]);
+
+  const doAcceptWithWrongEmail = useCallback(() => {
+    dispatch(invitationActions.doAcceptFromAuth(token as string, true) as any);
   }, [dispatch, token]);
 
-  const doAcceptWithWrongEmail = () => {
-    dispatch(
-      invitationActions.doAcceptFromAuth(token, true),
-    );
-  };
-
-  const doSignout = async () => {
-    await dispatch(authActions.doSignout());
-   navigate('/');
-  };
+  const doSignout = useCallback(async () => {
+    await dispatch(authActions.doSignout() as any);
+    navigate('/');
+  }, [dispatch, navigate]);
 
   return (
     <div
       style={{
-        backgroundImage: `url(${
-          backgroundImageUrl || '/images/invitation.jpg'
-        })`,
+        backgroundImage: `url(${backgroundImageUrl || '/images/invitation.jpg'})`,
       }}
       className="bg-cover h-screen flex items-center justify-center"
     >
@@ -74,15 +60,10 @@ function InviationPage() {
 
           <div className="mt-8">
             {loading && <Spinner />}
-
-            {Boolean(warningMessage) && (
-              <div className="text-center text-lg">
-                {warningMessage}
-              </div>
-            )}
+            {hasWarning && <div className="text-center text-lg">{warningMessage}</div>}
           </div>
 
-          {Boolean(warningMessage) && (
+          {hasWarning && (
             <div className="mt-6">
               <button
                 type="submit"

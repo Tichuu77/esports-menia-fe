@@ -6,7 +6,7 @@ export default class PermissionChecker {
   currentTenant;
   currentUser;
 
-  constructor(currentTenant, currentUser) {
+  constructor(currentTenant:any, currentUser:any) {
     this.currentTenant = currentTenant;
     this.currentUser = currentUser;
   }
@@ -18,10 +18,10 @@ export default class PermissionChecker {
 
     const tenant = this.currentUser.tenants
       .filter(
-        (tenantUser) => tenantUser.status === 'active',
+        (tenantUser:any) => tenantUser.status === 'active',
       )
       .find(
-        (tenantUser) =>
+        (tenantUser:any) =>
           tenantUser.tenant.id === this.currentTenant.id,
       );
 
@@ -32,7 +32,7 @@ export default class PermissionChecker {
     return tenant.roles;
   }
 
-  match(permission) {
+  match(permission:any) {
     if (!permission) {
       return true;
     }
@@ -44,7 +44,7 @@ export default class PermissionChecker {
     return this.rolesMatchOneOf(permission.allowedRoles);
   }
 
-  lockedForCurrentPlan(permission) {
+  lockedForCurrentPlan(permission:any) {
     if (!permission) {
       return false;
     }
@@ -56,7 +56,7 @@ export default class PermissionChecker {
     return !this.planMatchOneOf(permission.allowedPlans);
   }
 
-  rolesMatchOneOf(arg) {
+  rolesMatchOneOf(arg:any) {
     if (!this.currentUserRolesIds) {
       return false;
     }
@@ -78,7 +78,7 @@ export default class PermissionChecker {
     return this.currentUserRolesIds.includes(arg);
   }
 
-  planMatchOneOf(arg) {
+  planMatchOneOf(arg:any) {
     if (!this.currentTenantPlan) {
       return false;
     }
@@ -122,7 +122,7 @@ export default class PermissionChecker {
     }
 
     return !this.currentUser.tenants.some(
-      (tenant) => tenant.status === 'active',
+      (tenant:any) => tenant.status === 'active',
     );
   }
 
@@ -136,7 +136,7 @@ export default class PermissionChecker {
     }
 
     const tenant = this.currentUser.tenants.find(
-      (tenant) => tenant.status === 'active',
+      (tenant:any) => tenant.status === 'active',
     );
 
     if (!tenant) {

@@ -7,10 +7,10 @@ import Errors from 'src/modules/shared/error/errors';
 import UserService from 'src/modules/user/userService';
 import UserNewForm from 'src/view/user/new/UserNewForm';
 
-function UserNewFormModal(props) {
+function UserNewFormModal(props:any) {
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const doSubmit = async (_, data) => {
+  const doSubmit = async (_:any, data:any) => {
     try {
       setSaveLoading(true);
       await UserService.create(data);

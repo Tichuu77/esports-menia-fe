@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 
-function TenantToolbar(props) {
+function TenantToolbar( ) {
   return (
     <div className="mb-4">
       <Link to="/tenant/new">

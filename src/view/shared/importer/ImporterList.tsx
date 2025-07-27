@@ -4,7 +4,7 @@ import ImporterRowStatus from 'src/view/shared/importer/ImporterRowStatus';
 import Pagination from 'src/view/shared/table/Pagination';
 import TableColumnHeader from 'src/view/shared/table/TableColumnHeader';
 
-export default (selectors, actions, fields) => {
+export default (selectors:any, actions:any, fields:any) => {
   function ImporterList() {
     const dispatch = useDispatch();
     const rows = useSelector(selectors.selectRows);
@@ -25,7 +25,7 @@ export default (selectors, actions, fields) => {
       selectors.selectPagination,
     );
 
-    const showTotal = (total, range) => {
+    const showTotal = ( ) => {
       return i18n(
         'importer.total',
         importedRowsCount,
@@ -34,7 +34,7 @@ export default (selectors, actions, fields) => {
       );
     };
 
-    const doChangeSort = (field) => {
+    const doChangeSort = (field:any) => {
       const order =
         sorter.field === field && sorter.order === 'ascend'
           ? 'descend'
@@ -48,7 +48,7 @@ export default (selectors, actions, fields) => {
       );
     };
 
-    const doChangePagination = (pagination) => {
+    const doChangePagination = (pagination:any) => {
       dispatch(actions.doChangePagination(pagination));
     };
 
@@ -65,7 +65,7 @@ export default (selectors, actions, fields) => {
                   name="_line"
                   label={i18n('importer.line')}
                 />
-                {fields.map((schemaItem) => (
+                {fields.map((schemaItem:any) => (
                   <TableColumnHeader
                     key={schemaItem.name}
                     onSort={doChangeSort}
@@ -90,7 +90,7 @@ export default (selectors, actions, fields) => {
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
                     {row._line}
                   </td>
-                  {fields.map((schemaItem) => (
+                  {fields.map((schemaItem:any) => (
                     <td
                       className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
                       key={schemaItem.name}
@@ -111,7 +111,7 @@ export default (selectors, actions, fields) => {
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
                     <ImporterRowStatus
                       value={row._status}
-                      errorMessage={row._errorMessage}
+                      errorMessage={row._errorMessaage}
                     />
                   </td>
                 </tr>

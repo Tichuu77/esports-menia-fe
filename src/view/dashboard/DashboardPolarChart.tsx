@@ -51,7 +51,7 @@ export default function DashboardPolarChart( ) {
   useEffect(() => {
     return () => {
       if (chartRef.current) {
-        chartRef.current.destroy() ;
+        chartRef.current.destroy()  ;
       }
     };
   }, []);

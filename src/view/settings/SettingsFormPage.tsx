@@ -9,7 +9,7 @@ import SettingsForm from 'src/view/settings/SettingsForm';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 import Spinner from '../shared/Spinner';
 
-const SettingsFormPage = (props) => {
+const SettingsFormPage = () => {
   const dispatch = useDispatch();
        const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const SettingsFormPage = (props) => {
   const settings = useSelector(selectors.selectSettings);
 
   useEffect(() => {
-    dispatch(actions.doInit());
+    dispatch(actions.doInit()as any);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -49,7 +49,7 @@ const previewRenders = {
   },
   role: {
     label: i18n('user.fields.role'),
-    render: (value) =>
+    render: (value:any) =>
       value ? i18n(`roles.${value}.label`) : null,
   },
   status: {
@@ -58,7 +58,7 @@ const previewRenders = {
   },
 };
 
-function UserFilter(props) {
+function UserFilter(props:any) {
   const rawFilter = useSelector(selectors.selectRawFilter);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
@@ -81,14 +81,14 @@ function UserFilter(props) {
       actions.doFetch(
         schema.cast(initialValues),
         rawFilter,
-      ),
+      )as any,
     );
     // eslint-disable-next-line
   }, [dispatch]);
 
-  const onSubmit = (values) => {
+  const onSubmit = (values:any) => {
     const rawValues = form.getValues();
-    dispatch(actions.doFetch(values, rawValues));
+    dispatch(actions.doFetch(values, rawValues)as any);
     setExpanded(false);
   };
 
@@ -96,11 +96,11 @@ function UserFilter(props) {
     Object.keys(emptyValues).forEach((key) => {
       form.setValue(key, emptyValues[key]);
     });
-    dispatch(actions.doReset());
+    dispatch(actions.doReset()as any);
     setExpanded(false);
   };
 
-  const onRemove = (key) => {
+  const onRemove = (key:string) => {
     form.setValue(key, emptyValues[key]);
     return form.handleSubmit(onSubmit)();
   };

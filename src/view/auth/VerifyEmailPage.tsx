@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { i18n } from 'src/i18n';
@@ -105,4 +105,4 @@ function VerifyEmailPage() {
   );
 }
 
-export default VerifyEmailPage;
+export default React.memo(VerifyEmailPage);

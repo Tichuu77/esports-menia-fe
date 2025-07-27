@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import ImagesUploader from 'src/view/shared/uploaders/ImagesUploader';
 
-function ImagesFormItem(props) {
+function ImagesFormItem(props:any) {
   const {
     label,
     name,
@@ -50,7 +50,7 @@ function ImagesFormItem(props) {
       <ImagesUploader
         storage={storage}
         value={watch(name)}
-        onChange={(value) => {
+        onChange={(value:any) => {
           setValue(name, value, {
             shouldValidate: true,
             shouldDirty: true,
@@ -88,4 +88,4 @@ ImagesFormItem.propTypes = {
   formItemProps: PropTypes.object,
 };
 
-export default ImagesFormItem;
+export default React.memo(ImagesFormItem);

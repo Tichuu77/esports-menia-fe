@@ -1,6 +1,6 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
 import {
@@ -8,7 +8,7 @@ import {
   EXCEL_TYPE,
 } from 'src/modules/shared/excel/excel';
 
-export default (selectors, actions) => {
+export default (selectors :any, actions:any) => {
   function ImporterForm() {
     const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ export default (selectors, actions) => {
 
     const input = useRef(null);
 
-    const handleChange = (event) => {
+    const handleChange = (event:any) => {
       const files = event.target.files;
 
       if (!files || !files.length) {
@@ -53,5 +53,5 @@ export default (selectors, actions) => {
     );
   }
 
-  return ImporterForm;
+  return React.memo(ImporterForm);
 };

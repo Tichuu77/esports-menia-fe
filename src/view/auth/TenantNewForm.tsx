@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import config from 'src/config';
@@ -46,7 +46,7 @@ const schema = tenantSubdomain.isEnabled
   ? schemaWithUrl
   : schemaWithoutUrl;
 
-function TenantNewForm(props) {
+function TenantNewForm(props:any) {
   const dispatch = useDispatch();
 
   const [initialValues] = useState({
@@ -65,8 +65,8 @@ function TenantNewForm(props) {
     authSelectors.selectInvitedTenants,
   );
 
-  const onSubmit = (values) => {
-    dispatch(actions.doCreate(values));
+  const onSubmit = (values:any) => {
+    dispatch(actions.doCreate(values)as any);
   };
 
   return (
@@ -79,7 +79,7 @@ function TenantNewForm(props) {
           name="name"
           label={i18n('tenant.fields.tenantName')}
           autoComplete="name"
-          onChange={(value) => {
+          onChange={(value:any) => {
             // @ts-ignore
             form.setValue('url', urlfy(value));
           }}
@@ -122,4 +122,4 @@ function TenantNewForm(props) {
   );
 }
 
-export default TenantNewForm;
+export default React.memo(TenantNewForm);

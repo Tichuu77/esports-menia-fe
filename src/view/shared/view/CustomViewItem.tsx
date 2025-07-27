@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function CustomViewItem(props) {
+function CustomViewItem(props:any) {
   const isBlank =
     (!props.value &&
       props.value !== 0 &&

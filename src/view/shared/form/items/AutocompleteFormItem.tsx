@@ -1,7 +1,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import AsyncSelect from 'react-select/async';
@@ -13,7 +13,7 @@ import { v4 as uuid } from 'uuid';
 
 const AUTOCOMPLETE_SERVER_FETCH_SIZE = 100;
 
-function AutocompleteFormItem(props) {
+function AutocompleteFormItem(props: any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -41,99 +41,83 @@ function AutocompleteFormItem(props) {
     register(name);
   }, [register, name]);
 
-  const isDarkMode = useSelector(
-    layoutSelectors.selectDarkMode,
-  );
+  const isDarkMode = useSelector(layoutSelectors.selectDarkMode);
 
   const originalValue = watch(name);
 
-  const value = () => {
+  const valueMultiple = useCallback(() => {
+    if (originalValue) {
+      return originalValue.map((value: any) => mapper.toAutocomplete(value));
+    }
+    return [];
+  }, [originalValue, mapper]);
+
+  const valueOne = useCallback(() => {
+    if (originalValue) {
+      return mapper.toAutocomplete(originalValue);
+    }
+    return null;
+  }, [originalValue, mapper]);
+
+  const value = useCallback(() => {
     if (mode === 'multiple') {
       return valueMultiple();
     } else {
       return valueOne();
     }
-  };
+  }, [mode, valueMultiple, valueOne]);
 
-  const valueMultiple = () => {
-    if (originalValue) {
-      return originalValue.map((value) =>
-        mapper.toAutocomplete(value),
-      );
-    }
+  const handleSelectMultiple = useCallback(
+    (values: any) => {
+      if (!values) {
+        setValue(name, [], { shouldValidate: true, shouldDirty: true });
+        props.onChange && props.onChange([]);
+        return;
+      }
+      const newValue = values.map((value: any) => mapper.toValue(value));
+      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      props.onChange && props.onChange(newValue);
+    },
+    [setValue, name, mapper, props.onChange],
+  );
 
-    return [];
-  };
+  const handleSelectOne = useCallback(
+    (value: any) => {
+      if (!value) {
+        setValue(name, null, { shouldValidate: true, shouldDirty: true });
+        props.onChange && props.onChange(null);
+        return;
+      }
+      const newValue = mapper.toValue(value);
+      setValue(name, newValue, { shouldValidate: true, shouldDirty: true });
+      props.onChange && props.onChange(newValue);
+    },
+    [setValue, name, mapper, props.onChange],
+  );
 
-  const valueOne = () => {
-    if (originalValue) {
-      return mapper.toAutocomplete(originalValue);
-    }
+  const handleSelect = useCallback(
+    (value: any) => {
+      if (mode === 'multiple') {
+        return handleSelectMultiple(value);
+      } else {
+        return handleSelectOne(value);
+      }
+    },
+    [mode, handleSelectMultiple, handleSelectOne],
+  );
 
-    return null;
-  };
-
-  const handleSelect = (value) => {
-    if (mode === 'multiple') {
-      return handleSelectMultiple(value);
-    } else {
-      return handleSelectOne(value);
-    }
-  };
-
-  const handleSelectMultiple = (values) => {
-    if (!values) {
-      setValue(name, [], {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange([]);
-      return;
-    }
-
-    const newValue = values.map((value) =>
-      mapper.toValue(value),
-    );
-    setValue(name, newValue, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(newValue);
-  };
-
-  const handleSelectOne = (value) => {
-    if (!value) {
-      setValue(name, null, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-      props.onChange && props.onChange(null);
-      return;
-    }
-
-    const newValue = mapper.toValue(value);
-    setValue(name, newValue, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    props.onChange && props.onChange(newValue);
-  };
-
-  const handleSearch = async (value) => {
-    try {
-      const results = await fetchFn(
-        value,
-        AUTOCOMPLETE_SERVER_FETCH_SIZE,
-      );
-
-      return results.map((result) =>
-        mapper.toAutocomplete(result),
-      );
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
+  const handleSearch = useCallback(
+    async (value: any) => {
+      try {
+        const results = await fetchFn(value, AUTOCOMPLETE_SERVER_FETCH_SIZE);
+        return results.map((result: any) => mapper.toAutocomplete(result));
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
+    },
+    [fetchFn, mapper],
+  );
 
   const errorMessage = FormErrors.errorMessage(
     name,
@@ -143,24 +127,22 @@ function AutocompleteFormItem(props) {
     externalErrorMessage,
   );
 
-  const isInvalid = Boolean(errorMessage);
-
-  const controlStyles = selectControlStyles(
-    isDarkMode,
-    Boolean(errorMessage),
+  const controlStyles = useMemo(
+    () => selectControlStyles(isDarkMode, Boolean(errorMessage)),
+    [isDarkMode, errorMessage],
   );
+
+  const onOpenModal = useCallback(() => props.onOpenModal(), [props.onOpenModal]);
 
   return (
     <div>
       {Boolean(label) && (
         <label
-          className={`block text-sm text-gray-800 dark:text-gray-200`}
+          className="block text-sm text-gray-800 dark:text-gray-200"
           htmlFor={inputId}
         >
           {label}{' '}
-          {required ? (
-            <span className="text-sm text-red-400">*</span>
-          ) : null}
+          {required ? <span className="text-sm text-red-400">*</span> : null}
         </label>
       )}
       <div style={{ display: 'flex' }}>
@@ -170,7 +152,7 @@ function AutocompleteFormItem(props) {
           id={inputId}
           name={name}
           defaultOptions={true}
-          isMulti={mode === 'multiple' ? true : false}
+          isMulti={mode === 'multiple'}
           loadOptions={handleSearch}
           placeholder={placeholder || ''}
           autoFocus={autoFocus || undefined}
@@ -180,19 +162,15 @@ function AutocompleteFormItem(props) {
           }}
           value={value()}
           isClearable={isClearable}
-          loadingMessage={() =>
-            i18n('autocomplete.loading')
-          }
-          noOptionsMessage={() =>
-            i18n('autocomplete.noOptions')
-          }
+          loadingMessage={() => i18n('autocomplete.loading')}
+          noOptionsMessage={() => i18n('autocomplete.noOptions')}
         />
 
         {props.showCreate && props.hasPermissionToCreate ? (
           <button
             className="mt-2 ml-2 flex-shrink-0 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             type="button"
-            onClick={props.onOpenModal}
+            onClick={onOpenModal}
             style={{ height: 42 }}
           >
             <FontAwesomeIcon icon={faPlus} />
@@ -200,13 +178,9 @@ function AutocompleteFormItem(props) {
         ) : null}
       </div>
 
-      <div className="text-red-600 text-sm mt-2">
-        {errorMessage}
-      </div>
+      <div className="text-red-600 text-sm mt-2">{errorMessage}</div>
       {Boolean(hint) && (
-        <div className="text-gray-500 text-sm mt-2">
-          {hint}
-        </div>
+        <div className="text-gray-500 text-sm mt-2">{hint}</div>
       )}
     </div>
   );
@@ -234,4 +208,4 @@ AutocompleteFormItem.propTypes = {
   hasPermissionToCreate: PropTypes.bool,
 };
 
-export default AutocompleteFormItem;
+export default React.memo(AutocompleteFormItem); // Memoized for list usage

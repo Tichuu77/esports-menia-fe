@@ -9,7 +9,7 @@ import UserView from 'src/view/user/view/UserView';
 import UserViewToolbar from 'src/view/user/view/UserViewToolbar';
 import { useNavigate } from 'react-router-dom';
 
-function UserViewPage(props) {
+function UserViewPage() {
      const navigate = useNavigate();
   const dispatch = useDispatch();
   const {id} = useParams();

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state) => state.tenant.list;
+const selectRaw = (state:any) => state.tenant.list;
 
 const selectLoading = createSelector(
   [selectRaw],
@@ -92,7 +92,7 @@ const selectSelectedKeys = createSelector(
 const selectSelectedRows = createSelector(
   [selectRaw, selectRows],
   (raw, rows) => {
-    return rows.filter((row) =>
+    return rows.filter((row:any) =>
       raw.selectedKeys.includes(row.id),
     );
   },

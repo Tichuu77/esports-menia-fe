@@ -5,11 +5,11 @@ import Errors from 'src/modules/shared/error/errors';
 import Importer from 'src/modules/shared/importer/importer';
 
 async function importRow(
-  dispatch,
-  actions,
-  importer,
-  importFn,
-  row,
+  dispatch : any,
+  actions:any,
+  importer:any,
+  importFn:any,
+  row:any,
 ) {
   try {
     const importableRow = await importer.castForImport(row);
@@ -34,11 +34,11 @@ async function importRow(
 }
 
 export default (
-  prefix,
-  selectors,
-  importFn,
-  importFields,
-  templateFileName,
+  prefix:any,
+  selectors:any,
+  importFn:any,
+  importFields:any,
+  templateFileName :any,
   batchSize = 10,
 ) => {
   const actions = {
@@ -58,16 +58,16 @@ export default (
     IMPORT_BATCH_ERROR: `${prefix}_IMPORT_BATCH_ERROR`,
     IMPORT_BATCH_SUCCESS: `${prefix}_IMPORT_BATCH_SUCCESS`,
 
-    doChangePagination: (pagination) => ({
+    doChangePagination: (pagination:any) => ({
       type: actions.PAGINATION_CHANGED,
       payload: pagination,
     }),
 
     doChangeSort:
-      (rows, sorter) => async (dispatch, getState) => {
+      (rows:any, sorter:any) => async (dispatch:any) => {
         const { field, order } = sorter;
 
-        let sortFn = (a, b) =>
+        let sortFn = (a:any, b:any) =>
           (String(a[field]) || '').localeCompare(
             String(b[field]) || '',
           );
@@ -110,7 +110,7 @@ export default (
       };
     },
 
-    doImport: () => async (dispatch, getState) => {
+    doImport: () => async (dispatch:any, getState:any) => {
       try {
         dispatch({
           type: actions.IMPORT_STARTED,
@@ -159,12 +159,12 @@ export default (
       }
     },
 
-    doDownloadTemplate: () => async (dispatch) => {
+    doDownloadTemplate: () => async ( ) => {
       const importer = new Importer(importFields);
       importer.downloadTemplate(templateFileName);
     },
 
-    doReadFile: (file) => async (dispatch) => {
+    doReadFile: (file:any) => async (dispatch:any) => {
       try {
         const importer = new Importer(importFields);
 

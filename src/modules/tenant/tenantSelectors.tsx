@@ -5,7 +5,7 @@ import Permissions from 'src/security/permissions';
 
 const selectPermissionToEdit = createSelector(
   [authSelectors.selectCurrentUser],
-  (currentUser) => (tenant) =>
+  (currentUser) => (tenant:any) =>
     new PermissionChecker(tenant, currentUser).match(
       Permissions.values.tenantEdit,
     ),
@@ -13,7 +13,7 @@ const selectPermissionToEdit = createSelector(
 
 const selectPermissionToDestroy = createSelector(
   [authSelectors.selectCurrentUser],
-  (currentUser) => (tenant) =>
+  (currentUser) => (tenant:any) =>
     new PermissionChecker(tenant, currentUser).match(
       Permissions.values.tenantDestroy,
     ),
@@ -21,13 +21,13 @@ const selectPermissionToDestroy = createSelector(
 
 const selectInvitationToken = createSelector(
   [authSelectors.selectCurrentUser],
-  (currentUser) => (tenant) => {
+  (currentUser) => (tenant:any) => {
     if (!currentUser || !currentUser.tenants) {
       return false;
     }
 
     const tenantUser = currentUser.tenants.find(
-      (tenantUser) =>
+      (tenantUser:any) =>
         tenantUser.tenant.id === tenant.id &&
         tenantUser.status === 'invited',
     );

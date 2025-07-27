@@ -31,7 +31,7 @@ const schema = yup.object().shape({
   ),
 });
 
-function SettingsForm(props) {
+function SettingsForm(props:any) {
   const dispatch = useDispatch();
 
   const saveLoading = useSelector(
@@ -50,8 +50,8 @@ function SettingsForm(props) {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (values) => {
-    dispatch(actions.doSave(values));
+  const onSubmit = (values:any) => {
+    dispatch(actions.doSave(values) as any);
   };
 
   const onReset = () => {

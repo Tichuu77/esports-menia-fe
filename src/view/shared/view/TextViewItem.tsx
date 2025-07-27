@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function TextViewItem(props) {
+function TextViewItem(props:any) {
   if (
     !props.value &&
     props.value !== 0 &&

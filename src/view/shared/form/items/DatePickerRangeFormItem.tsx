@@ -1,9 +1,8 @@
-import { useEffect, useId } from 'react';
+import React, { useEffect, useId, useCallback, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
-import "react-datepicker/dist/react-datepicker.css";
-
+import 'react-datepicker/dist/react-datepicker.css';
 
 type DatePickerRangeFormItemProps = {
   name: string;
@@ -44,7 +43,7 @@ const DatePickerRangeFormItem: React.FC<DatePickerRangeFormItemProps> = ({
     errors,
     touchedFields,
     isSubmitted,
-    externalErrorMessage,
+    externalErrorMessage as any,
   );
 
   const originalValue = watch(name) as [Date | null, Date | null] | undefined;
@@ -53,20 +52,49 @@ const DatePickerRangeFormItem: React.FC<DatePickerRangeFormItemProps> = ({
     register(name);
   }, [register, name]);
 
-  const startValue = () => (originalValue && Array.isArray(originalValue) ? originalValue[0] : null);
-  const endValue = () => (originalValue && Array.isArray(originalValue) ? originalValue[1] : null);
+  const startValue = useCallback(
+    () => (originalValue && Array.isArray(originalValue) ? originalValue[0] : null),
+    [originalValue],
+  );
 
-  const handleStartChanged = (value: Date | null) => {
-    const newRange: [Date | null, Date | null] = [value, endValue()];
-    setValue(name, newRange, { shouldValidate: true, shouldDirty: true });
-    onChange?.(newRange);
-  };
+  const endValue = useCallback(
+    () => (originalValue && Array.isArray(originalValue) ? originalValue[1] : null),
+    [originalValue],
+  );
 
-  const handleEndChanged = (value: Date | null) => {
-    const newRange: [Date | null, Date | null] = [startValue(), value];
-    setValue(name, newRange, { shouldValidate: true, shouldDirty: true });
-    onChange?.(newRange);
-  };
+  const handleStartChanged = useCallback(
+    (value: Date | null) => {
+      const newRange: [Date | null, Date | null] = [value, endValue()];
+      setValue(name, newRange, { shouldValidate: true, shouldDirty: true });
+      onChange?.(newRange);
+    },
+    [setValue, name, endValue, onChange],
+  );
+
+  const handleEndChanged = useCallback(
+    (value: Date | null) => {
+      const newRange: [Date | null, Date | null] = [startValue(), value];
+      setValue(name, newRange, { shouldValidate: true, shouldDirty: true });
+      onChange?.(newRange);
+    },
+    [setValue, name, startValue, onChange],
+  );
+
+  const startClassName = useMemo(
+    () =>
+      `block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
+        errorMessage ? 'border-red-400 text-red-600' : ''
+      }`,
+    [errorMessage],
+  );
+
+  const endClassName = useMemo(
+    () =>
+      `block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring ${
+        errorMessage ? 'border-red-400 text-red-600' : ''
+      }`,
+    [errorMessage],
+  );
 
   return (
     <div className="w-full">
@@ -84,19 +112,18 @@ const DatePickerRangeFormItem: React.FC<DatePickerRangeFormItemProps> = ({
         <DatePicker
           id={`${inputId}Start`}
           selected={startValue()}
-          onChange={(value) => handleStartChanged(value as Date | null)}
-          onBlur={(event) => onBlur?.(event)}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${errorMessage ? 'border-red-400 text-red-600' : ''
-            }`}
+          onChange={handleStartChanged}
+          onBlur={(event) => onBlur?.(event as any)}
+          className={startClassName}
           showTimeInput={showTimeInput}
           placeholderText={placeholder || ''}
           autoFocus={autoFocus}
           autoComplete="off"
           dateFormat={showTimeInput ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'}
           timeIntervals={15}
-          withPortal  // ✅ Makes it mobile-friendly
+          withPortal
           popperClassName="z-[9999]"
-          popperContainer={(popper) => <div className="z-[9999]">{popper}</div>}
+          popperContainer={(popper) => <div className="z-[9999]">{popper as any}</div>}
         />
 
         <div className="text-gray-300 mx-2">~</div>
@@ -105,19 +132,18 @@ const DatePickerRangeFormItem: React.FC<DatePickerRangeFormItemProps> = ({
         <DatePicker
           id={`${inputId}End`}
           selected={endValue()}
-          onChange={(value) => handleEndChanged(value as Date | null)}
-          onBlur={(event) => onBlur?.(event)}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring ${errorMessage ? 'border-red-400 text-red-600' : ''
-            }`}
+          onChange={handleEndChanged}
+          onBlur={(event) => onBlur?.(event as any)}
+          className={endClassName}
           showTimeInput={showTimeInput}
           placeholderText={placeholder || ''}
           autoFocus={autoFocus}
           autoComplete="off"
           dateFormat={showTimeInput ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'}
           timeIntervals={15}
-          withPortal // ✅ Makes it mobile-friendly
+          withPortal
           popperClassName="z-[9999]"
-          popperContainer={(popper) => <div className="z-[9999]">{popper}</div>}
+          popperContainer={(popper) => <div className="z-[9999]">{popper as any}</div>}
         />
       </div>
 
@@ -127,4 +153,4 @@ const DatePickerRangeFormItem: React.FC<DatePickerRangeFormItemProps> = ({
   );
 };
 
-export default DatePickerRangeFormItem;
+export default React.memo(DatePickerRangeFormItem); // Memoized for list usage

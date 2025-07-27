@@ -2,7 +2,7 @@ import truncate from 'lodash/truncate';
 import PropTypes from 'prop-types';
 import FilesUploader from 'src/view/shared/uploaders/FilesUploader';
 
-function FilesListView(props) {
+function FilesListView(props:any) {
   const valueAsArray = () => {
     const { value } = props;
 

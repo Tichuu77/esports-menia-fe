@@ -47,7 +47,7 @@ const schema = tenantSubdomain.isEnabled
   ? schemaWithUrl
   : schemaWithoutUrl;
 
-function TenantForm(props) {
+function TenantForm(props:any) {
   const { saveLoading } = props;
 
   const [initialValues] = useState(
@@ -60,7 +60,7 @@ function TenantForm(props) {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values:any) => {
     const { ...data } = values;
     props.onSubmit(props.record?.id, data);
   };

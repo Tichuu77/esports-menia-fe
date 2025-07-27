@@ -7,10 +7,10 @@ class Roles {
       user: 'user',
       owner: 'owner',
       host: 'host',
-    };
+    } as any;
   }
 
-  static labelOf(roleId) {
+  static labelOf(roleId:string) {
     if (!this.values[roleId]) {
       return roleId;
     }
@@ -18,7 +18,7 @@ class Roles {
     return i18n(`roles.${roleId}.label`);
   }
 
-  static descriptionOf(roleId) {
+  static descriptionOf(roleId:string) {
     if (!this.values[roleId]) {
       return roleId;
     }

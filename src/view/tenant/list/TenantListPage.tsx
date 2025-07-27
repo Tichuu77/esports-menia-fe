@@ -3,7 +3,7 @@ import TenantListFilter from 'src/view/tenant/list/TenantListFilter';
 import TenantListTable from 'src/view/tenant/list/TenantListTable';
 import TenantListToolbar from 'src/view/tenant/list/TenantListToolbar';
 
-function TenantListPage(props) {
+function TenantListPage( ) {
   return (
     <>
       <div className="p-6 bg-white dark:bg-gray-800 dark:border-gray-800 text-gray-900 dark:text-gray-200 border-gray-200 border rounded-md">

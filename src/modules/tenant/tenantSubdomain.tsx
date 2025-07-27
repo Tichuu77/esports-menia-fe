@@ -45,15 +45,15 @@ export const tenantSubdomain = {
     return subdomain;
   },
 
-  fullTenantUrl(tenantUrl) {
+  fullTenantUrl(tenantUrl:string) {
     return `${config.frontendUrl.protocol}://${tenantUrl}.${config.frontendUrl.host}`;
   },
 
-  isSubdomainOf(tenantUrl) {
+  isSubdomainOf(tenantUrl:string) {
     return this.fromLocationHref() === tenantUrl;
   },
 
-  redirectAuthenticatedTo(tenantUrl) {
+  redirectAuthenticatedTo(tenantUrl:string) {
     if (this.isSubdomainOf(tenantUrl)) {
       return;
     }
@@ -63,7 +63,7 @@ export const tenantSubdomain = {
     // Clean the AuthToken of the Root Domain
     // to not redirect every time
     if (this.isRootDomain) {
-      AuthToken.set(null, true);
+      AuthToken.set('', true);
     }
 
     window.location.href = `${this.fullTenantUrl(

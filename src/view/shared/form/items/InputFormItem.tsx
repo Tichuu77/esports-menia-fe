@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-export function InputFormItem(props) {
+export function InputFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -136,4 +136,4 @@ InputFormItem.propTypes = {
   onChange: PropTypes.any,
 };
 
-export default InputFormItem;
+export default React.memo(InputFormItem);

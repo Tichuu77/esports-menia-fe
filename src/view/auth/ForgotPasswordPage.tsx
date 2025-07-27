@@ -29,7 +29,7 @@ function ForgotPasswordPage() {
   );
   const logoUrl = useSelector(selectors.selectLogoUrl);
 
-  const [initialValues] = useState(() => ({ email: '' }));
+  let [initialValues]:any = useState(() => ({ email: '' }));
 
   const form = useForm({
     resolver: yupResolver(schema),
@@ -37,10 +37,10 @@ function ForgotPasswordPage() {
     defaultValues: initialValues,
   });
 
-  const onSubmit = async ({ email }) => {
-    await dispatch(actions.doSendPasswordResetEmail(email));
+  const onSubmit = async ({ email } : any) => {
+    await dispatch(actions.doSendPasswordResetEmail(email) as any);
     Object.keys(initialValues).forEach((key: any) => {
-      form.setValue(key, initialValues[key]);
+      form.setValue(key, initialValues[key] );
     });
   };
 

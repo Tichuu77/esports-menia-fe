@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PasswordChangeForm from 'src/view/auth/PasswordChangeForm';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 
-function PasswordChangeFormPage(props) {
+function PasswordChangeFormPage( ) {
    const navigate = useNavigate();
   return (
     <>

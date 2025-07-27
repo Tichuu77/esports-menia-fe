@@ -1,7 +1,7 @@
 import { tenantSubdomain } from '../tenant/tenantSubdomain';
 
 export default class AuthCurrentTenant {
-  static selectAndSaveOnStorageFor(currentUser) {
+  static selectAndSaveOnStorageFor(currentUser:any) {
     if (!currentUser) {
       return null;
     }
@@ -11,7 +11,7 @@ export default class AuthCurrentTenant {
     }
 
     const activeTenants = currentUser.tenants.filter(
-      (tenantUser) => tenantUser.status === 'active',
+      (tenantUser:any) => tenantUser.status === 'active',
     );
 
     if (!activeTenants || !activeTenants.length) {
@@ -24,8 +24,8 @@ export default class AuthCurrentTenant {
 
     if (tenantId) {
       tenant = activeTenants
-        .map((tenantUser) => tenantUser.tenant)
-        .find((tenant) => tenant.id === tenantId);
+        .map((tenantUser :any) => tenantUser.tenant)
+        .find((tenant:any) => tenant.id === tenantId);
     }
 
     tenant = tenant || activeTenants[0].tenant;
@@ -76,7 +76,7 @@ export default class AuthCurrentTenant {
     return null;
   }
 
-  static set(tenant) {
+  static set(tenant:any) {
     if (!tenant) {
       return this.clear();
     }

@@ -4,7 +4,7 @@ const initialData = {
   loading: false,
 };
 
-export default (state = initialData, { type, payload }) => {
+export default (state = initialData, { type, payload }:any) => {
   if (type === actions.DESTROY_STARTED) {
     return {
       ...state,

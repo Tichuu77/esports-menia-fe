@@ -5,7 +5,7 @@ import AuthCurrentTenant from './authCurrentTenant';
 import PermissionChecker from './permissionChecker';
 import Permissions from 'src/security/permissions';
 
-const selectRaw = (state) => state.auth;
+const selectRaw = (state:any) => state.auth;
 
 const selectAuthenticationUser = createSelector(
   [selectRaw],
@@ -53,7 +53,7 @@ const selectRoles = createSelector(
     }
 
     const tenantUser = currentUser.tenants.find(
-      (userTenant) =>
+      (userTenant:any) =>
         userTenant.tenant.id === currentTenant.id,
     );
 
@@ -158,9 +158,9 @@ const selectInvitedTenants = createSelector(
 
     return currentUser.tenants
       .filter(
-        (tenantUser) => tenantUser.status === 'invited',
+        (tenantUser:any) => tenantUser.status === 'invited',
       )
-      .map((tenantUser) => tenantUser.tenant);
+      .map((tenantUser:any) => tenantUser.tenant);
   },
 );
 
@@ -276,6 +276,17 @@ const selectPesmissionAccessUser= createSelector(
     )
 );
 
+const selectPesmissionAccessAdmin= createSelector(
+  [
+    selectCurrentTenant,
+    selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.adminAccess,
+    )
+);
+
 
 const authSelectors = {
   selectLoadingPasswordResetEmail,
@@ -306,7 +317,8 @@ const authSelectors = {
   selectPermissionToAccess,
   selectPesmissionAccessOwner,
   selectPesmissionAccessUser,
-  selectPesmissionAccessHost
+  selectPesmissionAccessHost,
+  selectPesmissionAccessAdmin
 };
 
 export default authSelectors;

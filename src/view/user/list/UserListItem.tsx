@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import selectors from 'src/modules/user/userSelectors';
 
-function UserListItem(props) {
+function UserListItem(props:any) {
   const hasPermissionToRead = useSelector(
     selectors.selectPermissionToRead,
   );
@@ -22,7 +22,7 @@ function UserListItem(props) {
     return [value];
   };
 
-  const label = (record) => {
+  const label = (record:any) => {
     if (!record) {
       return null;
     }
@@ -34,7 +34,7 @@ function UserListItem(props) {
     return `${record.fullName} <${record.email}>`;
   };
 
-  const displayableRecord = (record) => {
+  const displayableRecord = (record:any) => {
     if (hasPermissionToRead) {
       return (
         <div key={record.id}>

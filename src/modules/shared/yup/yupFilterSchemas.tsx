@@ -3,10 +3,10 @@ import { i18n } from 'src/i18n';
 import * as yup from 'yup';
 
 const yupFilterSchemas = {
-  generic(label) {
+  generic(label:any) {
     return yup.mixed().label(label);
   },
-  string(label) {
+  string(label:any) {
     return yup
       .string()
       .transform((cv, ov) => {
@@ -16,7 +16,7 @@ const yupFilterSchemas = {
       .trim()
       .label(label);
   },
-  stringArray(label) {
+  stringArray(label:any) {
     let yupChain = yup
       .array()
       .compact()
@@ -44,13 +44,13 @@ const yupFilterSchemas = {
 
     return yupChain;
   },
-  boolean(label) {
-    return yup.bool().nullable(true).label(label);
+  boolean(label:any) {
+    return yup.bool().nullable().label(label);
   },
-  relationToOne(label) {
+  relationToOne(label:any) {
     return yup
       .mixed()
-      .nullable()
+      .nullable(true)
       .label(label)
       .transform((value, originalValue) => {
         if (!originalValue) {
@@ -60,36 +60,36 @@ const yupFilterSchemas = {
         return originalValue.id;
       });
   },
-  relationToMany(label) {
+  relationToMany(label:any) {
     return yup
       .mixed()
-      .nullable()
+      .nullable(true)
       .label(label)
       .transform((value, originalValue) => {
         if (!originalValue || !originalValue.length) {
           return [];
         }
 
-        return originalValue.map((item) => item.id);
+        return originalValue.map((item:any) => item.id);
       });
   },
-  json(label) {
+  json(label:any) {
     return yup.mixed().nullable().label(label);
   },
-  integer(label) {
+  integer(label:any) {
     return yup
       .number()
       .transform((cv, ov) => {
         return ov === '' ? null : cv;
       })
-      .integer()
-      .nullable(true)
+      .integer(true)
+      .nullable()
       .label(label);
   },
-  integerRange(label) {
+  integerRange(label:any) {
     return yup.mixed().label(label);
   },
-  enumerator(label) {
+  enumerator(label:any) {
     return yup
       .string()
       .transform((cv, ov) => {
@@ -98,7 +98,7 @@ const yupFilterSchemas = {
       .label(label)
       .nullable(true);
   },
-  email(label) {
+  email(label:any) {
     return yup
       .string()
       .transform((cv, ov) => {
@@ -108,7 +108,7 @@ const yupFilterSchemas = {
       .trim()
       .label(label);
   },
-  decimal(label) {
+  decimal(label:any) {
     let yupChain = yup
       .number()
       .transform((cv, ov) => {
@@ -119,7 +119,7 @@ const yupFilterSchemas = {
 
     return yupChain;
   },
-  decimalRange(label) {
+  decimalRange(label:any) {
     return yup
       .array()
       .ensure()
@@ -135,7 +135,7 @@ const yupFilterSchemas = {
       )
       .label(label);
   },
-  datetime(label) {
+  datetime(label:any) {
     let yupChain = yup
       .mixed()
       .nullable(true)
@@ -151,10 +151,10 @@ const yupFilterSchemas = {
 
     return yupChain;
   },
-  datetimeRange(label) {
+  datetimeRange(label:any) {
     return yup.mixed().label(label);
   },
-  date(label) {
+  date(label:any) {
     return yup
       .mixed()
       .nullable(true)
@@ -171,7 +171,7 @@ const yupFilterSchemas = {
         },
       );
   },
-  dateRange(label) {
+  dateRange(label:any) {
     return yup
       .array()
       .ensure()

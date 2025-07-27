@@ -7,8 +7,9 @@ import selectors from 'src/modules/user/form/userFormSelectors';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 import Spinner from 'src/view/shared/Spinner';
 import UserEditForm from 'src/view/user/edit/UserEditForm';
+ 
 
-function UserEditPage(props) {
+function UserEditPage( ) {
 
   useEffect(() => {
     console.log('UserEditPage component mounted');
@@ -31,7 +32,7 @@ function UserEditPage(props) {
   const {id} = useParams();
 
   useEffect(() => {
-    dispatch(actions.doInit(id,navigate));
+    dispatch(actions.doInit(id as string,navigate as any)as any);
     setDispatched(true);
   }, [dispatch, id]);
 

@@ -24,7 +24,7 @@ const tenantFormActions = {
   UPDATE_SUCCESS: `${prefix}_UPDATE_SUCCESS`,
   UPDATE_ERROR: `${prefix}_UPDATE_ERROR`,
 
-  doInit: (id) => async (dispatch) => {
+  doInit: (id:string) => async (dispatch:any) => {
       const navigate = useNavigate();
     try {
       dispatch({
@@ -54,7 +54,7 @@ const tenantFormActions = {
     }
   },
 
-  doCreate: (values) => async (dispatch) => {
+  doCreate: (values:any) => async (dispatch:any) => {
     try {
       dispatch({
         type: tenantFormActions.CREATE_STARTED,
@@ -75,7 +75,7 @@ const tenantFormActions = {
     }
   },
 
-  doUpdate: (id, values) => async (dispatch, getState) => {
+  doUpdate: (id:string, values:any) => async (dispatch:any) => {
     try {
       dispatch({
         type: tenantFormActions.UPDATE_STARTED,

@@ -7,7 +7,7 @@ export const EXCEL_TYPE_WITH_CHARSET = `${EXCEL_TYPE};charset=UTF-8`;
 export const EXCEL_EXTENSION = '.xlsx';
 
 export class Excel {
-  static exportAsExcelFile(json, header, fileName) {
+  static exportAsExcelFile(json:any, header:any, fileName:any) {
     let worksheet = XLSX.utils.json_to_sheet(json, {
       header,
       skipHeader: false,
@@ -26,7 +26,7 @@ export class Excel {
     this.saveAsExcelFile(excelBuffer, fileName);
   }
 
-  static saveAsExcelFile(buffer, fileName) {
+  static saveAsExcelFile(buffer:any, fileName:any) {
     const data = new Blob([buffer], {
       type: EXCEL_TYPE_WITH_CHARSET,
     });

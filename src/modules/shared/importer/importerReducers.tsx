@@ -2,7 +2,7 @@ import statuses from 'src/modules/shared/importer/importerStatuses';
 
 const INITIAL_PAGE_SIZE = 10;
 
-export default (actions) => {
+export default (actions:any) => {
   const initialData = {
     rows: [] as Array<any>,
     errorMessage: null,
@@ -15,7 +15,7 @@ export default (actions) => {
     sorter: {},
   };
 
-  return (state = initialData, { type, payload }) => {
+  return (state = initialData, { type, payload }:any) => {
     if (type === actions.RESETED) {
       return {
         ...initialData,

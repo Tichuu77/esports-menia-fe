@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function InputRangeFormItem(props) {
+function InputRangeFormItem(props:any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -39,7 +39,7 @@ function InputRangeFormItem(props) {
     register(name);
   }, [register, name]);
 
-  const handleStartChanged = (value) => {
+  const handleStartChanged = (value:any) => {
     setValue(name, [value, endValue()], {
       shouldValidate: true,
       shouldDirty: true,
@@ -47,7 +47,7 @@ function InputRangeFormItem(props) {
     props.onChange && props.onChange([value, endValue()]);
   };
 
-  const handleEndChanged = (value) => {
+  const handleEndChanged = (value:any) => {
     setValue(name, [startValue(), value], {
       shouldValidate: true,
       shouldDirty: true,

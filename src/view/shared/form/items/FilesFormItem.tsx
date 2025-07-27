@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import FilesUploader from 'src/view/shared/uploaders/FilesUploader';
 
-function FilesFormItem(props) {
+function FilesFormItem(props:any) {
   const {
     label,
     name,
@@ -52,7 +52,7 @@ function FilesFormItem(props) {
         storage={storage}
         formats={formats}
         value={watch(name)}
-        onChange={(value) => {
+        onChange={(value:any) => {
           setValue(name, value, {
             shouldValidate: true,
             shouldDirty: true,
@@ -91,4 +91,4 @@ FilesFormItem.propTypes = {
   max: PropTypes.number,
 };
 
-export default FilesFormItem;
+export default React.memo(FilesFormItem);

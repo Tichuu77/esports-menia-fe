@@ -1,4 +1,4 @@
 export default class {
-  static error(message) {}
-  static success(message) {}
+  static error(message:string) {}
+  static success(message:string) {}
 }

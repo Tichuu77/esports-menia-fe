@@ -1,7 +1,6 @@
 import {
   faBars,
   faLock,
-  faMoon,
   faSignOutAlt,
   faThLarge,
   faUser,
@@ -22,7 +21,7 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const darkMode = useSelector(layoutSelectors.selectDarkMode);
+   
   const userText = useSelector(authSelectors.selectCurrentUserNameOrEmailPrefix);
   const userAvatar = useSelector(authSelectors.selectCurrentUserAvatar);
   const currentTenant = useSelector(authSelectors.selectCurrentTenant);
@@ -31,7 +30,7 @@ function Header() {
 
 
   const doToggleMenu = () => dispatch(layoutActions.doToggleMenu());
-  const doSignout = () => dispatch(authActions.doSignout());
+  const doSignout = () => dispatch(authActions.doSignout() as any);
 
   const doNavigateToProfile = () => navigate('/profile');
   const doNavigateToPasswordChange = () => navigate('/password-change');

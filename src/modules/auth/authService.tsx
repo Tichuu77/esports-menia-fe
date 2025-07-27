@@ -77,7 +77,7 @@ export default class AuthService {
   }
 
   static signout() {
-    AuthToken.set(null, true);
+    AuthToken.set('', true);
   }
 
   static async updateProfile(data : any) {

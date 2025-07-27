@@ -6,7 +6,7 @@ import ImagesViewItem from 'src/view/shared/view/ImagesViewItem';
 import TextViewItem from 'src/view/shared/view/TextViewItem';
 import UserStatusView from 'src/view/user/view/UserStatusView';
 
-function UserView(props) {
+function UserView(props:any) {
   const { user, loading } = props;
 
   if (loading || !user) {
@@ -41,8 +41,8 @@ function UserView(props) {
       <CustomViewItem
         label={i18n('user.fields.roles')}
         value={user.roles}
-        render={(value) =>
-          value.map((roleId) => (
+        render={(value:any) =>
+          value.map((roleId:any) => (
             <div key={roleId}>
               <span>{Roles.labelOf(roleId)}</span>
             </div>
@@ -53,7 +53,7 @@ function UserView(props) {
       <CustomViewItem
         label={i18n('user.fields.status')}
         value={user.status}
-        render={(value) => <UserStatusView value={value} />}
+        render={(value:any) => <UserStatusView value={value} />}
       />
     </div>
   );

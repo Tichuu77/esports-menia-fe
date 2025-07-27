@@ -6,7 +6,7 @@ import authAxios from 'src/modules/shared/axios/authAxios';
 import { v4 as uuid } from 'uuid';
 
 export default class FileUploader {
-  static validate(file, config) {
+  static validate(file:any, config:any) {
     if (!config) {
       return;
     }
@@ -44,7 +44,7 @@ export default class FileUploader {
     }
   }
 
-  static async upload(file, config) {
+  static async upload(file:any, config:any) {
     try {
       this.validate(file, config);
     } catch (error) {
@@ -74,7 +74,7 @@ export default class FileUploader {
     };
   }
 
-  static async fetchFileCredentials(filename, config) {
+  static async fetchFileCredentials(filename:any, config:any) {
     const tenantId = AuthCurrentTenant.get();
 
     const { data } = await authAxios.get(
@@ -90,7 +90,7 @@ export default class FileUploader {
     return data;
   }
 
-  static async uploadToServer(file, uploadCredentials) {
+  static async uploadToServer(file:any, uploadCredentials:any) {
     try {
       const url = uploadCredentials.url;
       const formData = new FormData();
@@ -117,7 +117,7 @@ export default class FileUploader {
   }
 }
 
-function extractExtensionFrom(filename) {
+function extractExtensionFrom(filename:any) {
   if (!filename) {
     return null;
   }

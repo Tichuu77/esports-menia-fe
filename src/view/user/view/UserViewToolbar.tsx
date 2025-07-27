@@ -11,7 +11,7 @@ import auditLogSelectors from 'src/modules/auditLog/auditLogSelectors';
 import userSelectors from 'src/modules/user/userSelectors';
 import selectors from 'src/modules/user/view/userViewSelectors';
 
-function UserViewToolbar(props) {
+function UserViewToolbar(props:any) {
   const { id } = props;
 
   const user = useSelector(selectors.selectUser);

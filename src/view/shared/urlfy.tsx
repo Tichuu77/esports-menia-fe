@@ -1,4 +1,4 @@
-export function urlfy(text) {
+export function urlfy(text:any) {
   return text
     .toString()
     .normalize('NFD') // split an accented letter in the base letter and the acent

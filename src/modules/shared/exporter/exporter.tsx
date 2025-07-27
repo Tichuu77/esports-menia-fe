@@ -6,13 +6,13 @@ export default class Exporter {
   schema: ExporterSchema;
   excelFileName: string;
 
-  constructor(fields, excelFileName) {
+  constructor(fields:any, excelFileName:any) {
     this.schema = new ExporterSchema(fields);
     this.excelFileName = excelFileName;
   }
 
-  transformAndExportAsExcelFile(rows) {
-    const exportableData = rows.map((row) => {
+  transformAndExportAsExcelFile(rows:any) {
+    const exportableData = rows.map((row:any) => {
       const rowCasted = this.schema.cast(row);
       return this._makeNameHeadersIntoLabels(rowCasted);
     });
@@ -24,7 +24,7 @@ export default class Exporter {
     );
   }
 
-  _makeNameHeadersIntoLabels(row) {
+  _makeNameHeadersIntoLabels(row:any) {
     return mapKeys(row, (value, key) => {
       return this.schema.labelOf(key);
     });

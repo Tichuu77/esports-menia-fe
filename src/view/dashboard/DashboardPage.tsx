@@ -8,7 +8,7 @@ import DashboardMixChartTwo from 'src/view/dashboard/DashboardMixChartTwo';
 import DashboardPolarChart from 'src/view/dashboard/DashboardPolarChart';
 import DashboardRadarChart from 'src/view/dashboard/DashboardRadarChart';
 
-const DashboardPage = (props) => {
+const DashboardPage = ( ) => {
   return (
     <>
       <div>

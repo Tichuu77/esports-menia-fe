@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import queryString from 'query-string';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -12,29 +12,20 @@ import InputFormItem from 'src/view/shared/form/items/InputFormItem';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-  password: yupFormSchemas.string(
-    i18n('user.fields.password'),
-    {
-      required: true,
-    },
-  ),
+  password: yupFormSchemas.string(i18n('user.fields.password'), { required: true }),
 });
+
+const initialValues = { password: '' };
 
 function PasswordResetPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const token = queryString.parse(location.search).token;
-
-  const backgroundImageUrl = useSelector(
-    selectors.selectBackgroundImageUrl,
-  );
+  const token = useMemo(() => queryString.parse(location.search).token, [location.search]);
+  const backgroundImageUrl = useSelector(selectors.selectBackgroundImageUrl);
   const logoUrl = useSelector(selectors.selectLogoUrl);
-
-  const [initialValues] = useState({
-    password: '',
-  });
+  const loading = useSelector(selectors.selectLoadingPasswordReset);
 
   const form = useForm({
     resolver: yupResolver(schema),
@@ -42,20 +33,14 @@ function PasswordResetPage() {
     defaultValues: initialValues,
   });
 
-  const loading = useSelector(
-    selectors.selectLoadingPasswordReset,
-  );
-
-  const onSubmit = async ({ password } : any) => {
-    dispatch(actions.doResetPassword(token, password,navigate) as any);
+  const onSubmit = ({ password }: any) => {
+    dispatch(actions.doResetPassword(token as string, password, navigate) as any);
   };
 
   return (
     <div
       style={{
-        backgroundImage: `url(${
-          backgroundImageUrl || '/images/forgotPassword.jpg'
-        })`,
+        backgroundImage: `url(${backgroundImageUrl || '/images/forgotPassword.jpg'})`,
       }}
       className="bg-cover h-screen flex items-center justify-center"
     >
@@ -63,11 +48,7 @@ function PasswordResetPage() {
         <div className="p-6">
           <div className="w-full flex justify-center items-center">
             {logoUrl ? (
-              <img
-                src={logoUrl}
-                className="w-72 max-h-14 object-cover"
-                alt={i18n('app.title')}
-              />
+              <img src={logoUrl} className="w-72 max-h-14 object-cover" alt={i18n('app.title')} />
             ) : (
               <h1 className="text-3xl font-semibold text-center text-gray-700 dark:text-white">
                 {i18n('app.title')}
@@ -76,10 +57,7 @@ function PasswordResetPage() {
           </div>
 
           <FormProvider {...form}>
-            <form
-              className="mt-6"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
+            <form className="mt-6" onSubmit={form.handleSubmit(onSubmit)}>
               <InputFormItem
                 name="password"
                 placeholder={i18n('user.fields.password')}

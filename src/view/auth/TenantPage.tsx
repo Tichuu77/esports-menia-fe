@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/auth/authActions';
@@ -24,7 +24,7 @@ function TenantPage() {
   }, [invitedTenants]);
 
   const doSignout = () => {
-    dispatch(actions.doSignout());
+    dispatch(actions.doSignout() as any);
   };
 
   const doToggleView = () => {
@@ -79,4 +79,4 @@ function TenantPage() {
   );
 }
 
-export default TenantPage;
+export default React.memo(TenantPage);

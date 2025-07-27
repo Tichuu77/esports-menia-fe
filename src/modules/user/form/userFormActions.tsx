@@ -20,7 +20,7 @@ const userFormActions = {
   UPDATE_SUCCESS: `${prefix}_UPDATE_SUCCESS`,
   UPDATE_ERROR: `${prefix}_UPDATE_ERROR`,
 
-  doInit: (id,navigate) => async (dispatch) => {
+  doInit: (id:string,navigate:any) => async (dispatch:any) => {
     
     try {
        
@@ -52,7 +52,7 @@ const userFormActions = {
     }
   },
 
-  doAdd: (values,navigate) => async (dispatch) => {
+  doAdd: (values:any,navigate:any) => async (dispatch:any) => {
   
     try {
       dispatch({

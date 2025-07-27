@@ -2,14 +2,14 @@ import * as toastr from 'toastr';
 import 'toastr/build/toastr.css';
 
 export default class Message {
-  static success(arg) {
+  static success(arg:any) {
     toastr.options.toastClass = 'toastr';
     toastr.options.positionClass = 'toast-bottom-left';
 
     toastr.success(arg);
   }
 
-  static error(arg) {
+  static error(arg:any) {
     toastr.options.toastClass = 'toastr';
     toastr.options.positionClass = 'toast-bottom-left';
 

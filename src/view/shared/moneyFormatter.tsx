@@ -1,5 +1,5 @@
 export default function moneyFormatter(
-  amount,
+  amount:number,
   currency = 'USD',
 ) {
   const options = {
@@ -12,6 +12,6 @@ export default function moneyFormatter(
     options.minimumFractionDigits = 0;
   }
 
-  const formatter = new Intl.NumberFormat('en-US', options);
+  const formatter = new Intl.NumberFormat('en-US', options as any);
   return formatter.format(amount);
 }

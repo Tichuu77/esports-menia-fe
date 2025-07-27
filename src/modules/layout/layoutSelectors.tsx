@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state) => state.layout;
+const selectRaw = (state:any) => state.layout;
 
 const selectMenuVisible = createSelector(
   [selectRaw],

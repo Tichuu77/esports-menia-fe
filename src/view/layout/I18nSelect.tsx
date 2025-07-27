@@ -1,8 +1,8 @@
 import { getLanguageCode, getLanguages } from 'src/i18n';
 import actions from 'src/modules/layout/layoutActions';
 
-function I18nSelect(props) {
-  const doChangeLanguage = (language) => {
+function I18nSelect( ) {
+  const doChangeLanguage = (language:any) => {
     actions.doChangeLanguage(language);
   };
 

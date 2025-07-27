@@ -1,7 +1,8 @@
+import React, { useCallback, useMemo } from 'react';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/auditLog/auditLogActions';
 import selectors from 'src/modules/auditLog/auditLogSelectors';
@@ -9,46 +10,116 @@ import Spinner from 'src/view/shared/Spinner';
 import Pagination from 'src/view/shared/table/Pagination';
 import TableColumnHeader from 'src/view/shared/table/TableColumnHeader';
 
-function AuditLogTable(props) {
+type RowType = {
+  id: string;
+  timestamp: string | number | Date;
+  createdByEmail: string;
+  entityName: string;
+  action: string;
+  entityId: string;
+  values: unknown;
+};
+
+type Sorter = {
+  field: string;
+  order: 'ascend' | 'descend';
+};
+
+const AuditLogTableRow = React.memo(function AuditLogTableRow({
+  row,
+  formattedTimestamp,
+  onViewValues,
+}: {
+  row: RowType;
+  formattedTimestamp: string;
+  onViewValues: (values: unknown) => void;
+}) {
+  return (
+    <tr key={row.id}>
+      <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+        {formattedTimestamp}
+      </td>
+      <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+        {row.createdByEmail}
+      </td>
+      <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+        {row.entityName}
+      </td>
+      <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+        {row.action}
+      </td>
+      <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+        {row.entityId}
+      </td>
+      <td
+        align="right"
+        className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
+      >
+        <button
+          type="button"
+          className="w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+          onClick={() => onViewValues(row.values)}
+          title={i18n('common.view')}
+        >
+          <FontAwesomeIcon icon={faSearch} />
+        </button>
+      </td>
+    </tr>
+  );
+});
+
+function AuditLogTable() {
   const dispatch = useDispatch();
 
-  const doOpenSelectdValues = (values) => {
+  const loading = useSelector(selectors.selectLoading);
+  const rows = useSelector(selectors.selectRows, shallowEqual) as RowType[];
+  const pagination = useSelector(selectors.selectPagination, shallowEqual);
+  const hasRows = useSelector(selectors.selectHasRows);
+  const sorter = useSelector(selectors.selectSorter, shallowEqual) as Sorter;
+
+  const doOpenSelectedValues = useCallback((values: unknown) => {
     const data = JSON.stringify(values, null, 2);
     const jsonWindow = window.open(
       '',
       '_blank',
       'toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400',
     );
-    (jsonWindow as any).document.write(
-      `<pre>${data}</pre>`,
-    );
-  };
+    jsonWindow?.document.write(`<pre>${data}</pre>`);
+  }, []);
 
-  const doChangeSort = (field) => {
-    const order =
-      sorter.field === field && sorter.order === 'ascend'
-        ? 'descend'
-        : 'ascend';
+  const doChangeSort = useCallback(
+    (field: string) => {
+      const order =
+        sorter.field === field && sorter.order === 'ascend'
+          ? 'descend'
+          : 'ascend';
 
-    dispatch(
-      actions.doChangeSort({
-        field,
-        order,
-      }),
-    );
-  };
-
-  const doChangePagination = (pagination) => {
-    dispatch(actions.doChangePagination(pagination));
-  };
-
-  const loading = useSelector(selectors.selectLoading);
-  const rows = useSelector(selectors.selectRows);
-  const pagination = useSelector(
-    selectors.selectPagination,
+      dispatch(
+        actions.doChangeSort({
+          field,
+          order,
+        }) as any,
+      );
+    },
+    [dispatch, sorter.field, sorter.order],
   );
-  const hasRows = useSelector(selectors.selectHasRows);
-  const sorter = useSelector(selectors.selectSorter);
+
+  const doChangePagination = useCallback(
+    (p: any) => {
+      dispatch(actions.doChangePagination(p) as any);
+    },
+    [dispatch],
+  );
+
+  // Pre-format timestamps once
+  const rowsWithFormattedTs = useMemo(
+    () =>
+      rows.map((r) => ({
+        row: r,
+        formatted: moment(r.timestamp).format('YYYY-MM-DD HH:mm'),
+      })),
+    [rows],
+  );
 
   return (
     <>
@@ -60,42 +131,41 @@ function AuditLogTable(props) {
                 onSort={doChangeSort}
                 hasRows={hasRows}
                 sorter={sorter}
-                name={'timestamp'}
+                name="timestamp"
                 label={i18n('auditLog.fields.timestamp')}
               />
               <TableColumnHeader
                 onSort={doChangeSort}
                 hasRows={hasRows}
                 sorter={sorter}
-                name={'createdByEmail'}
-                label={i18n(
-                  'auditLog.fields.createdByEmail',
-                )}
+                name="createdByEmail"
+                label={i18n('auditLog.fields.createdByEmail')}
               />
               <TableColumnHeader
                 onSort={doChangeSort}
                 hasRows={hasRows}
                 sorter={sorter}
-                name={'entityName'}
+                name="entityName"
                 label={i18n('auditLog.fields.entityName')}
               />
               <TableColumnHeader
                 onSort={doChangeSort}
                 hasRows={hasRows}
                 sorter={sorter}
-                name={'action'}
+                name="action"
                 label={i18n('auditLog.fields.action')}
               />
               <TableColumnHeader
                 onSort={doChangeSort}
                 hasRows={hasRows}
                 sorter={sorter}
-                name={'entityId'}
+                name="entityId"
                 label={i18n('auditLog.fields.entityId')}
               />
               <TableColumnHeader className="th-actions-sm" />
             </tr>
           </thead>
+
           <tbody className="dark:bg-gray-600">
             {loading && (
               <tr>
@@ -104,6 +174,7 @@ function AuditLogTable(props) {
                 </td>
               </tr>
             )}
+
             {!loading && !hasRows && (
               <tr>
                 <td colSpan={100}>
@@ -113,42 +184,15 @@ function AuditLogTable(props) {
                 </td>
               </tr>
             )}
+
             {!loading &&
-              rows.map((row) => (
-                <tr key={row.id}>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {moment(row.timestamp).format(
-                      'YYYY-MM-DD HH:mm',
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.createdByEmail}
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.entityName}
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.action}
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.entityId}
-                  </td>
-                  <td
-                    align="right"
-                    className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
-                  >
-                    <button
-                      type="button"
-                      className="w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
-                      onClick={() =>
-                        doOpenSelectdValues(row.values)
-                      }
-                      title={i18n('common.view')}
-                    >
-                      <FontAwesomeIcon icon={faSearch} />
-                    </button>
-                  </td>
-                </tr>
+              rowsWithFormattedTs.map(({ row, formatted }) => (
+                <AuditLogTableRow
+                  key={row.id}
+                  row={row}
+                  formattedTimestamp={formatted}
+                  onViewValues={doOpenSelectedValues}
+                />
               ))}
           </tbody>
         </table>
@@ -163,4 +207,4 @@ function AuditLogTable(props) {
   );
 }
 
-export default AuditLogTable;
+export default React.memo(AuditLogTable);

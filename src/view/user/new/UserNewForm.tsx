@@ -46,7 +46,7 @@ const multipleSchema = yup.object().shape({
   ),
 });
 
-function UserNewForm(props) {
+function UserNewForm(props:any) {
   const { single, saveLoading } = props;
 
   const schema = props.single
@@ -57,15 +57,15 @@ function UserNewForm(props) {
     emails: [],
     email: '',
     roles: [],
-  }));
+  }as any));
 
   const form = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema as any),
     mode: 'all',
     defaultValues: initialValues,
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values:any) => {
     const { ...data } = values;
 
     if (data.email) {

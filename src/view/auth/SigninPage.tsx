@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import queryString from 'query-string';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -230,4 +230,4 @@ function SigninPage() {
   );
 }
 
-export default SigninPage;
+export default React.memo(SigninPage);
