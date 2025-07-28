@@ -1,5 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 const ConfirmModal = (props:any) => {
@@ -54,4 +55,4 @@ const ConfirmModal = (props:any) => {
   );
 };
 
-export default ConfirmModal;
+export default React.memo(ConfirmModal);

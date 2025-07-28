@@ -1,8 +1,5 @@
 import {
   faChevronRight,
-  //faCog,
-  //faCreditCard,
-  //faHistory,
   faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
 import { i18n } from 'src/i18n';
@@ -121,27 +118,5 @@ export const hostMenus= [
     permissionRequired: permissions.hostAccess,
     group: 'main',
   },
-  {
-    path: '/user',
-    label: i18n('user.menu'),
-    permissionRequired: null,
-    icon: faChevronRight,
-    group: 'administrator',
-  },
-
-  {
-    path: '/audit-logs',
-    icon: faChevronRight,
-    label: i18n('auditLog.menu'),
-    permissionRequired: null,
-    group: 'administrator',
-  },
   
-  {
-    path: '/settings',
-    icon: faChevronRight,
-    label: i18n('settings.menu'),
-    permissionRequired: null,
-    group: 'administrator',
-  },
 ].filter(Boolean);

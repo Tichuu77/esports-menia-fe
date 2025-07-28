@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import Avatar from 'src/view/shared/Avatar';
 
 function ImagesListView(props:any) {
@@ -32,4 +33,4 @@ ImagesListView.propTypes = {
   value: PropTypes.any,
 };
 
-export default ImagesListView;
+export default React.memo(ImagesListView);

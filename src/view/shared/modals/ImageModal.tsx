@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
 
 const ImageModalWrapper = styled.div`
@@ -108,4 +109,4 @@ ImageModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default ImageModal;
+export default React.memo(ImageModal);

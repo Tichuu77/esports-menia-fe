@@ -13,7 +13,7 @@ export default function CustomLoadable({ loader }: LoadableOptions): React.FC {
   const LoadableWrapper: React.FC = (props) => (
     <React.Suspense fallback={<LoadingComponent />}>
       <LazyComponent {...props} />
-    </React..Suspense>
+    </React.Suspense>
   );
 
   return LoadableWrapper;

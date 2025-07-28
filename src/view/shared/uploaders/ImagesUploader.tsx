@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { i18n } from 'src/i18n';
 import Errors from 'src/modules/shared/error/errors';
 import FileUploader from 'src/modules/shared/fileUpload/fileUploader';
@@ -193,4 +193,4 @@ ImagesUploader.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default ImagesUploader;
+export default React.memo(ImagesUploader);

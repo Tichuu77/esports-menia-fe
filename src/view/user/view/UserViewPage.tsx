@@ -18,7 +18,7 @@ function UserViewPage() {
   const user = useSelector(selectors.selectUser);
 
   useEffect(() => {
-    dispatch(actions.doFind(id,navigate));
+    dispatch(actions.doFind(id as string,navigate) as any);
   }, [dispatch,id]);
 
   return (

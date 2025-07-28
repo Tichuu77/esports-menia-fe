@@ -47,7 +47,7 @@ const settingsActions = {
     }
   },
 
-  doSave: (values:any) => async (dispatch:any, getState:any) => {
+  doSave: (values:any) => async (dispatch:any ) => {
     try {
       dispatch({
         type: settingsActions.SAVE_STARTED,

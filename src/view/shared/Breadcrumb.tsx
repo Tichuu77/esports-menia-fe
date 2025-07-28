@@ -1,5 +1,6 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Breadcrumb(props:any) {
@@ -44,4 +45,4 @@ function Breadcrumb(props:any) {
   );
 }
 
-export default Breadcrumb;
+export default React.memo(Breadcrumb);

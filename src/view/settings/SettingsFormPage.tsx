@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/settings/settingsActions';
@@ -53,4 +53,4 @@ const SettingsFormPage = () => {
   );
 };
 
-export default SettingsFormPage;
+export default React.memo(SettingsFormPage);

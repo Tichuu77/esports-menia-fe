@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  useParams } from 'react-router-dom';
 import { i18n } from 'src/i18n';
@@ -31,15 +31,15 @@ function TenantFormPage() {
   );
 
   useEffect(() => {
-    dispatch(actions.doInit(id));
+    dispatch(actions.doInit(id as string)as any);
     setDispatched(true);
   }, [dispatch, id]);
 
-  const doSubmit = (id, data) => {
+  const doSubmit = (id:string, data:string) => {
     if (isEditing) {
-      dispatch(actions.doUpdate(id, data));
+      dispatch(actions.doUpdate(id, data)as any);
     } else {
-      dispatch(actions.doCreate(data));
+      dispatch(actions.doCreate(data)as any);
     }
   };
 
@@ -74,4 +74,4 @@ function TenantFormPage() {
   );
 }
 
-export default TenantFormPage;
+export default React.memo(TenantFormPage);

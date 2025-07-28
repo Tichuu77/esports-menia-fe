@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import ErrorWrapper from 'src/view/shared/errors/styles/ErrorWrapper';
@@ -33,4 +34,4 @@ const Error500Page = () => {
   );
 };
 
-export default Error500Page;
+export default React.memo(Error500Page);

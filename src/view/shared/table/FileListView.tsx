@@ -1,5 +1,6 @@
 import truncate from 'lodash/truncate';
 import PropTypes from 'prop-types';
+import React from 'react';
 import FilesUploader from 'src/view/shared/uploaders/FilesUploader';
 
 function FilesListView(props:any) {
@@ -41,4 +42,4 @@ FilesListView.propTypes = {
   value: PropTypes.any,
 };
 
-export default FilesListView;
+export default React.memo(FilesListView);

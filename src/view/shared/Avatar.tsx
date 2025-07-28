@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const AvatarWrapper = styled.span`
@@ -77,4 +78,4 @@ const Avatar = (props:any) => {
   );
 };
 
-export default Avatar;
+export default React.memo(Avatar);

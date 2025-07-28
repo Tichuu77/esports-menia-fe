@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import RCPagination from 'rc-pagination';
+import React from 'react';
 import { getLanguage, i18n } from 'src/i18n';
 
 const Pagination = (props:any) => {
@@ -57,4 +58,4 @@ Pagination.propTypes = {
   showTotal: PropTypes.func,
 };
 
-export default Pagination;
+export default React.memo(Pagination);

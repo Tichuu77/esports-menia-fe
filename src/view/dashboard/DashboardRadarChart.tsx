@@ -6,7 +6,7 @@ import { i18n } from 'src/i18n';
 // Register the radialLinear scale
 Chart.register(RadialLinearScale);
 
-export default function DashboardRadarChart(props) {
+export default function DashboardRadarChart( ) {
   const chartRef = useRef(null);
 
   // Memoize data to prevent unnecessary re-renders

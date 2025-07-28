@@ -135,29 +135,6 @@ const adminPrivateRoutes = [
     permissionRequired: null,
     exact: true,
   },
-
-  {
-    path: '/tenant',
-    loader: () =>
-      import('src/view/tenant/list/TenantListPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/new',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/:id/edit',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-
   {
     path: '/user',
     loader: () => import('src/view/user/list/UserPage'),
@@ -245,74 +222,7 @@ const hostPrivateRoutes = [
     exact: true,
   },
 
-  {
-    path: '/tenant',
-    loader: () =>
-      import('src/view/tenant/list/TenantListPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/new',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/:id/edit',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-
-  {
-    path: '/user',
-    loader: () => import('src/view/user/list/UserPage'),
-    permissionRequired: permissions.userRead,
-    exact: true,
-  },
-
-  {
-    path: '/user/new',
-    loader: () => import('src/view/user/new/UserNewPage'),
-    permissionRequired: permissions.userCreate,
-    exact: true,
-  },
-
-  {
-    path: '/user/importer',
-    loader: () =>
-      import('src/view/user/importer/UserImporterPage'),
-    permissionRequired: permissions.userImport,
-    exact: true,
-  },
-  {
-    path: '/user/:id/edit',
-    loader: () => import('src/view/user/edit/UserEditPage'),
-    permissionRequired: permissions.userEdit,
-    exact: true,
-  },
-  {
-    path: '/user/:id',
-    loader: () => import('src/view/user/view/UserViewPage'),
-    permissionRequired: permissions.userRead,
-    exact: true,
-  },
-
-  {
-    path: '/audit-logs',
-    loader: () => import('src/view/auditLog/AuditLogPage'),
-    permissionRequired: permissions.auditLogRead,
-  },
-
-  {
-    path: '/settings',
-    loader: () =>
-      import('src/view/settings/SettingsFormPage'),
-    permissionRequired: permissions.settingsEdit,
-  },
+  
 ].filter(Boolean);
 
 const hostPublicRoutes = [
@@ -353,63 +263,7 @@ const userPrivateRoutes = [
     permissionRequired: null,
     exact: true,
   },
-
-  {
-    path: '/tenant',
-    loader: () =>
-      import('src/view/tenant/list/TenantListPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/new',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-  {
-    path: '/tenant/:id/edit',
-    loader: () =>
-      import('src/view/tenant/form/TenantFormPage'),
-    permissionRequired: null,
-    exact: true,
-  },
-
-  {
-    path: '/user',
-    loader: () => import('src/view/user/list/UserPage'),
-    permissionRequired: permissions.userRead,
-    exact: true,
-  },
-
-  {
-    path: '/user/new',
-    loader: () => import('src/view/user/new/UserNewPage'),
-    permissionRequired: permissions.userCreate,
-    exact: true,
-  },
-
-  {
-    path: '/user/importer',
-    loader: () =>
-      import('src/view/user/importer/UserImporterPage'),
-    permissionRequired: permissions.userImport,
-    exact: true,
-  },
-  {
-    path: '/user/:id/edit',
-    loader: () => import('src/view/user/edit/UserEditPage'),
-    permissionRequired: permissions.userEdit,
-    exact: true,
-  },
-  {
-    path: '/user/:id',
-    loader: () => import('src/view/user/view/UserViewPage'),
-    permissionRequired: permissions.userRead,
-    exact: true,
-  },
-
+   
   {
     path: '/audit-logs',
     loader: () => import('src/view/auditLog/AuditLogPage'),

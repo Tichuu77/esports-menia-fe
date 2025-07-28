@@ -1,3 +1,4 @@
+import React from 'react';
 import { i18n } from 'src/i18n';
 import TenantListFilter from 'src/view/tenant/list/TenantListFilter';
 import TenantListTable from 'src/view/tenant/list/TenantListTable';
@@ -19,4 +20,4 @@ function TenantListPage( ) {
   );
 }
 
-export default TenantListPage;
+export default React.memo(TenantListPage);

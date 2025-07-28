@@ -3,6 +3,7 @@ import {
   faSortUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import styled from 'styled-components';
 
 const TableColumnHeaderStyled = styled.th`
@@ -88,4 +89,4 @@ const TableColumnHeader = (props:any) => {
   );
 };
 
-export default TableColumnHeader;
+export default React.memo(TableColumnHeader);
