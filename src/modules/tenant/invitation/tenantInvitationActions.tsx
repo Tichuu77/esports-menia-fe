@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import selectors from 'src/modules/tenant/invitation/tenantInvitationSelectors';
 import TenantService from 'src/modules/tenant/tenantService';
 import Message from 'src/view/shared/message';
+import AuthRefferCode from 'src/modules/auth/authRefferCode';
 
 const prefix = 'TENANT_INVITATION';
 
@@ -29,7 +30,7 @@ const tenantInvitationActions = {
   DECLINE_ERROR: `${prefix}_DECLINE_ERROR`,
 
   doAcceptFromAuth:
-    (token:string, navigate:any,forceAcceptOtherEmail = false) =>
+    (token:string,reffreBy: string, navigate:any,forceAcceptOtherEmail = false) =>
     async (dispatch :any, getState:any) => {
        
       try {
@@ -45,6 +46,7 @@ const tenantInvitationActions = {
 
         if (!isSignedIn) {
           AuthInvitationToken.set(token);
+          AuthRefferCode.set(reffreBy)
          navigate('/auth/signup');
           return;
         }
@@ -55,6 +57,7 @@ const tenantInvitationActions = {
 
         const tenant = await TenantService.acceptInvitation(
           token,
+          reffreBy,
           forceAcceptOtherEmail,
         );
 
@@ -86,14 +89,14 @@ const tenantInvitationActions = {
       }
     },
 
-  doAccept: (token:string) => async (dispatch:any) => {
+  doAccept: (token:string,refferBy:string) => async (dispatch:any) => {
     try {
       dispatch({
         type: tenantInvitationActions.ACCEPT_STARTED,
       });
 
       const tenant =
-        await TenantService.acceptInvitation(token);
+        await TenantService.acceptInvitation(token,refferBy);
       await dispatch(authActions.doSelectTenant(tenant));
 
       dispatch({

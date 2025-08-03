@@ -49,23 +49,27 @@ const RoutesComponent: React.FC = () => {
         privateRoutes: routes.ownerPrivateRoutes,
       };
     }
-    if (adminAccess) {
+    else if (adminAccess) {
       return {
         publicRoutes: routes.adminPublicRoutes,
         privateRoutes: routes.adminPrivateRoutes,
       };
     }
-    if (hostAccess) {
+   else if (hostAccess) {
       return {
         publicRoutes: routes.hostPublicRoutes,
         privateRoutes: routes.hostPrivateRoutes,
       };
     }
-    return {
-      publicRoutes: routes.userPrivateRoutes,
-      privateRoutes: routes.userPublicRoutes,
+    else{
+       return {
+      publicRoutes: routes.userPublicRoutes,
+      privateRoutes: routes.userPrivateRoutes,
     };
-  }, [ownerAccess, adminAccess, hostAccess]);
+    }
+   
+  }, [ownerAccess, adminAccess, hostAccess,routes]);
+
 
   useEffect(() => {
     if (isInitialMount.current) {

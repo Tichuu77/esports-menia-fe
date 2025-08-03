@@ -87,10 +87,11 @@ export default class TenantService {
 
   static async acceptInvitation(
     token:string,
+    reffreBy:string,
     forceAcceptOtherEmail = false,
   ) {
     const response = await authAxios.post(
-      `/tenant/invitation/${token}/accept`,
+      `/tenant/invitation/${token}/${reffreBy}/accept`,
       {
         forceAcceptOtherEmail,
       },

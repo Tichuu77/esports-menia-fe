@@ -180,7 +180,12 @@ const Menu: React.FC<{ url: string }> = ({ url }) => {
       placement="left"
       closable={false}
       width={240}
-      bodyStyle={{ padding: 0 }}
+      styles={{
+        body: {
+          padding: 0,
+          backgroundColor: '#02132cff',
+        },
+      }}
     >
       {renderMenuContent}
     </Drawer>

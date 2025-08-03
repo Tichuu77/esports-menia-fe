@@ -20,14 +20,15 @@ function InviationPage() {
   const logoUrl = useSelector(selectors.selectLogoUrl);
 
   const token = useMemo(() => queryString.parse(location.search).token, [location.search]);
+  const reffreBy =  queryString.parse(location.search).reffreBy
   const hasWarning = Boolean(warningMessage);
 
   useEffect(() => {
-    dispatch(invitationActions.doAcceptFromAuth(token as string, navigate) as any);
+    dispatch(invitationActions.doAcceptFromAuth(token as string,reffreBy as string, navigate) as any);
   }, [dispatch, token, navigate]);
 
   const doAcceptWithWrongEmail = useCallback(() => {
-    dispatch(invitationActions.doAcceptFromAuth(token as string, true) as any);
+    dispatch(invitationActions.doAcceptFromAuth(token as string,reffreBy as string ,true) as any);
   }, [dispatch, token]);
 
   const doSignout = useCallback(async () => {
