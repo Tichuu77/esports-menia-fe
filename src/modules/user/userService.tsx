@@ -49,6 +49,21 @@ export default class UserService {
     return response.data;
   }
 
+   static async invite(data:any) {
+    const body = {
+      data,
+    };
+
+    const tenantId = AuthCurrentTenant.get();
+
+    const response = await authAxios.post(
+      `/tenant/${tenantId}/invite`,
+      body,
+    );
+
+    return response.data;
+  }
+
   static async import(values:any, importHash:any) {
     const body = {
       data: {

@@ -58,12 +58,24 @@ const selectPermissionToImport = createSelector(
     ),
 );
 
+const selectPermissionToInvite = createSelector(
+  [
+    authSelectors.selectCurrentTenant,
+    authSelectors.selectCurrentUser,
+  ],
+  (currentTenant, currentUser) =>
+    new PermissionChecker(currentTenant, currentUser).match(
+      Permissions.values.userInvite,
+    ),
+);
+
 const userSelectors = {
   selectPermissionToRead,
   selectPermissionToEdit,
   selectPermissionToCreate,
   selectPermissionToImport,
   selectPermissionToDestroy,
+  selectPermissionToInvite,
 };
 
 export default userSelectors;

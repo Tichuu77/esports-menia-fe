@@ -265,9 +265,9 @@ const userPrivateRoutes = [
   },
    
   {
-    path: '/audit-logs',
-    loader: () => import('src/view/auditLog/AuditLogPage'),
-    permissionRequired: permissions.auditLogRead,
+    path: '/invite',
+    loader: () => import('src/view/user/invite/UserInvitePage'),
+    permissionRequired: permissions.userInvite,
   },
 
   {

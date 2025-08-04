@@ -85,28 +85,14 @@ export const userMenus= [
     group: 'main',
   },
   {
-    path: '/user',
-    label: i18n('user.menu'),
-    permissionRequired: null,
+    path: '/invite',
     icon: faChevronRight,
-    group: 'administrator',
-  },
-
-  {
-    path: '/audit-logs',
-    icon: faChevronRight,
-    label: i18n('auditLog.menu'),
+    label: i18n('user.invite.menu'),
     permissionRequired: null,
-    group: 'administrator',
+    group: 'main',
   },
   
-  {
-    path: '/settings',
-    icon: faChevronRight,
-    label: i18n('settings.menu'),
-    permissionRequired: null,
-    group: 'administrator',
-  },
+  
 ].filter(Boolean);
 
 export const hostMenus= [

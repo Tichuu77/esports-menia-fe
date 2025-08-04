@@ -86,7 +86,6 @@ export default class AuthService {
   }
 
   static async updateProfile(data : any) {
-    console.log('Updating profile with data:', data);
     const body = {
       data,
     };

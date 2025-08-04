@@ -166,7 +166,10 @@ const en = {
   },
 
   user: {
-    invite: 'Invite',
+    invite:{
+      'title':'Invite',
+       'menu':'Invites'
+    },
     title: 'Users',
     menu: 'Users',
     type:{
@@ -204,6 +207,7 @@ const en = {
     disable: 'Disable',
     enable: 'Enable',
     doAddSuccess: 'User(s) successfully saved',
+    doInviteSuccess: 'User(s) successfully invited',
     doUpdateSuccess: 'User successfully saved',
     status: {
       active: 'Active',

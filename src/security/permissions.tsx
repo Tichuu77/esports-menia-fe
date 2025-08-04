@@ -44,6 +44,10 @@ class Permissions {
         allowedRoles: [roles.owner,roles.admin],
         
       },
+        userInvite: {
+        id: 'userCreate',
+        allowedRoles: [roles.owner,roles.user],
+      },
       userImport: {
         id: 'userImport',
         allowedRoles: [roles.owner, roles.admin],

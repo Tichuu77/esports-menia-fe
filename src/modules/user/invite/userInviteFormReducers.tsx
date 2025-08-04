@@ -1,0 +1,57 @@
+import actions from 'src/modules/user/invite/userInviteFormActions';
+
+const initialData = {
+  initLoading: false,
+  saveLoading: false,
+  user: null,
+};
+
+export default (state = initialData, { type, payload }:any) => {
+  if (type === actions.INIT_STARTED) {
+    return {
+      ...state,
+      user: null,
+      initLoading: true,
+    };
+  }
+
+  if (type === actions.INIT_SUCCESS) {
+    return {
+      ...state,
+      user: payload,
+      initLoading: false,
+    };
+  }
+
+  if (type === actions.INIT_ERROR) {
+    return {
+      ...state,
+      user: null,
+      initLoading: false,
+    };
+  }
+
+  if (type === actions.INVITE_STARTED) {
+    return {
+      ...state,
+      saveLoading: true,
+    };
+  }
+
+  if (type === actions.INVITE_SUCCESS) {
+    return {
+      ...state,
+      saveLoading: false,
+    };
+  }
+
+  if (type === actions.INVITE_ERROR) {
+    return {
+      ...state,
+      saveLoading: false,
+    };
+  }
+
+
+  return state;
+};
