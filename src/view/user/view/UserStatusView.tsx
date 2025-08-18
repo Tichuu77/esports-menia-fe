@@ -31,11 +31,20 @@ function UserStatusView(props : { value: string }) {
     );
   }
 
+  if (value === 'accept') {
+    return (
+      <span className="bg-green-500 text-white dark:bg-green-800 dark:text-green-100 font-medium py-1 px-2 text-sm rounded-lg">
+        {i18n('user.status.accept')}
+      </span>
+    );
+  }
+
   return (
     <span className="bg-yellow-500 text-white dark:bg-yellow-800 dark:text-yellow-100 font-medium py-1 px-2 text-sm rounded-lg">
       {i18n('user.status.invited')}
     </span>
   );
+
 }
 
 export default UserStatusView;

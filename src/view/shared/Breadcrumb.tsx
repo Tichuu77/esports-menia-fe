@@ -3,19 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Breadcrumb(props:any) {
-  const isLink = (item:any) => {
-    return item.length > 1;
-  };
+interface BreadcrumbItem {
+  label: string;
+  path?: string; // optional → if no path, render as plain text
+}
+
+function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (
     <ol className="text-sm flex items-center">
-      {props.items.map((item:any, index:any) => {
+      {items.map((item, index) => {
         const isFirst = index === 0;
-        const isLast = props.items.length - 1 === index;
+        const isLast = items.length - 1 === index;
 
         return (
           <li
-            key={item[0]}
+            key={index}
             className={`${
               isLast
                 ? 'text-gray-800 dark:text-white'
@@ -28,15 +30,12 @@ function Breadcrumb(props:any) {
                 icon={faChevronRight}
               />
             )}
-            {isLink(item) ? (
-              <Link
-                className="hover:underline"
-                to={item[1]}
-              >
-                {item[0]}
+            {item.path && !isLast ? (
+              <Link className="hover:underline" to={item.path}>
+                {item.label}
               </Link>
             ) : (
-              item[0]
+              item.label
             )}
           </li>
         );

@@ -34,6 +34,23 @@ export default class UserService {
     return response.data;
   }
 
+  
+  static async removeInvite(ids:any[]) {
+    const params = {
+      ids,
+    };
+
+    const tenantId = AuthCurrentTenant.get();
+
+    const response = await authAxios.put(
+      `/tenant/${tenantId}/invite-remove`,
+      {
+        params,
+      },
+    );
+
+    return response.data;
+  }
   static async create(data:any) {
     const body = {
       data,
@@ -107,6 +124,26 @@ export default class UserService {
       },
     );
 
+    return response.data;
+  }
+
+   static async fetchInvites(filter:any, orderBy:any, limit:number, offset:any) {
+    const params = {
+      filter,
+      orderBy,
+      limit,
+      offset,
+    };
+
+    const tenantId = AuthCurrentTenant.get();
+
+    const response = await authAxios.get(
+      `/tenant/${tenantId}/invites`,
+      {
+        params,
+      },
+    );
+    console.log('response',response.data)
     return response.data;
   }
 

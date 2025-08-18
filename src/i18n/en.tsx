@@ -167,10 +167,16 @@ const en = {
 
   user: {
     invite:{
-      'title':'Invite',
-       'menu':'Invites'
+      title:'Invite',
+       menu:'Invites',
+       new:'New Invite',
+       doDestroySuccess:'Invite removed successfull',
+       doDestroyAllSelectedSuccess:'Invite removed successfull',
+       doInviteSuccess:'Invite sent successfully',
+       note:'Invitation will be dismissed after 3 days if not accepted',
     },
     title: 'Users',
+    home: 'Home',
     menu: 'Users',
     type:{
       user: 'User',
@@ -213,6 +219,7 @@ const en = {
       active: 'Active',
       invited: 'Invited',
       blocked: 'Blocked',
+      accept: 'Accept',
     },
     exporterFileName: 'users_export',
     doDestroySuccess: 'User successfully deleted',

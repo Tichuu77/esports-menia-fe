@@ -266,6 +266,12 @@ const userPrivateRoutes = [
    
   {
     path: '/invite',
+    loader: () => import('src/view/user/invitesLIst/InvitePage'),
+    permissionRequired: permissions.userInvite,
+  },
+
+   {
+    path: '/invite/new',
     loader: () => import('src/view/user/invite/UserInvitePage'),
     permissionRequired: permissions.userInvite,
   },

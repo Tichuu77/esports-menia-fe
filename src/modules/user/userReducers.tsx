@@ -4,11 +4,13 @@ import importerReducer from 'src/modules/user/importer/userImporterReducers';
 import list from 'src/modules/user/list/userListReducers';
 import view from 'src/modules/user/view/userViewReducers';
 import invite from 'src/modules/user/invite/userInviteFormReducers'
+import inviteList from 'src/modules/user/invitesLIst/inviteListReducers'
 
 export default combineReducers({
   list,
   form,
   view,
   invite,
+  inviteList,
   importer: importerReducer,
 });

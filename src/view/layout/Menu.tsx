@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { i18n } from 'src/i18n';
 import authSelectors from 'src/modules/auth/authSelectors';
 import PermissionChecker from 'src/modules/auth/permissionChecker';
@@ -77,8 +77,12 @@ function buildMenuItems(
   return items;
 }
 
-const Menu: React.FC<{ url: string }> = ({ url }) => {
+const Menu: React.FC<{ url?: string }> = ({ url: propUrl }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  
+  // Use location.pathname if url prop is not provided
+  const currentUrl = propUrl || location.pathname;
 
   const logoUrl = useSelector(authSelectors.selectLogoUrl, shallowEqual);
   const currentTenant = useSelector(authSelectors.selectCurrentTenant, shallowEqual);
@@ -90,6 +94,7 @@ const Menu: React.FC<{ url: string }> = ({ url }) => {
   const hostAccess = useSelector(authSelectors.selectPesmissionAccessHost);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -125,17 +130,27 @@ const Menu: React.FC<{ url: string }> = ({ url }) => {
     () => buildMenuItems(activeMenus as any, matchPermission, onMenuClick, !!hasPermissionAdministrator),
     [activeMenus, matchPermission, onMenuClick, hasPermissionAdministrator],
   );
-
-  // Compute selected keys based on url
+ 
   const selectedKeys = useMemo(() => {
-    const matched = menuItems
-      .flatMap((item: any) => ('children' in item && item.children ? item.children : [item]))
-      .find((item: any) => item.key && url.startsWith(item.key.toString()));
+    const allItems = menuItems.flatMap((item: any) =>
+      'children' in item && item.children ? item.children : [item]
+    );
+
+    // First, try exact match
+    let matched = allItems.find((item: any) => item.key && currentUrl === item.key.toString());
+
+    // If no exact match, try prefix match (for nested routes like /invite/new)
+    if (!matched) {
+      matched = allItems.find((item: any) => {
+        const key = item.key?.toString() || '';
+        return currentUrl === key || currentUrl.startsWith(key + '/');
+      });
+    }
 
     return matched?.key ? [matched.key.toString()] : [];
-  }, [menuItems, url]);
+  }, [menuItems, currentUrl]);
 
-  // Compute default open keys for submenu groups
+  // Compute and set open keys for submenu groups
   const defaultOpenKeys = useMemo(() => {
     const matchedGroup = GROUPS_ORDER.find((group) => {
       if (group.key === '') return false;
@@ -143,11 +158,23 @@ const Menu: React.FC<{ url: string }> = ({ url }) => {
         (item: any) =>
           item.key === group.key &&
           'children' in item &&
-          item.children?.some((child: any) => url.startsWith(child.key?.toString() || '')),
+          item.children?.some((child: any) => {
+            const childKey = child.key?.toString() || '';
+            return currentUrl === childKey || currentUrl.startsWith(childKey + '/');
+          }),
       );
     });
     return matchedGroup && matchedGroup.key ? [matchedGroup.key] : [];
-  }, [menuItems, url]);
+  }, [menuItems, currentUrl]);
+
+  // Update open keys when URL changes
+  useEffect(() => {
+    setOpenKeys(defaultOpenKeys);
+  }, [defaultOpenKeys]);
+
+  const handleOpenChange = useCallback((keys: string[]) => {
+    setOpenKeys(keys);
+  }, []);
 
   const renderMenuContent = (
     <>
@@ -167,9 +194,52 @@ const Menu: React.FC<{ url: string }> = ({ url }) => {
         theme="dark"
         mode="inline"
         selectedKeys={selectedKeys}
-        defaultOpenKeys={defaultOpenKeys}
+        openKeys={openKeys}
+        onOpenChange={handleOpenChange}
         items={menuItems}
+        style={{
+          backgroundColor: '#02132cff',
+          borderRight: 'none',
+        }}
       />
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .ant-menu-dark .ant-menu-item:hover,
+          .ant-menu-dark .ant-menu-submenu-title:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #1890ff !important;
+          }
+          
+          .ant-menu-dark .ant-menu-item-selected {
+            background-color: #1890ff !important;
+            color: white !important;
+          }
+          
+          .ant-menu-dark .ant-menu-item-selected::after {
+            border-right: 3px solid #1890ff;
+          }
+          
+          .ant-menu-dark .ant-menu-item a,
+          .ant-menu-dark .ant-menu-submenu-title a {
+            color: inherit !important;
+            text-decoration: none;
+          }
+          
+          .ant-menu-dark .ant-menu-item:hover a,
+          .ant-menu-dark .ant-menu-submenu-title:hover a {
+            color: #1890ff !important;
+          }
+          
+          .ant-menu-dark .ant-menu-item-selected a {
+            color: white !important;
+          }
+          
+          .ant-menu-dark .ant-menu-submenu-open > .ant-menu-submenu-title {
+            color: #1890ff !important;
+          }
+        `
+      }} />
     </>
   );
 

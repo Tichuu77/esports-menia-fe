@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+ 
 import { useDispatch, useSelector } from 'react-redux';
 import { i18n } from 'src/i18n';
 import { useNavigate } from 'react-router-dom';
@@ -7,28 +7,24 @@ import selectors from 'src/modules/user/invite/userInviteFormSelector';
 import Breadcrumb from 'src/view/shared/Breadcrumb';
 import UserInviteForm from './UserInviteForm';
 
-function UserInvitePage( ) {
+function UserInvitePage() {
   const dispatch = useDispatch();
-       const navigate = useNavigate();
-  const saveLoading = useSelector(
-    selectors.selectSaveLoading,
-  );
+  const navigate = useNavigate();
+  const saveLoading = useSelector(selectors.selectSaveLoading);
 
-  useEffect(() => {
-    dispatch(actions.doInit()as any);
-  }, [dispatch]);
+ 
 
-  const doSubmit = (id:string, data:any) => {
-    dispatch(actions.doInvite(data,navigate)as any);
+  const doSubmit = ( data: any) => {
+    dispatch(actions.doInvite(data, navigate) as any);
   };
 
   return (
     <>
       <Breadcrumb
         items={[
-          [i18n('dashboard.menu'), '/'],
-          [i18n('user.invite.title'), '/new'],
-          [i18n('user.invite.title')],
+          { label: i18n('user.home'), path: '/' }, // root breadcrumb
+          { label: i18n('user.invite.menu'), path: '/invites' },   // parent
+          { label: i18n('user.invite.new') },          // current page (no path)
         ]}
       />
 

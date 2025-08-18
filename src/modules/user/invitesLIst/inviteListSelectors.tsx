@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state:any) => state.user.list;
+const selectRaw = (state:any) => state.user.inviteList;
 
+console.log('selectRaw',selectRaw)
 
 const selectLoading = createSelector(
   [selectRaw],
@@ -98,12 +99,13 @@ const selectSelectedKeys = createSelector(
 const selectSelectedRows = createSelector(
   [selectRaw, selectRows],
   (raw, rows) => {
+    console.log('rows inner',rows)
+    console.log('row inner',raw)
     return rows.filter((row:any) =>
-      raw.selectedKeys.includes(row.id),
+      raw.selectedKeys.includes(row.user?.id),
     );
   },
 );
-
 const selectIsAllSelected = createSelector(
   [selectRows, selectSelectedKeys],
   (rows, selectedKeys) => {
@@ -111,7 +113,7 @@ const selectIsAllSelected = createSelector(
   },
 );
 
-const userListSelectors = {
+const inviteListSelectors = {
   selectLoading,
   selectRows,
   selectCount,
@@ -129,4 +131,4 @@ const userListSelectors = {
   selectSorter,
 };
 
-export default userListSelectors;
+export default  inviteListSelectors  ;

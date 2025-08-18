@@ -48,6 +48,10 @@ class Permissions {
         id: 'userCreate',
         allowedRoles: [roles.owner,roles.user],
       },
+       userRemoveInvite: {
+        id: 'userCreate',
+        allowedRoles: [roles.owner,roles.user],
+      },
       userImport: {
         id: 'userImport',
         allowedRoles: [roles.owner, roles.admin],
