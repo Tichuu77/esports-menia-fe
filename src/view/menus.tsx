@@ -24,6 +24,22 @@ export const ownerMenus= [
     group: 'administrator',
   },
 
+{
+    path: '/invites',
+    label: i18n('user.invite.menu'),
+    permissionRequired: permissions.invitesRead,
+    icon: faChevronRight,
+    group: 'administrator',
+  },
+
+  {
+    path: '/invites/dashboard',
+    label: i18n('user.invite.dashboard.title'),
+    permissionRequired: permissions.invitesDashboard,
+    icon: faChevronRight,
+    group: 'administrator',
+  },
+
   {
     path: '/audit-logs',
     icon: faChevronRight,

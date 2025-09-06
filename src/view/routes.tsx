@@ -82,6 +82,23 @@ const ownerPrivateRoutes = [
     permissionRequired: permissions.userRead,
     exact: true,
   },
+    {
+    path:'/invites',
+    loader: () => import('src/view/invites/list/InvitesPage'),
+    permissionsRequired: permissions.invitesRead,
+  },
+   {
+    path:'/invites/dashboard',
+    loader: () => import('src/view/invites/dashboard/invitesDashboard'),
+    permissionsRequired: permissions.invitesDashboard,
+  },
+
+  {
+    path: '/invites/:id/edit',
+    loader: () => import('src/view/invites/edit/InvitesEditPage'),
+    permissionRequired: permissions.invitesEdit,
+    exact: true,
+  },
 
   {
     path: '/audit-logs',
@@ -275,7 +292,6 @@ const userPrivateRoutes = [
     loader: () => import('src/view/user/invite/UserInvitePage'),
     permissionRequired: permissions.userInvite,
   },
-
   {
     path: '/settings',
     loader: () =>

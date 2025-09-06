@@ -7,12 +7,14 @@ import layoutReducer from 'src/modules/layout/layoutReducers';
 import settingsReducer from 'src/modules/settings/settingsReducers';
 import tenantReducer from 'src/modules/tenant/tenantReducers';
 import userReducer from 'src/modules/user/userReducers';
+import invitesReducer from 'src/modules/invites/invitesReducers';
 
 const rootReducer = combineReducers({
   layout: layoutReducer,
   auth: authReducer,
   tenant: tenantReducer,
   user: userReducer,
+  invites:invitesReducer,
   auditLog: auditLogReducer,
   settings: settingsReducer,
 });

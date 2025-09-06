@@ -167,13 +167,31 @@ const en = {
 
   user: {
     invite:{
-      title:'Invite',
+      title:'Invites',
        menu:'Invites',
        new:'New Invite',
        doDestroySuccess:'Invite removed successfull',
        doDestroyAllSelectedSuccess:'Invite removed successfull',
        doInviteSuccess:'Invite sent successfully',
+       doUpdateSuccess:'Invite updated successfully',
        note:'Invitation will be dismissed after 3 days if not accepted',
+       status:{
+        accept:'Accept',
+        invite:'Invite',
+        reject:'Reject',
+       },
+       edit:{
+        title:'Edit Invite',
+       },
+       dashboard:{
+        title:'Invites Dashboard',
+        totalInvites:'Total Invites',
+        acceptedInvites:'Accepted Invites',
+        rejectedInvites:'Rejected Invites',
+        pendingInvites:'Pending Invites',
+        invitesOverTime:'Invites Over Time',
+        inviteStatusDistribution:'Invite Status Distribution',
+       }
     },
     title: 'Users',
     home: 'Home',
@@ -193,7 +211,12 @@ const en = {
       lastName: 'Last Name',
       status: 'Status',
       userType: 'User Type',
+      invitedBy: 'Invited By',
+      inviterName: 'Inviter Name',
+      inviteDate: 'Invite Date',
+      date: 'Date',
       phoneNumber: 'Phone Number',
+      user: 'User',
       role: 'Role',
       createdAt: 'Created at',
       updatedAt: 'Updated at',
@@ -220,6 +243,7 @@ const en = {
       invited: 'Invited',
       blocked: 'Blocked',
       accept: 'Accept',
+      reject: 'Reject',
     },
     exporterFileName: 'users_export',
     doDestroySuccess: 'User successfully deleted',

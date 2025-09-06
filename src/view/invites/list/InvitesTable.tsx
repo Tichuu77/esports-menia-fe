@@ -2,16 +2,14 @@ import {
   faEdit,
   faTrashAlt,
 } from '@fortawesome/free-regular-svg-icons';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { i18n } from 'src/i18n';
-import actions from 'src/modules/user/list/userListActions';
-import selectors from 'src/modules/user/list/userListSelectors';
-import userSelectors from 'src/modules/user/userSelectors';
-import Roles from 'src/security/roles';
+import actions from 'src/modules/invites/list/invitesListActions';
+import selectors from 'src/modules/invites/list/invitesListSelectors';
+import invitesSelectors from 'src/modules/invites/invitesSelectors';
 import Avatar from 'src/view/shared/Avatar';
 import ConfirmModal from 'src/view/shared/modals/ConfirmModal';
 import Spinner from 'src/view/shared/Spinner';
@@ -19,30 +17,34 @@ import Pagination from 'src/view/shared/table/Pagination';
 import TableColumnHeader from 'src/view/shared/table/TableColumnHeader';
 import UserStatusView from 'src/view/user/view/UserStatusView';
 
-function UserTable() {
+function InvitesTable() {
   const dispatch = useDispatch();
   const [recordIdToDestroy, setRecordIdToDestroy] =
     useState(null);
 
+    console.log('recordIdToDestroy',recordIdToDestroy)
+
   const loading = useSelector(selectors.selectLoading);
   const rows = useSelector(selectors.selectRows);
+
+  console.log('rows',rows)
   const pagination = useSelector(
     selectors.selectPagination,
   );
   const selectedKeys = useSelector(
     selectors.selectSelectedKeys,
   );
+
+  console.log('selectedKeys',selectedKeys)
   const hasRows = useSelector(selectors.selectHasRows);
   const sorter = useSelector(selectors.selectSorter);
   const isAllSelected = useSelector(
     selectors.selectIsAllSelected,
   );
-  const hasPermissionToEdit = useSelector(
-    userSelectors.selectPermissionToEdit,
+   const hasPermissionToEdit = useSelector(
+    invitesSelectors.selectPermissionToEdit,
   );
-  const hasPermissionToDestroy = useSelector(
-    userSelectors.selectPermissionToDestroy,
-  );
+ 
 
   const doDestroy = (id:any) => {
     setRecordIdToDestroy(null);
@@ -77,6 +79,7 @@ function UserTable() {
 
   useEffect(() => {
     console.log('UserTable component mounted');
+    dispatch(actions.doFetch()as any)
   }, []);
 
   return (
@@ -113,9 +116,31 @@ function UserTable() {
                 name={'fullName'}
                 label={i18n('user.fields.fullName')}
               />
+
               <TableColumnHeader
-                label={i18n('user.fields.roles')}
-              ></TableColumnHeader>
+               onSort={doChangeSort}
+                hasRows={hasRows}
+                sorter={sorter} 
+                label={i18n('user.fields.invitedBy')}
+                 name={'invitedBy'}
+              />
+
+               <TableColumnHeader
+               onSort={doChangeSort}
+                hasRows={hasRows}
+                sorter={sorter} 
+                label={i18n('user.fields.inviterName')}
+                 name={'inviterName'}
+              />
+
+              <TableColumnHeader
+                onSort={doChangeSort}
+                hasRows={hasRows}
+                sorter={sorter}
+                name={'invitedDate'}
+                label={i18n('user.fields.inviteDate')}
+              />
+              
               <TableColumnHeader
                 label={i18n('user.fields.status')}
                 align="center"
@@ -151,10 +176,10 @@ function UserTable() {
                       type="checkbox"
                       className="cursor-pointer rounded border-gray-300 dark:bg-gray-800 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                       checked={selectedKeys.includes(
-                        row.id,
+                        row.user?.id,
                       )}
                       onChange={() =>
-                        doToggleOneSelected(row.id)
+                        doToggleOneSelected(row.user?.id)
                       }
                     />
                   </th>
@@ -172,18 +197,24 @@ function UserTable() {
                     />
                   </td>
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.email}
+                    {row.user?.email}
                   </td>
                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row.fullName}
+                    {row.user?.fullName}
                   </td>
-                  <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
-                    {row?.roles?.map((roleId:string) => (
-                      <div key={roleId}>
-                        <span>{Roles.labelOf(roleId)}</span>
-                      </div>
-                    ))}
+
+                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+                    {row.invitedBy?.email}
                   </td>
+
+                   <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+                    {row.invitedBy?.name}
+                  </td>
+
+                    <td className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm">
+                    {row.inviteDate}
+                  </td>
+               
                   <td
                     align="center"
                     className="whitespace-nowrap px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
@@ -194,23 +225,16 @@ function UserTable() {
                     align="right"
                     className="w-56 whitespace-nowrap border-b px-5 py-5 border-gray-200 dark:border-gray-800"
                   >
-                    <Link
-                      className="inline-flex justify-center items-center w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
-                      to={`/user/${row.id}`}
-                      title={i18n('common.view')}
-                    >
-                      <FontAwesomeIcon icon={faSearch} />
-                    </Link>
-                    {hasPermissionToEdit && (
+                       {hasPermissionToEdit && (
                       <Link
                         className="inline-flex justify-center items-center w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
-                        to={`/user/${row.id}/edit`}
+                        to={`/invites/${row.id}/edit`}
                         title={i18n('common.edit')}
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </Link>
                     )}
-                    {hasPermissionToDestroy && (
+                    {  (
                       <button
                         className="w-9 h-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
                         onClick={() =>
@@ -223,6 +247,7 @@ function UserTable() {
                         />
                       </button>
                     )}
+                    
                   </td>
                 </tr>
               ))}
@@ -249,4 +274,4 @@ function UserTable() {
   );
 }
 
-export default UserTable;
+export default InvitesTable;

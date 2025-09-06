@@ -67,6 +67,27 @@ class Permissions {
         allowedRoles: [roles.admin, roles.owner],
         
       },
+      invitesRead:{
+        id: 'invitesRead',
+        allowedRoles: [roles.owner, roles.admin],
+      },
+      invitesCreate:{
+        id: 'invitesCreate',
+        allowedRoles: [roles.owner, roles.admin],
+      },
+      invitesDestroy:{
+        id: 'invitesDestroy',
+        allowedRoles: [roles.owner, roles.admin],
+      },
+      invitesEdit:{
+        id: 'invitesEdit',
+        allowedRoles: [roles.owner, roles.admin],
+      },
+      invitesDashboard:{
+        id: 'invitesDashboard',
+        allowedRoles: [roles.owner, roles.admin, roles.user],
+      },
+      
       auditLogRead: {
         id: 'auditLogRead',
         allowedRoles: [roles.owner],

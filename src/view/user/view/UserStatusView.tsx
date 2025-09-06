@@ -39,6 +39,14 @@ function UserStatusView(props : { value: string }) {
     );
   }
 
+  if (value === 'reject') {
+    return (
+      <span className="bg-red-500 text-white dark:bg-red-800 dark:text-red-100 font-medium py-1 px-2 text-sm rounded-lg">
+        {i18n('user.status.reject')}
+      </span>
+    );
+  }
+
   return (
     <span className="bg-yellow-500 text-white dark:bg-yellow-800 dark:text-yellow-100 font-medium py-1 px-2 text-sm rounded-lg">
       {i18n('user.status.invited')}
