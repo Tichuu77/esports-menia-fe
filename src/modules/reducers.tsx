@@ -8,6 +8,7 @@ import settingsReducer from 'src/modules/settings/settingsReducers';
 import tenantReducer from 'src/modules/tenant/tenantReducers';
 import userReducer from 'src/modules/user/userReducers';
 import invitesReducer from 'src/modules/invites/invitesReducers';
+import coinAccountReducers from './coinAccount/coinAccountReducers';
 
 const rootReducer = combineReducers({
   layout: layoutReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   invites:invitesReducer,
   auditLog: auditLogReducer,
   settings: settingsReducer,
+  coinAccount:coinAccountReducers,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

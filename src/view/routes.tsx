@@ -293,6 +293,11 @@ const userPrivateRoutes = [
     permissionRequired: permissions.userInvite,
   },
   {
+    path: '/coinaccount',
+    loader: () => import('src/view/coinAccount/coinAccountPage'),
+    permissionRequired: permissions.coinAccountUserRead,
+  },
+  {
     path: '/settings',
     loader: () =>
       import('src/view/settings/SettingsFormPage'),

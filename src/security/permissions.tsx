@@ -87,6 +87,14 @@ class Permissions {
         id: 'invitesDashboard',
         allowedRoles: [roles.owner, roles.admin, roles.user],
       },
+        coinAccountUserRead:{
+        id: 'coinAccountUserRead',
+        allowedRoles: [roles.owner, roles.admin, roles.user],
+      },
+       coinAccountEdit:{
+        id: 'coinAccountEdit',
+        allowedRoles: [roles.owner, roles.admin,],
+      },
       
       auditLogRead: {
         id: 'auditLogRead',

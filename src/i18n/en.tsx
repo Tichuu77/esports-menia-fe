@@ -193,6 +193,10 @@ const en = {
         inviteStatusDistribution:'Invite Status Distribution',
        }
     },
+    coinAccount:{
+      menu:'Coin Account',
+      title:'Coin Account',
+    },
     title: 'Users',
     home: 'Home',
     menu: 'Users',

@@ -107,6 +107,14 @@ export const userMenus= [
     permissionRequired: null,
     group: 'main',
   },
+
+   {
+    path: '/coinaccount',
+    icon: faChevronRight,
+    label: i18n('user.coinAccount.menu'),
+    permissionRequired: null,
+    group: 'main',
+  },
   
   
 ].filter(Boolean);
