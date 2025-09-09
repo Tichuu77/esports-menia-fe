@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import FormErrors from 'src/view/shared/form/formErrors';
 import { v4 as uuid } from 'uuid';
 
-function InputRangeFormItem(props:any) {
+function InputRangeFormItem(props: any) {
   const [inputId] = useState(uuid());
 
   const {
@@ -16,6 +16,7 @@ function InputRangeFormItem(props:any) {
     autoComplete,
     required,
     externalErrorMessage,
+    separatorLabel = "to",
   } = props;
 
   const {
@@ -39,7 +40,39 @@ function InputRangeFormItem(props:any) {
     register(name);
   }, [register, name]);
 
-  const handleStartChanged = (value:any) => {
+  const startValue = () => {
+    if (!originalValue) {
+      return '';
+    }
+
+    if (!Array.isArray(originalValue)) {
+      return '';
+    }
+
+    if (!originalValue.length) {
+      return '';
+    }
+
+    return originalValue[0] || '';
+  };
+
+  const endValue = () => {
+    if (!originalValue) {
+      return '';
+    }
+
+    if (!Array.isArray(originalValue)) {
+      return '';
+    }
+
+    if (originalValue.length < 2) {
+      return '';
+    }
+
+    return originalValue[1] || '';
+  };
+
+  const handleStartChanged = (value: any) => {
     setValue(name, [value, endValue()], {
       shouldValidate: true,
       shouldDirty: true,
@@ -47,120 +80,141 @@ function InputRangeFormItem(props:any) {
     props.onChange && props.onChange([value, endValue()]);
   };
 
-  const handleEndChanged = (value:any) => {
+  const handleEndChanged = (value: any) => {
     setValue(name, [startValue(), value], {
       shouldValidate: true,
       shouldDirty: true,
     });
-    props.onChange && props.onChange([value, startValue()]);
+    // Fixed: corrected order in onChange callback
+    props.onChange && props.onChange([startValue(), value]);
   };
 
-  const startValue = () => {
-    if (!originalValue) {
-      return null;
-    }
-
-    if (Array.isArray(!originalValue)) {
-      return null;
-    }
-
-    if (!originalValue.length) {
-      return null;
-    }
-
-    return originalValue[0];
-  };
-
-  const endValue = () => {
-    if (!originalValue) {
-      return null;
-    }
-
-    if (Array.isArray(!originalValue)) {
-      return null;
-    }
-
-    if (originalValue.length < 2) {
-      return null;
-    }
-
-    return originalValue[1];
+  const hasValues = () => {
+    const start = startValue();
+    const end = endValue();
+    return start !== '' || end !== '';
   };
 
   return (
-    <div>
-      {Boolean(label) && (
-        <label
-          className={`block text-sm text-gray-800 dark:text-gray-200`}
-          htmlFor={`${inputId}Start`}
-        >
-          {label}{' '}
-          {required ? (
-            <span className="text-sm text-red-400">*</span>
-          ) : null}
-        </label>
-      )}
-      <div className="flex flex-nowrap items-baseline">
-        <input
-          type="text"
-          id={`${inputId}Start`}
-          name={`${name}Start`}
-          onChange={(event) =>
-            handleStartChanged(event.target.value)
-          }
-          onBlur={(event) => {
-            props.onBlur && props.onBlur(event);
-          }}
-          value={startValue()}
-          placeholder={placeholder || undefined}
-          autoFocus={autoFocus || undefined}
-          autoComplete={autoComplete || undefined}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
-            errorMessage
-              ? 'border-red-400 text-red-600'
-              : ''
-          }`}
-        />
+    <div className="space-y-2">
+      <div>
+        {Boolean(label) && (
+          <label
+            className="block text-sm font-medium text-gray-900 mb-2"
+            htmlFor={`${inputId}Start`}
+          >
+            {label}
+            {required && (
+              <span className="text-blue-600 ml-1">*</span>
+            )}
+          </label>
+        )}
 
-        <div
-          className="text-gray-300"
-          style={{
-            flexShrink: 1,
-            marginLeft: '8px',
-            marginRight: '8px',
-          }}
-        >
-          ~
+        <div className="flex items-center gap-3">
+          {/* Start Input */}
+          <div className="flex-1">
+            <input
+              type="text"
+              id={`${inputId}Start`}
+              name={`${name}Start`}
+              onChange={(event) => handleStartChanged(event.target.value)}
+              onBlur={(event) => {
+                props.onBlur && props.onBlur(event);
+              }}
+              value={startValue()}
+              placeholder={placeholder || "Start value"}
+              autoFocus={autoFocus || undefined}
+              autoComplete={autoComplete || undefined}
+              className={`
+                block w-full px-4 py-3 text-gray-900 bg-white border-2 rounded-lg
+                transition-all duration-200 ease-in-out
+                placeholder:text-gray-500
+                ${errorMessage
+                  ? 'border-gray-800 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 bg-gray-50'
+                  : 'border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 hover:border-gray-300'
+                }
+                focus:outline-none
+              `}
+            />
+          </div>
+
+          {/* Separator */}
+          <div className="flex items-center gap-2 px-2">
+            <div className="h-px w-3 bg-gray-300"></div>
+            <span className="text-xs font-medium text-gray-500 bg-gray-50 px-2 py-1 rounded">
+              {separatorLabel}
+            </span>
+            <div className="h-px w-3 bg-gray-300"></div>
+          </div>
+
+          {/* End Input */}
+          <div className="flex-1">
+            <input
+              type="text"
+              id={`${inputId}End`}
+              name={`${name}End`}
+              onChange={(event) => handleEndChanged(event.target.value)}
+              onBlur={(event) => {
+                props.onBlur && props.onBlur(event);
+              }}
+              value={endValue()}
+              placeholder={placeholder || "End value"}
+              autoComplete={autoComplete || undefined}
+              className={`
+                block w-full px-4 py-3 text-gray-900 bg-white border-2 rounded-lg
+                transition-all duration-200 ease-in-out
+                placeholder:text-gray-500
+                ${errorMessage
+                  ? 'border-gray-800 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 bg-gray-50'
+                  : 'border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 hover:border-gray-300'
+                }
+                focus:outline-none
+              `}
+            />
+          </div>
         </div>
 
-        <input
-          style={{ width: '100%' }}
-          type="text"
-          id={`${inputId}End`}
-          name={`${name}End`}
-          onChange={(event) =>
-            handleEndChanged(event.target.value)
-          }
-          onBlur={(event) => {
-            props.onBlur && props.onBlur(event);
-          }}
-          value={endValue()}
-          placeholder={placeholder || undefined}
-          autoFocus={autoFocus || undefined}
-          autoComplete={autoComplete || undefined}
-          className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring ${
-            errorMessage
-              ? 'border-red-400 text-red-600'
-              : ''
-          }`}
-        />
+        {/* Range Status */}
+        {hasValues() && !errorMessage && (
+          <div className="flex items-center gap-2 mt-2 text-xs">
+            <div className="w-2 h-2 rounded-full bg-blue-500" />
+            <span className="text-blue-700 font-medium">
+              Range: {startValue() || '(empty)'} {separatorLabel} {endValue() || '(empty)'}
+            </span>
+          </div>
+        )}
+
+        {/* Usage Tip */}
+        {!hasValues() && !errorMessage && (
+          <div className="text-xs text-gray-500 mt-1">
+            💡 <strong>Tip:</strong> Enter text values to define a range (e.g., names, dates, codes)
+          </div>
+        )}
       </div>
-      <div className="text-red-600 text-sm mt-2">
-        {errorMessage}
-      </div>
-      {Boolean(hint) && (
-        <div className="text-gray-500 text-sm mt-2">
-          {hint}
+
+      {errorMessage && (
+        <div className="flex items-start gap-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+          <div className="flex-shrink-0 w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center mt-0.5">
+            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <p className="text-sm font-medium text-gray-800">
+            {errorMessage}
+          </p>
+        </div>
+      )}
+
+      {Boolean(hint) && !errorMessage && (
+        <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center mt-0.5">
+            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <p className="text-sm text-blue-700">
+            {hint}
+          </p>
         </div>
       )}
     </div>
@@ -169,6 +223,7 @@ function InputRangeFormItem(props:any) {
 
 InputRangeFormItem.defaultProps = {
   required: false,
+  separatorLabel: "to",
 };
 
 InputRangeFormItem.propTypes = {
@@ -177,10 +232,11 @@ InputRangeFormItem.propTypes = {
   hint: PropTypes.string,
   autoFocus: PropTypes.bool,
   required: PropTypes.bool,
-  prefix: PropTypes.string,
   placeholder: PropTypes.string,
   externalErrorMessage: PropTypes.string,
-  formItemProps: PropTypes.object,
+  separatorLabel: PropTypes.string,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default InputRangeFormItem;

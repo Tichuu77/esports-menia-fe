@@ -139,7 +139,7 @@ function InviteFilterMobile(props: any) {
                     label={i18n('user.fields.status')}
                     options={userEnumerators.inviteStatus.map((value) => ({
                       value,
-                      label: i18n(`user.status.${value}`),
+                      label: i18n(`user.invite.status.${value}`),
                     }))}
                   />
 
