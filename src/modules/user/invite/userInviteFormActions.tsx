@@ -1,4 +1,5 @@
 import { i18n } from 'src/i18n';
+import Errors from 'src/modules/shared/error/errors';
  
 import UserService from 'src/modules/user/userService';
 import Message from 'src/view/shared/message';
@@ -30,8 +31,8 @@ const userInviteFormActions = {
 
       navigate('/invite');
     } catch (error) {
-      console.error('UserFormActions doAdd error:', error);
-      // Errors.handle(error);
+       
+      Errors.handle(error);
 
       dispatch({
         type: userInviteFormActions.INVITE_ERROR,

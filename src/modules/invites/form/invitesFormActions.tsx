@@ -32,7 +32,6 @@ const invitesFormActions = {
 
       if (isEdit) {
         record = await InvitesService.find(id);
-        console.log('invitesFormActions record:', record);
       }
 
       dispatch({
@@ -66,10 +65,9 @@ const invitesFormActions = {
 
       Message.success(i18n('user.doAddSuccess'));
 
-      navigate('/user');
+      navigate('/invites');
     } catch (error) {
-      console.error('invitesFormActions doAdd error:', error);
-      // Errors.handle(error);
+      Errors.handle(error);
 
       dispatch({
         type: invitesFormActions.ADD_ERROR,

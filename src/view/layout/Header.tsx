@@ -14,20 +14,20 @@ import { i18n } from 'src/i18n';
 import authActions from 'src/modules/auth/authActions';
 import authSelectors from 'src/modules/auth/authSelectors';
 import layoutActions from 'src/modules/layout/layoutActions';
-import layoutSelectors from 'src/modules/layout/layoutSelectors';
 import Avatar from 'src/view/shared/Avatar';
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-   
-  const userText = useSelector(authSelectors.selectCurrentUserNameOrEmailPrefix);
+  const userText = useSelector(
+    authSelectors.selectCurrentUserNameOrEmailPrefix,
+  );
   const userAvatar = useSelector(authSelectors.selectCurrentUserAvatar);
   const currentTenant = useSelector(authSelectors.selectCurrentTenant);
-  const hasPermissionToReadWorkspeace = useSelector(authSelectors.selectPermissionToAccessWorkSpeacen);
-  const menuVisible = useSelector(layoutSelectors.selectMenuVisible);
-
+  const hasPermissionToReadWorkspeace = useSelector(
+    authSelectors.selectPermissionToAccessWorkSpeacen,
+  );
 
   const doToggleMenu = () => dispatch(layoutActions.doToggleMenu());
   const doSignout = () => dispatch(authActions.doSignout() as any);
@@ -41,6 +41,7 @@ function Header() {
       <div className="px-6 py-3">
         <div className="md:flex md:items-center md:justify-between">
           <div className="w-full flex items-center justify-between">
+            {/* ✅ Hamburger Button */}
             <div className="text-xl font-semibold text-gray-700">
               <button
                 className="focus:outline-none text-xl font-bold text-gray-700 dark:text-white md:text-2xl hover:text-gray-700 dark:hover:text-gray-300"
@@ -50,19 +51,25 @@ function Header() {
               </button>
             </div>
 
+            {/* ✅ Avatar + User Menu */}
             <div className="flex items-center mt-0">
-              
-
               <Menu>
-                <Menu.Button className={`${menuVisible?'hidden':'flex'} items-center focus:outline-none md:flex lg:flex`}>
-                  <Avatar size="small" src={userAvatar || undefined} alt="avatar" />
+                <Menu.Button className="flex items-center focus:outline-none md:flex lg:flex">
+                  <Avatar
+                    size="small"
+                    src={userAvatar || undefined}
+                    alt="avatar"
+                  />
                   <div className="text-left mx-2 text-sm font-medium text-gray-700 dark:text-gray-200 hidden md:block lg:block">
                     {userText}
-                    {['multi', 'multi-with-subdomain'].includes(config.tenantMode) && currentTenant && (
-                      <div className="text-xs font-medium">
-                        {currentTenant.name}
-                      </div>
-                    )}
+                    {['multi', 'multi-with-subdomain'].includes(
+                      config.tenantMode,
+                    ) &&
+                      currentTenant && (
+                        <div className="text-xs font-medium">
+                          {currentTenant.name}
+                        </div>
+                      )}
                   </div>
                 </Menu.Button>
 
@@ -77,6 +84,7 @@ function Header() {
                         {i18n('auth.profile.title')}
                       </button>
                     </Menu.Item>
+
                     <Menu.Item>
                       <button
                         onClick={doNavigateToPasswordChange}
@@ -86,7 +94,10 @@ function Header() {
                         {i18n('auth.passwordChange.title')}
                       </button>
                     </Menu.Item>
-                    {['multi', 'multi-with-subdomain'].includes(config.tenantMode) &&
+
+                    {['multi', 'multi-with-subdomain'].includes(
+                      config.tenantMode,
+                    ) &&
                       hasPermissionToReadWorkspeace && (
                         <Menu.Item>
                           <button
@@ -98,6 +109,7 @@ function Header() {
                           </button>
                         </Menu.Item>
                       )}
+
                     <Menu.Item>
                       <button
                         onClick={doSignout}

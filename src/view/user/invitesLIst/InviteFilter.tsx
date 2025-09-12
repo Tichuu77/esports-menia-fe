@@ -52,7 +52,7 @@ const previewRenders = {
   },
 };
 
-function InviteFilter(props:any) {
+function InviteFilter(props: any) {
   type FilterKeys = 'fullName' | 'email' | 'status';
   const rawFilter = useSelector(selectors.selectRawFilter);
   const dispatch = useDispatch();
@@ -76,73 +76,98 @@ function InviteFilter(props:any) {
       actions.doFetch(
         schema.cast(initialValues),
         rawFilter,
-      )as any,
+      ) as any,
     );
     // eslint-disable-next-line
   }, [dispatch]);
 
-  const onSubmit = (values:any) => {
+  const onSubmit = (values: any) => {
     const rawValues = form.getValues();
-    dispatch(actions.doFetch(values, rawValues)as any);
+    dispatch(actions.doFetch(values, rawValues) as any);
     setExpanded(false);
   };
 
   const onReset = () => {
     Object.keys(emptyValues).forEach((key) => {
-     form.setValue(key, emptyValues[key as FilterKeys]);
+      form.setValue(key, emptyValues[key as FilterKeys]);
     });
-    dispatch(actions.doReset()as any);
+    dispatch(actions.doReset() as any);
     setExpanded(false);
   };
 
-  const onRemove = (key:string) => {
-    form.setValue(key,  emptyValues[key as FilterKeys]);
+  const onRemove = (key: string) => {
+    form.setValue(key, emptyValues[key as FilterKeys]);
     return form.handleSubmit(onSubmit)();
   };
 
   const { loading } = props;
 
   return (
-    <div className="border-gray-200 dark:border-gray-600 border rounded-md mb-2">
-      <FilterPreview
-        onClick={() => {
-          setExpanded(!expanded);
-        }}
-        renders={previewRenders}
-        values={rawFilter}
-        expanded={expanded}
-        onRemove={onRemove}
-      />
-      <div className={`${expanded ? 'block' : 'hidden'}`}>
+    <div className="bg-white border-2 border-gray-200 rounded-lg shadow-sm mb-6 overflow-hidden transition-all duration-200 hover:shadow-md">
+      {/* Filter Preview Header */}
+      <div className="bg-gray-50 border-b border-gray-100">
+        <FilterPreview
+          onClick={() => {
+            setExpanded(!expanded);
+          }}
+          renders={previewRenders}
+          values={rawFilter}
+          expanded={expanded}
+          onRemove={onRemove}
+        />
+      </div>
+
+      {/* Filter Form Content */}
+      <div className={`transition-all duration-300 ease-in-out ${expanded ? 'block' : 'hidden'}`}>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="pl-4 pr-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-              <InputFormItem
-                name={'email'}
-                label={i18n('user.fields.email')}
-              />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white">
+            {/* Form Fields Grid */}
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <InputFormItem
+                  name={'email'}
+                  label={i18n('user.fields.email')}
+                />
 
-              <InputFormItem
-                name={'fullName'}
-                label={i18n('user.fields.fullName')}
-              />
+                <InputFormItem
+                  name={'fullName'}
+                  label={i18n('user.fields.fullName')}
+                />
 
-              <SelectFormItem
-                name={'status'}
-                label={i18n('user.fields.status')}
-                options={userEnumerators.inviteStatus.map(
-                  (value) => ({
-                    value,
-                    label: i18n(`user.status.${value}`),
-                  }),
-                )}
-              />
- 
+                <div className="md:col-span-1">
+                  <SelectFormItem
+                    name={'status'}
+                    label={i18n('user.fields.status')}
+                    options={userEnumerators.inviteStatus.map(
+                      (value) => ({
+                        value,
+                        label: i18n(`user.invite.status.${value}`),
+                      }),
+                    )}
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="px-4 py-2 text-right">
+            {/* Action Buttons */}
+            <div className="bg-gray-50 border-t border-gray-100 px-6 py-4 flex justify-end space-x-3">
+              {/* Reset Button */}
               <button
-                className="mr-2 mb-2 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+                className="inline-flex items-center px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border-2 border-gray-200 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-200"
+                type="button"
+                onClick={onReset}
+                disabled={loading}
+              >
+                <FontAwesomeIcon
+                  className="mr-2 text-gray-600"
+                  icon={faUndo}
+                />
+                {i18n('common.reset')}
+              </button>
+
+              {/* Search Button */}
+              <button
+                className="inline-flex items-center px-6 py-2.5 text-sm font-medium text-white bg-blue-500 border-2 border-blue-500 rounded-lg transition-all duration-200 hover:bg-blue-600 hover:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500 disabled:hover:border-blue-500"
                 type="submit"
                 disabled={loading}
               >
@@ -150,24 +175,22 @@ function InviteFilter(props:any) {
                   className="mr-2"
                   icon={faSearch}
                 />
-                {i18n('common.search')}
-              </button>
-              <button
-                className="mr-2 mb-2 text-sm disabled:opacity-50 disabled:cursor-default px-4 py-2 tracking-wide dark:border-gray-800 dark:bg-gray-800 dark:hover:bg-gray-600 dark:text-white text-gray-700 border border-gray-300 transition-colors duration-200 transform bg-white rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                type="button"
-                onClick={onReset}
-                disabled={loading}
-              >
-                <FontAwesomeIcon
-                  className="mr-2"
-                  icon={faUndo}
-                />
-                {i18n('common.reset')}
+                {loading ? 'Searching...' : i18n('common.search')}
               </button>
             </div>
           </form>
         </FormProvider>
       </div>
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+          <div className="flex items-center space-x-2 text-blue-600">
+            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-sm font-medium">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

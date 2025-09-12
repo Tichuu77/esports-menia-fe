@@ -102,6 +102,14 @@ const Menu: React.FC<{ url?: string }> = ({ url: propUrl }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+  if (isMobile) {
+    dispatch(layoutActions.doHideMenu());
+  } else {
+    dispatch(layoutActions.doShowMenu());
+  }
+}, [isMobile, dispatch]);
+
   const permissionChecker = useMemo(() => new PermissionChecker(currentTenant, currentUser), [
     currentTenant,
     currentUser,
@@ -181,7 +189,11 @@ const Menu: React.FC<{ url?: string }> = ({ url: propUrl }) => {
       <div className="logo p-4">
         {logoUrl ? (
           <Link to="/">
-            <img src={logoUrl} width="164px" alt={i18n('app.title')} />
+            <img
+              src={logoUrl}
+              width={!menuVisible ? '40px' : '164px'}
+              alt={i18n('app.title')}
+            />
           </Link>
         ) : (
           <h2>

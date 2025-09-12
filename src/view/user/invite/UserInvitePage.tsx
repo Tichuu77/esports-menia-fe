@@ -15,6 +15,7 @@ function UserInvitePage() {
  
 
   const doSubmit = ( data: any) => {
+    console.log('data', data);
     dispatch(actions.doInvite(data, navigate) as any);
   };
 

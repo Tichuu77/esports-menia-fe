@@ -33,21 +33,9 @@ const monthlyTrends = [
   { month: 'Jul', invites: 340, coins: 4080, accepted: 245 },
   { month: 'Aug', invites: 287, coins: 4205, accepted: 205 }
 ];
+ 
 
-const inviteStatusData = [
-  { name: 'Accepted', value: 856, color: '#10B981' },
-  { name: 'Pending', value: 294, color: '#F59E0B' },
-  { name: 'Rejected', value: 100, color: '#EF4444' }
-];
-
-const topPerformers = [
-  { name: 'John Doe', invites: 89, accepted: 67, coins: 1245.50 },
-  { name: 'Jane Smith', invites: 76, accepted: 58, coins: 1098.75 },
-  { name: 'Mike Johnson', invites: 64, accepted: 48, coins: 892.25 },
-  { name: 'Sarah Wilson', invites: 52, accepted: 41, coins: 734.50 },
-  { name: 'David Brown', invites: 48, accepted: 35, coins: 645.75 }
-];
-
+ 
 // KPI Card Component with proper null checking
 const KPICard = React.memo(({ title, value, subValue, trend, icon: Icon, color = "blue" }: any) => {
   const colorClasses: any = {
@@ -119,6 +107,23 @@ const CustomTooltip = React.memo(({ active, payload, label }: any) => {
 // Loading Component
 const LoadingDashboard = React.memo(() => (
   <div className="min-h-screen bg-gray-50 p-6">
+      <Breadcrumb
+        items={[
+          { label: i18n('user.home'), path: '/' }, 
+          { label: i18n('user.invite.dashboard.title')},  
+        ]}
+      />
+      
+      <div className="mx-auto my-8">
+        {/* Header */}        
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Invite Dashboard</h1>
+          <p className="text-gray-600">Monitor your invitation performance and analytics</p>
+        </div>
+
+        {/* Filter Component */}
+        <InviteDashboardFilter />
+    
     <div className="mx-auto my-8">
       <div className="animate-pulse">
         {/* Header Loading */}
@@ -149,6 +154,7 @@ const LoadingDashboard = React.memo(() => (
         </div>
       </div>
     </div>
+  </div>
   </div>
 ));
 
@@ -210,9 +216,9 @@ const InviteDashboard = () => {
       todayStats: safeGet(data, 'todayStats', {}),
       thisMonthStats: safeGet(data, 'thisMonthStats', {}),
       comparisonWithPreviousMonth: safeGet(data, 'comparisonWithPreviousMonth', {}),
-      monthlyTrends: safeGet(data, 'monthlyTrends', monthlyTrends),
-      inviteStatusData: safeGet(data, 'inviteStatusData', inviteStatusData),
-      topPerformers: safeGet(data, 'topPerformers', topPerformers),
+      monthlyTrends: safeGet(data, 'monthlyTrends',  {}),
+      inviteStatusData: safeGet(data, 'inviteStatusData',  {}),
+      topPerformers: safeGet(data, 'topPerformers',  {}),
       averageRates: safeGet(data, 'averageRates', {})
     };
   }, [data]);

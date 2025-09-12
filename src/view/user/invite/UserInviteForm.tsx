@@ -45,7 +45,6 @@ function UserInviteForm(props:any) {
 
   const [initialValues] = useState(() => ({
     emails: [],
-    email: '',
   }as any));
 
   const form = useForm({
@@ -62,7 +61,7 @@ function UserInviteForm(props:any) {
       delete data.email;
     }
 
-    props.onSubmit(null, data);
+    props.onSubmit(  data);
   };
 
   const onReset = () => {
